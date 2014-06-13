@@ -2,8 +2,10 @@
 <resources>
 
     <string name="app_name">Events</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_id">245438092330149</string>
     <string name="hello_world">Hello world!</string>
-	<string name="app_id"> 245438092330149 </string>
-    
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_page_login">EVENTS</string>
+    <string name="Button_text_login">Login</string>
+
 </resources>

@@ -7,5 +7,10 @@
     <string name="title_activity_login">Events</string>
     <string name="title_page_login">EVENTS</string>
     <string name="Button_text_login">Login</string>
+    <string name="login_effettuato">Benvenuto</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="action_websearch">Web search</string>
+    <string name="app_not_available">Sorry, there\'s no web browser available</string>
 
 </resources>

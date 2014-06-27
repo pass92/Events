@@ -3,7 +3,6 @@
 
     <string name="app_name">Events</string>
     <string name="app_id">245438092330149</string>
-    <string name="hello_world">Hello world!</string>
     <string name="title_activity_login">Events</string>
     <string name="title_page_login">EVENTS</string>
     <string name="Button_text_login">Login</string>
@@ -12,5 +11,5 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="action_websearch">Web search</string>
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
-
+	<string name="login_without_facebook">Salta!</string>
 </resources>

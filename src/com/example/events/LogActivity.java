@@ -3,6 +3,7 @@ package com.example.events;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -16,7 +17,8 @@ import com.facebook.Settings;
 
 public class LogActivity extends Activity {
 
-	private static final String URL_PREFIX_FRIENDS = "https://graph.facebook.com/me/friends?access_token=";
+	private static final String TAG = "LogActivity";
+	//private static final String URL_PREFIX_FRIENDS = "https://graph.facebook.com/me/friends?access_token=";
 	private Button buttonLogin;
 	private Session.StatusCallback statusCallback = new SessionStatusCallback();
 	Intent intent;
@@ -24,6 +26,7 @@ public class LogActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.v(TAG, "OnCreate");
 		setContentView(R.layout.activity_login);
 		
 		//creo l'intent che usero' per la chiamata alla mainActivity
@@ -80,10 +83,9 @@ public class LogActivity extends Activity {
         Session session = Session.getActiveSession();
         if (session.isOpened()) {
         	intent.putExtra("session", session);
+        	//intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         	startActivity(intent);
         } else {
-            //textInstructionsOrLink.setText(R.string.instructions);
-            //buttonLogin.setText("");
             buttonLogin.setOnClickListener(new OnClickListener() {
                 public void onClick(View view) { onClickLogin(); }
             });

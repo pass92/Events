@@ -1,6 +1,17 @@
 package com.example.events;
 
 import java.util.Locale;
+import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.model.GraphObject;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -39,7 +50,9 @@ public class MainActivity extends Activity {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String[] mPlanetTitles = {"Nome utente","I miei Eventi","Crea Evento","Cerca Evento","Impostazioni"};
-
+    
+    //sessione passata dopo il Login
+    static Session session;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +96,48 @@ public class MainActivity extends Activity {
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
+        Intent intent = getIntent();
+        session = (Session) intent.getSerializableExtra("session");
+		/////////////
+        //////////
+        /* make the API call */
+        new Request(
+            session,
+            "/me/events",
+            null,
+            HttpMethod.GET,
+            new Request.Callback() {
+                public void onCompleted(Response response) {
+                    /* handle the result */
+                	try{
+                		Log.w("response_of_query",response.toString());
+                	final JSONObject json = response.getGraphObject().getInnerJSONObject();
+                    JSONArray d = json.getJSONArray("data");
+                    int l = (d != null ? d.length() : 0);
+                    Log.d("Facebook-Example-events Request", "d.length(): " + l);
+
+                    for (int i=0; i<l; i++) {
+                        JSONObject o = d.getJSONObject(i);
+                        String id= o.getString("id");
+                        //String n = o.getString("name");
+                        //String h = o.getString("host");
+                        //String L = o.getString("location");
+                        Log.w("Name",id);
+                        //Events f = new Events();
+                        //f.host = h;
+                        //f.name = n;
+                        //f.location =L;
+                        //events.add(f);
+                    }
+                } catch (JSONException e) {
+                    Log.w("Facebook-Example", "JSON Error in response");
+                }
+                }
+            }
+        ).executeAsync();
+        ///////
+        ///end
+        //////
         if (savedInstanceState == null) {
             selectItem(0);
         }

@@ -1,5 +1,7 @@
 package com.example.events;
 
+import java.util.Arrays;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -47,7 +49,7 @@ public class LogActivity extends Activity {
             }
             Session.setActiveSession(session);
             if (session.getState().equals(SessionState.CREATED_TOKEN_LOADED)) {
-                session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback));
+                session.openForRead(new Session.OpenRequest(this).setPermissions(Arrays.asList("public_profile","user_likes", "user_status","user_events")).setCallback(statusCallback));
             }
         }
 
@@ -95,7 +97,7 @@ public class LogActivity extends Activity {
     private void onClickLogin() {
         Session session = Session.getActiveSession();
         if (!session.isOpened() && !session.isClosed()) {
-            session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback));
+            session.openForRead(new Session.OpenRequest(this).setPermissions(Arrays.asList("public_profile")).setCallback(statusCallback));
         } else {
             Session.openActiveSession(this, true, statusCallback);
         }

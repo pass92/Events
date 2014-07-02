@@ -21,6 +21,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -44,7 +45,7 @@ import android.widget.Toast;
 
 //cihgfdfghj krisss
 @SuppressLint("NewApi")
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements Communicator{
 	
 	private static final String TAG = "MainActivity";
     private DrawerLayout mDrawerLayout;
@@ -65,7 +66,14 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.v(TAG, "OnCreate");
+        //Log.v(TAG, "OnCreate");
+        Fragment fragment=new Fragment_main(); 
+        FragmentManager manager=getFragmentManager();
+		FragmentTransaction transaction=manager.beginTransaction();
+        transaction.add(R.id.content_frame, fragment, "basefragment");
+        transaction.addToBackStack(null);
+        transaction.commit();
+
         
         //pulisco l'array contenente gli eventi
         //events.clear();
@@ -207,13 +215,28 @@ public class MainActivity extends Activity {
 
     private void selectItem(int position) {
         // update the main content by replacing fragments
-        Fragment fragment = new PositionFragment();
+    	switch(position){
+    	case 1: System.out.println("i miei eventi");
+    	        Fragment fragment3=new Fragment_i_miei_eventi();
+	            FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment3).commit();
+    	
+    	       break;
+    	case 2: System.out.println("crea evento");
+    	 Fragment fragment4=new Fragment_crea_event();
+         FragmentManager fragmentManager2 = getFragmentManager();//levare e mettere all inizio
+         fragmentManager2.beginTransaction().replace(R.id.content_frame, fragment4).commit();
+	
+	       break;
+    	case 3: System.out.println("cerca evento");
+	       break;
+    	case 4: System.out.println("impostazioni");
+	       break;
+	    default : System.out.println("i???");
+	       break;
+    	}
         Bundle args = new Bundle();
         args.putInt("position", position);
-        fragment.setArguments(args);
-
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
         // update selected item and title, then close the drawer
         mDrawerList.setItemChecked(position, true);
@@ -246,6 +269,35 @@ public class MainActivity extends Activity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+    @Override
+    public void respond (String data) {
+		// TODO Auto-generated method stub
+    	if(data.equals("fragment_event")){
+	       System.out.println(data);
+		   Fragment fragment2=new Fragment_event();
+	       FragmentManager fragmentManager = getFragmentManager();
+           fragmentManager.beginTransaction().replace(R.id.content_frame, fragment2).commit();
+    	}
+    	if(data.equals("fragment_i_miei_eventi")){
+    	    System.out.println(data);
+    	    Fragment fragment3=new Fragment_i_miei_eventi();
+    	    FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment3).commit();
+        	
+    	
+    	}
+		
+      
+      
+		
+	}
+    
+    
+    
+    
+    
+    
+    
     /**
      * Fragment that appears in the "content_frame", shows a planet
      */

@@ -1,5 +1,9 @@
 package com.example.events;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -53,11 +57,19 @@ public class MainActivity extends Activity {
     
     //sessione passata dopo il Login
     static Session session;
+    
+    //Array per contenere eventi scaricati da Facebook
+    static List<EventsHelper> events = new ArrayList<EventsHelper>();
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.v(TAG, "OnCreate");
+        
+        //pulisco l'array contenente gli eventi
+        //events.clear();
+        
         
         mTitle = mDrawerTitle = getTitle();
         //mPlanetTitles = getResources().getStringArray(R.array.planets_array);
@@ -103,14 +115,14 @@ public class MainActivity extends Activity {
         /* make the API call */
         new Request(
             session,
-            "/me/events",
+            "me/events",
             null,
             HttpMethod.GET,
             new Request.Callback() {
                 public void onCompleted(Response response) {
                     /* handle the result */
                 	try{
-                		Log.w("response_of_query",response.toString());
+                		Log.w("response_of_query",response.getGraphObject().toString());
                 	final JSONObject json = response.getGraphObject().getInnerJSONObject();
                     JSONArray d = json.getJSONArray("data");
                     int l = (d != null ? d.length() : 0);
@@ -119,15 +131,16 @@ public class MainActivity extends Activity {
                     for (int i=0; i<l; i++) {
                         JSONObject o = d.getJSONObject(i);
                         String id= o.getString("id");
-                        //String n = o.getString("name");
+                        String title = o.getString("name");
+                        //String description = o.getString("description");
+                        //Log.w("description",description);
                         //String h = o.getString("host");
                         //String L = o.getString("location");
-                        Log.w("Name",id);
-                        //Events f = new Events();
-                        //f.host = h;
-                        //f.name = n;
-                        //f.location =L;
-                        //events.add(f);
+                        EventsHelper f = new EventsHelper();
+                        f.setId(id);
+                        f.setTitle(title);
+                        //f.setDescription(description);
+                        events.add(f);
                     }
                 } catch (JSONException e) {
                     Log.w("Facebook-Example", "JSON Error in response");
@@ -249,7 +262,12 @@ public class MainActivity extends Activity {
             int i = getArguments().getInt("position");
 
             TextView vista = (TextView) rootView.findViewById(R.id.image);
-            vista.setText("position"+i);
+            String textForPrinting="START: ";
+            for (int j = 0; j < events.size(); j++) {
+            	String newString = "START: id: "+events.get(j).getId()+"Title: "+events.get(j).getTitle();//+"description"+ events.get(j).getDescription()+"\n");
+            	textForPrinting = textForPrinting + newString;
+			}
+            vista.setText(textForPrinting);
             return rootView;
         }
     }

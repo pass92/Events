@@ -37,8 +37,11 @@ public class LogActivity extends Activity {
 		//associo la referenza del bottone all'istanza buttonLogin
 		buttonLogin = (Button)findViewById(R.id.login_button);
 		
-		Settings.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
-
+		/*
+		 * ho provato a cambiare le impostazioni!! vediamo :D
+		 */
+		//Settings.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
+		Settings.addLoggingBehavior(LoggingBehavior.REQUESTS);
         Session session = Session.getActiveSession();
         if (session == null) {
             if (savedInstanceState != null) {
@@ -97,7 +100,7 @@ public class LogActivity extends Activity {
     private void onClickLogin() {
         Session session = Session.getActiveSession();
         if (!session.isOpened() && !session.isClosed()) {
-            session.openForRead(new Session.OpenRequest(this).setPermissions(Arrays.asList("public_profile")).setCallback(statusCallback));
+            session.openForRead(new Session.OpenRequest(this).setPermissions(Arrays.asList("public_profile","user_likes", "user_status","user_events")).setCallback(statusCallback));
         } else {
             Session.openActiveSession(this, true, statusCallback);
         }

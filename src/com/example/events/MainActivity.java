@@ -45,7 +45,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//cihgfdfghj krisss
+
 @SuppressLint("NewApi")
 public class MainActivity extends Activity implements Communicator {
 
@@ -65,11 +65,60 @@ public class MainActivity extends Activity implements Communicator {
 	// Array per contenere eventi scaricati da Facebook
 	static List<EventsHelper> events = new ArrayList<EventsHelper>();
 
+    public static List<EventsHelper> getListEvents(){
+    	return events;
+    }
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		// Log.v(TAG, "OnCreate");
+		
+		/* make the API call */
+		Intent intent = getIntent();
+		session = (Session) intent.getSerializableExtra("session");
+		String fqlQuery = "select eid,name,description,start_time, pic_big from event where eid in (SELECT eid FROM event WHERE contains("
+				+ "'{Trento}'" + ")) order by start_time ASC";
+		Bundle params = new Bundle();
+		params.putString("q", fqlQuery);
+		Request request = new Request(session, "/fql", params, HttpMethod.GET,
+				new Request.Callback() {
+					public void onCompleted(Response response) {
+						Log.i(TAG, "Got results: " + response.toString());
+						try {
+							if (response != null) {
+								
+								final JSONObject json = response.getGraphObject().getInnerJSONObject();
+								JSONArray d = json.getJSONArray("data");
+								int l = (d != null ? d.length() : 0);
+								Log.d("Facebook-Example-events Request",
+										"d.length(): " + l);
+
+								for (int i = 0; i < l; i++) {
+									JSONObject o = d.getJSONObject(i);
+									String id = o.getString("eid");
+									String title = o.getString("name");
+									String description = o.getString("description");
+									String start_time = o.getString("start_time");
+									String photo = o.getString("pic_big");
+											
+									EventsHelper f = new EventsHelper();
+									f.setId(id);
+									f.setTitle(title);
+									f.setDescription(description);
+									f.setStart_time(start_time);
+									f.setPhoto(photo);
+									events.add(f);
+								}
+							}
+						} catch (JSONException e) {
+							Log.w("Facebook-Example", "JSON Error in response");
+						}
+					}
+				});
+		Request.executeBatchAsync(request);
+		
+		//fragment transaction
 		Fragment fragment = new Fragment_main();
 		FragmentManager manager = getFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
@@ -120,50 +169,6 @@ public class MainActivity extends Activity implements Communicator {
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-		/* make the API call */
-		Intent intent = getIntent();
-		session = (Session) intent.getSerializableExtra("session");
-		String fqlQuery = "select eid,name,description,start_time, pic_big from event where eid in (SELECT eid FROM event WHERE contains("
-				+ "'{Trento}'" + ")) order by start_time ASC";
-		Bundle params = new Bundle();
-		params.putString("q", fqlQuery);
-		Request request = new Request(session, "/fql", params, HttpMethod.GET,
-				new Request.Callback() {
-					public void onCompleted(Response response) {
-						Log.i(TAG, "Got results: " + response.toString());
-						try {
-							if (response != null) {
-								
-								final JSONObject json = response.getGraphObject().getInnerJSONObject();
-								JSONArray d = json.getJSONArray("data");
-								int l = (d != null ? d.length() : 0);
-								Log.d("Facebook-Example-events Request",
-										"d.length(): " + l);
-
-								for (int i = 0; i < l; i++) {
-									JSONObject o = d.getJSONObject(i);
-									String id = o.getString("eid");
-									String title = o.getString("name");
-									String description = o.getString("description");
-									String start_time = o.getString("start_time");
-									String photo = o.getString("pic_big");
-											
-									EventsHelper f = new EventsHelper();
-									f.setId(id);
-									f.setTitle(title);
-									f.setDescription(description);
-									f.setStart_time(start_time);
-									f.setPhoto(photo);
-									events.add(f);
-								}
-							}
-						} catch (JSONException e) {
-							Log.w("Facebook-Example", "JSON Error in response");
-						}
-					}
-				});
-		Request.executeBatchAsync(request);
-		
 		if (savedInstanceState == null) {
 			selectItem(0);
 		}

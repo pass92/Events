@@ -5,15 +5,50 @@ import com.google.android.maps.GeoPoint;
 import android.graphics.Bitmap;
 
 public class EventsHelper {
-	private String Id;
-	private String Title;
-	private String Description;
-	private Bitmap Photo;
-	private String Location;
-	private GeoPoint Point;
+	private String id;
+	private String title;
+	private String description;
+	private String photo;
+	private String location;
+	private GeoPoint point;
 	private String start_time;
 	private String end_time;
-	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public String getPhoto() {
+		return photo;
+	}
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	public GeoPoint getPoint() {
+		return point;
+	}
+	public void setPoint(GeoPoint point) {
+		this.point = point;
+	}
 	public String getStart_time() {
 		return start_time;
 	}
@@ -26,41 +61,7 @@ public class EventsHelper {
 	public void setEnd_time(String end_time) {
 		this.end_time = end_time;
 	}
-	public String getId() {
-		return Id;
-	}
-	public String getTitle() {
-		return Title;
-	}
-	public void setTitle(String title) {
-		Title = title;
-	}
-	public void setId(String id) {
-		Id = id;
-	}
-	public String getDescription() {
-		return Description;
-	}
-	public void setDescription(String description) {
-		Description = description;
-	}
-	public Bitmap getPhoto() {
-		return Photo;
-	}
-	public void setPhoto(Bitmap photo) {
-		Photo = photo;
-	}
-	public String getLocation() {
-		return Location;
-	}
-	public void setLocation(String location) {
-		Location = location;
-	}
-	public GeoPoint getPoint() {
-		return Point;
-	}
-	public void setPoint(GeoPoint point) {
-		Point = point;
-	}
+	
+	
 	
 }

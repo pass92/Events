@@ -3,3 +3,4 @@ search? q=coffee&type=place&center=46.07,11.12&distance=100
 search?q=party&type=event&until=today&fields=id 
 search?q=party&type=event&until=today&fields=id,venue
 search?q=party&type=event&fields=id,name,description,start_time,end_time,venue,location
+select eid,name,description,start_time from event where eid in (SELECT eid FROM event WHERE contains("{YOUR_LOCATION_NAME}")) and venue.id = {YOUR_LOCATION_ID} and start_time > now() order by start_time ASC

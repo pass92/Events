@@ -6,8 +6,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -17,9 +20,11 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,7 +37,7 @@ import android.widget.Toast;
 
 public class Fragment_crea_event extends Fragment {
 	
-	private static int RESULT_LOAD_IMAGE = 1;
+	private static int RESULT_ACTIVITY = 1;
 	private static int RESULT_CODE = -1;
 	Button b1=null;
 	ImageView image = null;
@@ -45,7 +50,7 @@ public class Fragment_crea_event extends Fragment {
 	 final EditText t1=(EditText)view.findViewById(R.id.editText_addTitle);
 	 final EditText t2=(EditText)view.findViewById(R.id.editText_addDescription);
 	 image=(ImageView)view.findViewById(R.id.imageView_addImg);
-	 //ciao pass
+	 
 	 image.setOnClickListener(new OnClickListener() {
        
 		 @Override
@@ -54,7 +59,7 @@ public class Fragment_crea_event extends Fragment {
 			 System.out.println("IMG");
 			 Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 			 i.setType("image/*");
-			 startActivityForResult(i, RESULT_LOAD_IMAGE);
+			 startActivityForResult(i, RESULT_ACTIVITY);
 			
 	 	 }
 	 });
@@ -62,8 +67,32 @@ public class Fragment_crea_event extends Fragment {
 		
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			System.out.println("DESC");
+			// TODO Auto-generated method stub/Users/specter987/Documents/kris/Events/src/com/example/events/Fragment_crea_event.java	
+			System.out.println("MAp");
+			
+			final Context context=getActivity();
+			AlertDialog.Builder alert = new AlertDialog.Builder(context);
+            alert.setTitle("Alert Dialog"); //Set Alert dialog title here
+            alert.setMessage("Enter Location"); //Message here
+ 
+            // Set an EditText view to get user input 
+            final EditText input = new EditText(context);
+            alert.setView(input);
+            alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+            
+                     String srt = input.getEditableText().toString();
+                     Toast.makeText(context,srt,Toast.LENGTH_LONG).show();                
+                } // End of onClick(DialogInterface dialog, int whichButton)
+            }); //End of alert.setPositiveButton
+            alert.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                 public void onClick(DialogInterface dialog, int whichButton) {
+                    // Canceled.
+                      dialog.cancel();
+                 }
+            }); //End of alert.setNegativeButton
+                AlertDialog alertDialog = alert.create();
+                alertDialog.show();
 			
 		}
 	});
@@ -107,22 +136,43 @@ public class Fragment_crea_event extends Fragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 	     super.onActivityResult(requestCode, resultCode, data);
 	     
-	     if((requestCode==RESULT_LOAD_IMAGE)&&(resultCode==RESULT_CODE)&&(data!=null)){
+	     if((requestCode==RESULT_ACTIVITY)&&(resultCode==RESULT_CODE)&&(data!=null)){
+	    	 
+
 			     System.out.println(data);
 			     Uri selectedImageUri = data.getData();           
 	             Object selectedImagePath = getPath(selectedImageUri);
-	             image.setAdjustViewBounds(true);
+	             
+	             ContentResolver cr =this.getActivity().getContentResolver();
+                 try {
+					image.setImageBitmap(MediaStore.Images.Media.getBitmap(cr, selectedImageUri));
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+
+	            
+	             /*
+	            image.setAdjustViewBounds(true);
 	             image.setImageURI(selectedImageUri);
-	         
+	             selectedImagePath=null;
 	             image.setAdjustViewBounds(true);
+	            
 	             //image.setScaleType(ImageView.ScaleType.FIT_CENTER);
 	             image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+	            
 	             //image.setScaleType(ImageView.ScaleType.MATRIX);+
-            
-		}    	
+	           
+            */
+		}
+	     else {System.out.println("ERRORE");}
 	}
 	private Object getPath(Uri uri) {
 		// TODO Auto-generated method stub
+		
 		String[] projection = { MediaStore.Images.Media.DATA };
         Cursor cursor =this.getActivity().managedQuery(uri, projection, null, null, null);
         if (cursor == null) return null;

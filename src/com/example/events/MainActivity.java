@@ -181,6 +181,8 @@ public class MainActivity extends Activity implements Communicator{
     }
 
     @Override
+    
+    //menu
     public boolean onOptionsItemSelected(MenuItem item) {
          // The action bar home/up action should open or close the drawer.
          // ActionBarDrawerToggle will take care of this.
@@ -229,8 +231,12 @@ public class MainActivity extends Activity implements Communicator{
 	
 	       break;
     	case 3: System.out.println("cerca evento");
+  
 	       break;
     	case 4: System.out.println("impostazioni");
+    		Fragment fragmentImp= new Fragment_impostazioni();
+            FragmentManager fragmentManager3 = getFragmentManager();//levare e mettere all inizio
+            fragmentManager3.beginTransaction().replace(R.id.content_frame, fragmentImp).commit();
 	       break;
 	    default : System.out.println("i???");
 	       break;

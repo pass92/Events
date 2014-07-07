@@ -24,6 +24,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -63,7 +64,7 @@ public class MainActivity extends Activity implements Communicator {
 	static Session session;
 
 	// Array per contenere eventi scaricati da Facebook
-	static List<EventsHelper> events = new ArrayList<EventsHelper>();
+	private static List<EventsHelper> events = new ArrayList<EventsHelper>();
 
     public static List<EventsHelper> getListEvents(){
     	return events;
@@ -77,54 +78,83 @@ public class MainActivity extends Activity implements Communicator {
 		/* make the API call */
 		Intent intent = getIntent();
 		session = (Session) intent.getSerializableExtra("session");
-		String fqlQuery = "select eid,name,description,start_time, pic_big from event where eid in (SELECT eid FROM event WHERE contains("
-				+ "'{Trento}'" + ")) order by start_time ASC";
-		Bundle params = new Bundle();
-		params.putString("q", fqlQuery);
-		Request request = new Request(session, "/fql", params, HttpMethod.GET,
-				new Request.Callback() {
-					public void onCompleted(Response response) {
-						Log.i(TAG, "Got results: " + response.toString());
-						try {
-							if (response != null) {
-								
-								final JSONObject json = response.getGraphObject().getInnerJSONObject();
-								JSONArray d = json.getJSONArray("data");
-								int l = (d != null ? d.length() : 0);
-								Log.d("Facebook-Example-events Request",
-										"d.length(): " + l);
-
-								for (int i = 0; i < l; i++) {
-									JSONObject o = d.getJSONObject(i);
-									String id = o.getString("eid");
-									String title = o.getString("name");
-									String description = o.getString("description");
-									String start_time = o.getString("start_time");
-									String photo = o.getString("pic_big");
-											
-									EventsHelper f = new EventsHelper();
-									f.setId(id);
-									f.setTitle(title);
-									f.setDescription(description);
-									f.setStart_time(start_time);
-									f.setPhoto(photo);
-									events.add(f);
-								}
-							}
-						} catch (JSONException e) {
-							Log.w("Facebook-Example", "JSON Error in response");
-						}
-					}
-				});
-		Request.executeBatchAsync(request);
+//		String fqlQuery = "select eid,name,description,start_time, pic_big from event where eid in (SELECT eid FROM event WHERE contains("
+//				+ "'{Trento}'" + ")) order by start_time ASC";
+//		Bundle params = new Bundle();
+//		params.putString("q", fqlQuery);
+//		
+//		Request request = new Request(session, "/fql", params, HttpMethod.GET,
+//				new Request.Callback() {
+//					public void onCompleted(Response response) {
+//						//Log.i(TAG, "Got results: " + response.toString());
+//						try {
+//							if (response != null) {
+//								
+//								final JSONObject json = response.getGraphObject().getInnerJSONObject();
+//								JSONArray d = json.getJSONArray("data");
+//								int l = (d != null ? d.length() : 0);
+//								Log.d("Facebook-Example-events Request",
+//										"d.length(): " + l);
+//
+//								for (int i = 0; i < l; i++) {
+//									JSONObject o = d.getJSONObject(i);
+//									String id = o.getString("eid");
+//									String title = o.getString("name");
+//									String description = o.getString("description");
+//									String start_time = o.getString("start_time");
+//									String photo = o.getString("pic_big");
+//											
+//									EventsHelper f = new EventsHelper();
+//									f.setId(id);
+//									f.setTitle(title);
+//									f.setDescription(description);
+//									f.setStart_time(start_time);
+//									f.setPhoto(photo);
+//									events.add(f);
+//								}
+//							}
+//							
+//
+//							
+//							
+//						} catch (JSONException e) {
+//							Log.w("Facebook-Example", "JSON Error in response");
+//						}
+//					}
+//					
+//				});
+//		Request.executeBatchAsync(request);
+		
+		DownloadEventsTask taskEvents = new DownloadEventsTask();
+		taskEvents.execute();
+		
+		final ProgressDialog pausingDialog = ProgressDialog.show(MainActivity.this, "", "Loading..", true);
+		Thread boh=new Thread() {
+		public void run() {
+		try {
+		Thread.sleep(5000);
+		} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		} // The length to 'pause' for
+		pausingDialog.dismiss();
+		}
+		};
+		boh.start();
 		
 		//fragment transaction
+//		EventsHelper event = new EventsHelper();
+//		event.setTitle("SEganna Culo!!");
+//		events.add(event);
+//		
+		
 		Fragment fragment = new Fragment_main();
 		FragmentManager manager = getFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.add(R.id.content_frame, fragment, "basefragment");
 		transaction.addToBackStack(null);
 		transaction.commit();
+
 
 		// pulisco l'array contenente gli eventi
 		// events.clear();
@@ -314,6 +344,8 @@ public class MainActivity extends Activity implements Communicator {
 
 	}
 
+	
+	
 	/**
 	 * Fragment that appears in the "content_frame", shows a planet
 	 */

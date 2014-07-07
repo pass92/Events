@@ -46,7 +46,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 @SuppressLint("NewApi")
 public class MainActivity extends Activity implements Communicator {
 
@@ -65,228 +64,212 @@ public class MainActivity extends Activity implements Communicator {
 
 	// Array per contenere eventi scaricati da Facebook
 	private static List<EventsHelper> events = new ArrayList<EventsHelper>();
+	// id da recuperare nel fragment_event
+	private static int id;
 
-    public static List<EventsHelper> getListEvents(){
-    	return events;
-    }
+	static int getidEvents() {
+		return id;
+	}
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+	static void setidEvents(int id2) {
+		id = id2;
+	}
 
-    /* Called whenever we call invalidateOptionsMenu() */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // If the nav drawer is open, hide action items related to the content view
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
-        return super.onPrepareOptionsMenu(menu);
-    }
+	public static List<EventsHelper> getListEvents() {
+		return events;
+	}
 
-    @Override
-    
-    //menu
-    public boolean onOptionsItemSelected(MenuItem item) {
-         // The action bar home/up action should open or close the drawer.
-         // ActionBarDrawerToggle will take care of this.
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        // Handle action buttons
-        switch(item.getItemId()) {
-        case R.id.action_websearch:
-            // create intent to perform web search for this planet
-            Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-            intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
-            // catch event that there's no activity to handle intent
-            if (intent.resolveActivity(getPackageManager()) != null) {
-                startActivity(intent);
-            } else {
-                Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
-            }
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
-        }
-    }
+	public static void setListEvents(List<EventsHelper> listEvents) {
+		events = listEvents;
+	}
 
-    /* The click listner for ListView in the navigation drawer */
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            selectItem(position);
-        }
-    }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
 
-    private void selectItem(int position) {
-        // update the main content by replacing fragments
-    	switch(position){
-    	case 1: System.out.println("i miei eventi");
-    	        Fragment fragment3=new Fragment_i_miei_eventi();
-	            FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment3).commit();
-    	
-    	       break;
-    	case 2: System.out.println("crea evento");
-    	 Fragment fragment4=new Fragment_crea_event();
-         FragmentManager fragmentManager2 = getFragmentManager();//levare e mettere all inizio
-         fragmentManager2.beginTransaction().replace(R.id.content_frame, fragment4).commit();
-	
-	       break;
-    	case 3: System.out.println("cerca evento");
-  
-	       break;
-    	case 4: System.out.println("impostazioni");
-    		Fragment fragmentImp= new Fragment_impostazioni();
-            FragmentManager fragmentManager3 = getFragmentManager();//levare e mettere all inizio
-            fragmentManager3.beginTransaction().replace(R.id.content_frame, fragmentImp).commit();
-	       break;
-	    default : System.out.println("i???");
-	       break;
-    	}
-        Bundle args = new Bundle();
-        args.putInt("position", position);
+	/* Called whenever we call invalidateOptionsMenu() */
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		// If the nav drawer is open, hide action items related to the content
+		// view
+		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+		menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
+		return super.onPrepareOptionsMenu(menu);
+	}
 
-        // update selected item and title, then close the drawer
-        mDrawerList.setItemChecked(position, true);
-        setTitle(mPlanetTitles[position]);
-        mDrawerLayout.closeDrawer(mDrawerList);
-    }
+	@Override
+	// menu
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// The action bar home/up action should open or close the drawer.
+		// ActionBarDrawerToggle will take care of this.
+		if (mDrawerToggle.onOptionsItemSelected(item)) {
+			return true;
+		}
+		// Handle action buttons
+		switch (item.getItemId()) {
+		case R.id.action_websearch:
+			// create intent to perform web search for this planet
+			Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+			intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
+			// catch event that there's no activity to handle intent
+			if (intent.resolveActivity(getPackageManager()) != null) {
+				startActivity(intent);
+			} else {
+				Toast.makeText(this, R.string.app_not_available,
+						Toast.LENGTH_LONG).show();
+			}
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
 
-    @Override
-    public void setTitle(CharSequence title) {
-        mTitle = title;
-        getActionBar().setTitle(mTitle);
-    }
+	/* The click listner for ListView in the navigation drawer */
+	private class DrawerItemClickListener implements
+			ListView.OnItemClickListener {
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			selectItem(position);
+		}
+	}
 
-    /**
-     * When using the ActionBarDrawerToggle, you must call it during
-     * onPostCreate() and onConfigurationChanged()...
-     */
+	private void selectItem(int position) {
+		// update the main content by replacing fragments
+		switch (position) {
+		case 0:
+			System.out.println("eventi");
+			Fragment fragment5 = new Fragment_main();
+			FragmentManager fragmentManager4 = getFragmentManager();
+			fragmentManager4.beginTransaction()
+					.replace(R.id.content_frame, fragment5).commit();
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
-    }
+			break;
+		case 1:
+			System.out.println("i miei eventi");
+			Fragment fragment3 = new Fragment_i_miei_eventi();
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.beginTransaction()
+					.replace(R.id.content_frame, fragment3).commit();
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggls
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
+			break;
+		case 2:
+			System.out.println("crea evento");
+			Fragment fragment4 = new Fragment_crea_event();
+			FragmentManager fragmentManager2 = getFragmentManager();// levare e
+																	// mettere
+																	// all
+																	// inizio
+			fragmentManager2.beginTransaction()
+					.replace(R.id.content_frame, fragment4).commit();
 
-    @Override
-    public void respond (String data) {
+			break;
+		case 3:
+			System.out.println("cerca evento");
+
+			break;
+		case 4:
+			System.out.println("impostazioni");
+			Fragment fragmentImp = new Fragment_impostazioni();
+			FragmentManager fragmentManager3 = getFragmentManager();// levare e
+																	// mettere
+																	// all
+																	// inizio
+			fragmentManager3.beginTransaction()
+					.replace(R.id.content_frame, fragmentImp).commit();
+			break;
+		default:
+			System.out.println("i???");
+			break;
+		}
+		Bundle args = new Bundle();
+		args.putInt("position", position);
+
+		// update selected item and title, then close the drawer
+		mDrawerList.setItemChecked(position, true);
+		setTitle(mPlanetTitles[position]);
+		mDrawerLayout.closeDrawer(mDrawerList);
+	}
+
+	@Override
+	public void setTitle(CharSequence title) {
+		mTitle = title;
+		getActionBar().setTitle(mTitle);
+	}
+
+	/**
+	 * When using the ActionBarDrawerToggle, you must call it during
+	 * onPostCreate() and onConfigurationChanged()...
+	 */
+
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		// Sync the toggle state after onRestoreInstanceState has occurred.
+		mDrawerToggle.syncState();
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		// Pass any configuration change to the drawer toggls
+		mDrawerToggle.onConfigurationChanged(newConfig);
+	}
+
+	@Override
+	public void respond(String data, int id) {
 		// TODO Auto-generated method stub
-    	if(data.equals("fragment_event")){
-	       System.out.println(data);
-		   Fragment fragment2=new Fragment_event();
-	       FragmentManager fragmentManager = getFragmentManager();
-           fragmentManager.beginTransaction().replace(R.id.content_frame, fragment2).commit();
-    	}
-    	if(data.equals("fragment_i_miei_eventi")){
-    	    System.out.println(data);
-    	    Fragment fragment3=new Fragment_i_miei_eventi();
-    	    FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment3).commit();
-    	}
-        	
-    	
-    	}
-    	
-    	
+		if (data.equals("fragment_event")) {
+			System.out.println(data);
+			Fragment fragment2 = new Fragment_event();
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.beginTransaction()
+					.replace(R.id.content_frame, fragment2).commit();
+		}
+		if (data.equals("fragment_i_miei_eventi")) {
+			System.out.println(data);
+			Fragment fragment3 = new Fragment_i_miei_eventi();
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.beginTransaction()
+					.replace(R.id.content_frame, fragment3).commit();
+		}
+
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		// Log.v(TAG, "OnCreate");
-		
+
 		/* make the API call */
 		Intent intent = getIntent();
 		session = (Session) intent.getSerializableExtra("session");
-//		String fqlQuery = "select eid,name,description,start_time, pic_big from event where eid in (SELECT eid FROM event WHERE contains("
-//				+ "'{Trento}'" + ")) order by start_time ASC";
-//		Bundle params = new Bundle();
-//		params.putString("q", fqlQuery);
-//		
-//		Request request = new Request(session, "/fql", params, HttpMethod.GET,
-//				new Request.Callback() {
-//					public void onCompleted(Response response) {
-//						//Log.i(TAG, "Got results: " + response.toString());
-//						try {
-//							if (response != null) {
-//								
-//								final JSONObject json = response.getGraphObject().getInnerJSONObject();
-//								JSONArray d = json.getJSONArray("data");
-//								int l = (d != null ? d.length() : 0);
-//								Log.d("Facebook-Example-events Request",
-//										"d.length(): " + l);
-//
-//								for (int i = 0; i < l; i++) {
-//									JSONObject o = d.getJSONObject(i);
-//									String id = o.getString("eid");
-//									String title = o.getString("name");
-//									String description = o.getString("description");
-//									String start_time = o.getString("start_time");
-//									String photo = o.getString("pic_big");
-//											
-//									EventsHelper f = new EventsHelper();
-//									f.setId(id);
-//									f.setTitle(title);
-//									f.setDescription(description);
-//									f.setStart_time(start_time);
-//									f.setPhoto(photo);
-//									events.add(f);
-//								}
-//							}
-//							
-//
-//							
-//							
-//						} catch (JSONException e) {
-//							Log.w("Facebook-Example", "JSON Error in response");
-//						}
-//					}
-//					
-//				});
-//		Request.executeBatchAsync(request);
-		
-		DownloadEventsTask taskEvents = new DownloadEventsTask();
-		taskEvents.execute();
-		
-		final ProgressDialog pausingDialog = ProgressDialog.show(MainActivity.this, "", "Loading..", true);
-		Thread boh=new Thread() {
-		public void run() {
-		try {
-		Thread.sleep(5000);
-		} catch (InterruptedException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-		} // The length to 'pause' for
-		pausingDialog.dismiss();
-		}
+
+		final ProgressDialog pausingDialog = ProgressDialog.show(
+				MainActivity.this, "", "Loading..", true);
+		Thread boh = new Thread() {
+			public void run() {
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} // The length to 'pause' for
+				pausingDialog.dismiss();
+			}
 		};
 		boh.start();
-		
-		//fragment transaction
-//		EventsHelper event = new EventsHelper();
-//		event.setTitle("SEganna Culo!!");
-//		events.add(event);
-//		
-		
+
 		Fragment fragment = new Fragment_main();
 		FragmentManager manager = getFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.add(R.id.content_frame, fragment, "basefragment");
 		transaction.addToBackStack(null);
 		transaction.commit();
-
 
 		// pulisco l'array contenente gli eventi
 		// events.clear();
@@ -335,7 +318,6 @@ public class MainActivity extends Activity implements Communicator {
 			selectItem(0);
 		}
 	}
-
 
 	/**
 	 * Fragment that appears in the "content_frame", shows a planet

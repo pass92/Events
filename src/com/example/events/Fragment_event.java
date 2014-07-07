@@ -27,6 +27,7 @@ public class Fragment_event extends Fragment {
 	FragmentTransaction transaction=manager.beginTransaction();
     transaction.add(R.id.fragment_event, fragment, "descriptionfragment");
     transaction.commit();
+    
 	  
 	 Button b0=(Button) view.findViewById(R.id.button_map_event);
 	 b0.setOnClickListener(new OnClickListener() {

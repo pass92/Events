@@ -69,6 +69,138 @@ public class MainActivity extends Activity implements Communicator {
     public static List<EventsHelper> getListEvents(){
     	return events;
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    /* Called whenever we call invalidateOptionsMenu() */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // If the nav drawer is open, hide action items related to the content view
+        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    
+    //menu
+    public boolean onOptionsItemSelected(MenuItem item) {
+         // The action bar home/up action should open or close the drawer.
+         // ActionBarDrawerToggle will take care of this.
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        // Handle action buttons
+        switch(item.getItemId()) {
+        case R.id.action_websearch:
+            // create intent to perform web search for this planet
+            Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+            intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
+            // catch event that there's no activity to handle intent
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
+            }
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    /* The click listner for ListView in the navigation drawer */
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectItem(position);
+        }
+    }
+
+    private void selectItem(int position) {
+        // update the main content by replacing fragments
+    	switch(position){
+    	case 1: System.out.println("i miei eventi");
+    	        Fragment fragment3=new Fragment_i_miei_eventi();
+	            FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment3).commit();
+    	
+    	       break;
+    	case 2: System.out.println("crea evento");
+    	 Fragment fragment4=new Fragment_crea_event();
+         FragmentManager fragmentManager2 = getFragmentManager();//levare e mettere all inizio
+         fragmentManager2.beginTransaction().replace(R.id.content_frame, fragment4).commit();
+	
+	       break;
+    	case 3: System.out.println("cerca evento");
+  
+	       break;
+    	case 4: System.out.println("impostazioni");
+    		Fragment fragmentImp= new Fragment_impostazioni();
+            FragmentManager fragmentManager3 = getFragmentManager();//levare e mettere all inizio
+            fragmentManager3.beginTransaction().replace(R.id.content_frame, fragmentImp).commit();
+	       break;
+	    default : System.out.println("i???");
+	       break;
+    	}
+        Bundle args = new Bundle();
+        args.putInt("position", position);
+
+        // update selected item and title, then close the drawer
+        mDrawerList.setItemChecked(position, true);
+        setTitle(mPlanetTitles[position]);
+        mDrawerLayout.closeDrawer(mDrawerList);
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        getActionBar().setTitle(mTitle);
+    }
+
+    /**
+     * When using the ActionBarDrawerToggle, you must call it during
+     * onPostCreate() and onConfigurationChanged()...
+     */
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggls
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void respond (String data) {
+		// TODO Auto-generated method stub
+    	if(data.equals("fragment_event")){
+	       System.out.println(data);
+		   Fragment fragment2=new Fragment_event();
+	       FragmentManager fragmentManager = getFragmentManager();
+           fragmentManager.beginTransaction().replace(R.id.content_frame, fragment2).commit();
+    	}
+    	if(data.equals("fragment_i_miei_eventi")){
+    	    System.out.println(data);
+    	    Fragment fragment3=new Fragment_i_miei_eventi();
+    	    FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment3).commit();
+    	}
+        	
+    	
+    	}
+    	
+    	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -204,148 +336,7 @@ public class MainActivity extends Activity implements Communicator {
 		}
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.main, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
 
-	/* Called whenever we call invalidateOptionsMenu() */
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		// If the nav drawer is open, hide action items related to the content
-		// view
-		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-		menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
-		return super.onPrepareOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// The action bar home/up action should open or close the drawer.
-		// ActionBarDrawerToggle will take care of this.
-		if (mDrawerToggle.onOptionsItemSelected(item)) {
-			return true;
-		}
-		// Handle action buttons
-		switch (item.getItemId()) {
-		case R.id.action_websearch:
-			// create intent to perform web search for this planet
-			Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-			intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
-			// catch event that there's no activity to handle intent
-			if (intent.resolveActivity(getPackageManager()) != null) {
-				startActivity(intent);
-			} else {
-				Toast.makeText(this, R.string.app_not_available,
-						Toast.LENGTH_LONG).show();
-			}
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-
-	/* The click listner for ListView in the navigation drawer */
-	private class DrawerItemClickListener implements
-			ListView.OnItemClickListener {
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
-			selectItem(position);
-		}
-	}
-
-	private void selectItem(int position) {
-		// update the main content by replacing fragments
-		switch (position) {
-		case 1:
-			System.out.println("i miei eventi");
-			Fragment fragment3 = new Fragment_i_miei_eventi();
-			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment3).commit();
-
-			break;
-		case 2:
-			System.out.println("crea evento");
-			Fragment fragment4 = new Fragment_crea_event();
-			FragmentManager fragmentManager2 = getFragmentManager();// levare e
-																	// mettere
-																	// all
-																	// inizio
-			fragmentManager2.beginTransaction()
-					.replace(R.id.content_frame, fragment4).commit();
-
-			break;
-		case 3:
-			System.out.println("cerca evento");
-			break;
-		case 4:
-			System.out.println("impostazioni");
-			break;
-		default:
-			System.out.println("i???");
-			break;
-		}
-		Bundle args = new Bundle();
-		args.putInt("position", position);
-
-		// update selected item and title, then close the drawer
-		mDrawerList.setItemChecked(position, true);
-		setTitle(mPlanetTitles[position]);
-		mDrawerLayout.closeDrawer(mDrawerList);
-	}
-
-	@Override
-	public void setTitle(CharSequence title) {
-		mTitle = title;
-		getActionBar().setTitle(mTitle);
-	}
-
-	/**
-	 * When using the ActionBarDrawerToggle, you must call it during
-	 * onPostCreate() and onConfigurationChanged()...
-	 */
-
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
-		// Sync the toggle state after onRestoreInstanceState has occurred.
-		mDrawerToggle.syncState();
-	}
-
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		// Pass any configuration change to the drawer toggls
-		mDrawerToggle.onConfigurationChanged(newConfig);
-	}
-
-	@Override
-	public void respond(String data) {
-		// TODO Auto-generated method stub
-		if (data.equals("fragment_event")) {
-			System.out.println(data);
-			Fragment fragment2 = new Fragment_event();
-			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment2).commit();
-		}
-		if (data.equals("fragment_i_miei_eventi")) {
-			System.out.println(data);
-			Fragment fragment3 = new Fragment_i_miei_eventi();
-			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment3).commit();
-
-		}
-
-	}
-
-	
-	
 	/**
 	 * Fragment that appears in the "content_frame", shows a planet
 	 */

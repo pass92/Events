@@ -27,9 +27,11 @@ public class Fragment_impostazioni extends Fragment{
 
 		SeekBar S = (SeekBar)view.findViewById(R.id.seekBar1);
 		final TextView T = (TextView) view.findViewById(R.id.textkm);
+		SharedPreferences userDetails = getActivity().getApplicationContext().getSharedPreferences("userdetails",getActivity().getApplicationContext().MODE_PRIVATE);
+		String Km = userDetails.getString("km", "");
 		
-		
-
+		S.setProgress(Integer.parseInt(Km));
+		T.setText(Integer.parseInt(Km)+" km");
 
 
 

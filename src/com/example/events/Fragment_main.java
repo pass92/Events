@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 
 public class Fragment_main extends Fragment{
 	Button b1;
@@ -27,15 +28,15 @@ public class Fragment_main extends Fragment{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		
-		
 	}
 	@Override 
 	 public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle saveInstanceState){
 	 View view= inflater.inflate(R.layout.fragment_main,container,false);
 	 final Communicator comm;
 	 comm=(Communicator) getActivity();
-	 ViewGroup l=(ViewGroup)view.findViewById(R.id.layoutTest);
-
+	 //ViewGroup l=(ViewGroup)view.findViewById(R.id.layoutTest);
+	 ListView l = (ListView) view.findViewById(R.id.listview_events);
+	 
 	 if(MainActivity.getListEvents().size()==0){
 	 DownloadEventsTask taskEvents = new DownloadEventsTask(view,comm,l);
 	 taskEvents.execute();	 

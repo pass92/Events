@@ -39,6 +39,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 
 public class DownloadEventsTask extends
 		AsyncTask<Void, Void, ArrayList<EventsHelper>> {
@@ -49,9 +50,9 @@ public class DownloadEventsTask extends
 	Session session;
 	View view;
 	Communicator comm;
-	ViewGroup l;
+	ListView l;
 
-	DownloadEventsTask(View view, Communicator comm, ViewGroup l) {
+	DownloadEventsTask(View view, Communicator comm, ListView l) {
 		this.view = view;
 		this.comm = comm;
 		this.l = l;
@@ -131,37 +132,39 @@ public class DownloadEventsTask extends
 		// for (int i = 0; i < result.size(); i++)
 		// Log.w("Name: ", result.get(i).getTitle());
 		MainActivity.setListEvents(events);
-
-		for (int i = 0; i < events.size(); i++) {
-			
-			Button b11 = new Button(view.getContext());
-			b11.setId(i);
-			// b11.setId(events.get(i).getId().toString());
-			b11.setText("" + events.get(i).getDescription());
-			b11.setMaxHeight(70);
-			BitmapDrawable bdrawable = new BitmapDrawable(events.get(i).getPhoto());
-			
-			b11.setBackgroundDrawable(bdrawable);
-			
-			b11.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					// System.out.println(v.getId());
-					MainActivity.setidEvents(v.getId());
-
-					comm.respond("fragment_event", v.getId());
-					// TODO Auto-generated method stub
-
-				}
-			});
-
-			l.addView(b11);
-//			Button b10 = new Button(view.getContext());
-//			b10.setText("" + events.get(i).getStart_time());
-//			b10.setHeight(75);
-//			l.addView(b10);
-		}
+		AdapterListView adapter = new AdapterListView(view.getContext(), events);
+		l.setAdapter(adapter);
+		
+//		for (int i = 0; i < events.size(); i++) {
+//			
+//			Button b11 = new Button(view.getContext());
+//			b11.setId(i);
+//			// b11.setId(events.get(i).getId().toString());
+//			b11.setText("" + events.get(i).getDescription());
+//			b11.setMaxHeight(70);
+//			BitmapDrawable bdrawable = new BitmapDrawable(events.get(i).getPhoto());
+//			
+//			b11.setBackgroundDrawable(bdrawable);
+//			
+//			b11.setOnClickListener(new OnClickListener() {
+//
+//				@Override
+//				public void onClick(View v) {
+//					// System.out.println(v.getId());
+//					MainActivity.setidEvents(v.getId());
+//
+//					comm.respond("fragment_event", v.getId());
+//					// TODO Auto-generated method stub
+//
+//				}
+//			});
+//
+//			l.addView(b11);
+////			Button b10 = new Button(view.getContext());
+////			b10.setText("" + events.get(i).getStart_time());
+////			b10.setHeight(75);
+////			l.addView(b10);
+//		}
 
 	}
 

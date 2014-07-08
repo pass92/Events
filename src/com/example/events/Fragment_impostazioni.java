@@ -18,13 +18,10 @@ import android.widget.Toast;
 
 public class Fragment_impostazioni extends Fragment{
 
-
-
-
-	@Override 
+    @Override 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle saveInstanceState){
 		View view= inflater.inflate(R.layout.fragment_impostazioni,container,false);
-
+/*
 		SeekBar S = (SeekBar)view.findViewById(R.id.seekBar1);
 		final TextView T = (TextView) view.findViewById(R.id.textkm);
 		SharedPreferences userDetails = getActivity().getApplicationContext().getSharedPreferences("userdetails",getActivity().getApplicationContext().MODE_PRIVATE);
@@ -60,7 +57,7 @@ public class Fragment_impostazioni extends Fragment{
 		
 
 
-
+*/
 
 		return view;
 	}

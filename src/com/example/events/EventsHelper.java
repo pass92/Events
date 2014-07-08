@@ -8,7 +8,8 @@ public class EventsHelper {
 	private String id;
 	private String title;
 	private String description;
-	private String photo;
+	private String photoURL;
+	private Bitmap photo;
 	private String location;
 	private GeoPoint point;
 	private String start_time;
@@ -31,10 +32,10 @@ public class EventsHelper {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getPhoto() {
+	public Bitmap getPhoto() {
 		return photo;
 	}
-	public void setPhoto(String photo) {
+	public void setPhoto(Bitmap photo) {
 		this.photo = photo;
 	}
 	public String getLocation() {
@@ -60,6 +61,12 @@ public class EventsHelper {
 	}
 	public void setEnd_time(String end_time) {
 		this.end_time = end_time;
+	}
+	public String getPhotoURL() {
+		return photoURL;
+	}
+	public void setPhotoURL(String photoURL) {
+		this.photoURL = photoURL;
 	}
 	
 	

@@ -53,7 +53,7 @@ public class Fragment_main extends Fragment{
 			        b11.setBackgroundResource(R.drawable.festa);
 				}
 				else{
-					b11.setBackgroundResource((R.drawable.sfondo));
+					b11.setBackgroundResource((R.drawable.festa));
 				}
 			    b11.setOnClickListener(new OnClickListener() {
 					

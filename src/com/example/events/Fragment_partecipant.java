@@ -58,4 +58,11 @@ public class Fragment_partecipant extends Fragment{
 	 
 	 return view;
 	}
+	
+	@Override
+	public void onDestroyView() {
+		// TODO Auto-generated method stub
+		super.onDestroyView();
+		getView().removeCallbacks(null);
+	}
 }

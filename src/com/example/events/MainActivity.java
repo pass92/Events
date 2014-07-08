@@ -249,20 +249,20 @@ public class MainActivity extends Activity implements Communicator {
 		Intent intent = getIntent();
 		session = (Session) intent.getSerializableExtra("session");
 
-		final ProgressDialog pausingDialog = ProgressDialog.show(
-				MainActivity.this, "", "Loading..", true);
-		Thread boh = new Thread() {
-			public void run() {
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} // The length to 'pause' for
-				pausingDialog.dismiss();
-			}
-		};
-		boh.start();
+//		final ProgressDialog pausingDialog = ProgressDialog.show(
+//				MainActivity.this, "", "Loading..", true);
+//		Thread boh = new Thread() {
+//			public void run() {
+//				try {
+//					Thread.sleep(5000);
+//				} catch (InterruptedException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				} // The length to 'pause' for
+//				pausingDialog.dismiss();
+//			}
+//		};
+//		boh.start();
 
 		Fragment fragment = new Fragment_main();
 		FragmentManager manager = getFragmentManager();
@@ -271,8 +271,7 @@ public class MainActivity extends Activity implements Communicator {
 		transaction.addToBackStack(null);
 		transaction.commit();
 
-		// pulisco l'array contenente gli eventi
-		// events.clear();
+
 
 		mTitle = mDrawerTitle = getTitle();
 		// mPlanetTitles = getResources().getStringArray(R.array.planets_array);

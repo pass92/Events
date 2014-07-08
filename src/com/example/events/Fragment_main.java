@@ -25,14 +25,12 @@ import android.widget.Toast;
 public class Fragment_main extends Fragment {
 	Button b1;
 	private static List<EventsHelper> events;
-
-	// List<EventsHelper> events;
+	private ProgressDialog dialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-
 		
 	}
 
@@ -40,6 +38,7 @@ public class Fragment_main extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle saveInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_main, container, false);
+		dialog = ProgressDialog.show(view.getContext(), "", "Attendi...", false, true);
 		final Communicator comm;
 		comm = (Communicator) getActivity();
 		// ViewGroup l=(ViewGroup)view.findViewById(R.id.layoutTest);
@@ -47,7 +46,7 @@ public class Fragment_main extends Fragment {
 
 		if (MainActivity.getListEvents().size() == 0) {
 			DownloadEventsTask taskEvents = new DownloadEventsTask(view, comm,
-					lv);
+					lv,dialog);
 			taskEvents.execute();
 		} else {
 			events = MainActivity.getListEvents();
@@ -61,12 +60,7 @@ public class Fragment_main extends Fragment {
 			  @Override
 			  public void onItemClick(AdapterView<?> parent, View view,
 			    int position, long id) {
-			    Toast.makeText(view.getContext(),
-			      "Click ListItem Number " + position, Toast.LENGTH_LONG)
-			      .show();
 				 MainActivity.setidEvents(position);
-					
-					
 				 comm.respond("fragment_event",position);
 			  }
 			});  

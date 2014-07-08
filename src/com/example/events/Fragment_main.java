@@ -31,7 +31,7 @@ public class Fragment_main extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		
+
 	}
 
 	@Override
@@ -44,27 +44,30 @@ public class Fragment_main extends Fragment {
 		ListView lv = (ListView) view.findViewById(R.id.listview_events);
 
 		if (MainActivity.getListEvents().size() == 0) {
-			dialog = ProgressDialog.show(view.getContext(), "", "Attendi...", false, true);
+			dialog = ProgressDialog.show(view.getContext(), "", "Attendi...",
+					false, true);
 			DownloadEventsTask taskEvents = new DownloadEventsTask(view, comm,
-					lv,dialog);
+					lv, dialog);
 			taskEvents.execute();
 		} else {
 			events = MainActivity.getListEvents();
-			AdapterListView adapter = new AdapterListView(view.getContext(),(ArrayList<EventsHelper>) events);
+			AdapterListView adapter = new AdapterListView(view.getContext(),
+					(ArrayList<EventsHelper>) events);
 			lv.setAdapter(adapter);
 
 		}
 
-		//Aggiungo l'ascoltatore per aprire maggiori dettagli dall'elenco della listView
+		// Aggiungo l'ascoltatore per aprire maggiori dettagli dall'elenco della
+		// listView
 		lv.setOnItemClickListener(new OnItemClickListener() {
-			  @Override
-			  public void onItemClick(AdapterView<?> parent, View view,
-			    int position, long id) {
-				 MainActivity.setidEvents(position);
-				 comm.respond("fragment_event",position);
-			  }
-			});  
-		
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				MainActivity.setidEvents(position);
+				comm.respond("fragment_event", position);
+			}
+		});
+
 		return view;
 	}
 }

@@ -115,7 +115,7 @@ public class DownloadEventsTask extends
 		Request.executeBatchAndWait(request);
 
 		// cliclo la lista di elementi scaricare l'immagine relativa all'evento
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 10; i++) {
 			String URLPhoto = events.get(i).getPhotoURL();
 			events.get(i).setPhoto(getBitmapFromURL(URLPhoto));
 			Log.w("URLImage", URLPhoto);

@@ -16,8 +16,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class Fragment_main extends Fragment {
 	Button b1;
@@ -30,6 +33,7 @@ public class Fragment_main extends Fragment {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 
+		
 	}
 
 	@Override
@@ -39,56 +43,34 @@ public class Fragment_main extends Fragment {
 		final Communicator comm;
 		comm = (Communicator) getActivity();
 		// ViewGroup l=(ViewGroup)view.findViewById(R.id.layoutTest);
-		ListView l = (ListView) view.findViewById(R.id.listview_events);
+		ListView lv = (ListView) view.findViewById(R.id.listview_events);
 
 		if (MainActivity.getListEvents().size() == 0) {
 			DownloadEventsTask taskEvents = new DownloadEventsTask(view, comm,
-					l);
+					lv);
 			taskEvents.execute();
 		} else {
 			events = MainActivity.getListEvents();
 			AdapterListView adapter = new AdapterListView(view.getContext(),(ArrayList<EventsHelper>) events);
-			l.setAdapter(adapter);
+			lv.setAdapter(adapter);
 
 		}
-		// events=MainActivity.getListEvents();
-		// int count=0;
-		// for(int i=99;i>89;i--){
-		// Button b11= new Button(view.getContext());
-		// b11.setId(i);
-		// //b11.setId(events.get(i).getId().toString());
-		// b11.setText(""+events.get(i).getDescription());
-		// b11.setMaxHeight(70);
-		// if(count%2==0){
-		// b11.setBackgroundResource(R.drawable.festa);
-		// }
-		// else{
-		// b11.setBackgroundResource((R.drawable.festa));
-		// }
-		// b11.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		// //System.out.println(v.getId());
-		// MainActivity.setidEvents(v.getId());
-		//
-		//
-		// comm.respond("fragment_event",v.getId());
-		// // TODO Auto-generated method stub
-		//
-		// }
-		// });
-		//
-		// l.addView(b11);
-		// Button b10= new Button(view.getContext());
-		// b10.setText(""+events.get(i).getStart_time());
-		// b10.setHeight(75);
-		// l.addView(b10);
-		// count++;
-		// }
-		// }
-		//
 
+		//Aggiungo l'ascoltatore per aprire maggiori dettagli dall'elenco della listView
+		lv.setOnItemClickListener(new OnItemClickListener() {
+			  @Override
+			  public void onItemClick(AdapterView<?> parent, View view,
+			    int position, long id) {
+			    Toast.makeText(view.getContext(),
+			      "Click ListItem Number " + position, Toast.LENGTH_LONG)
+			      .show();
+				 MainActivity.setidEvents(position);
+					
+					
+				 comm.respond("fragment_event",position);
+			  }
+			});  
+		
 		return view;
 	}
 }

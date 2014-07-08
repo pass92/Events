@@ -38,13 +38,13 @@ public class Fragment_main extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle saveInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_main, container, false);
-		dialog = ProgressDialog.show(view.getContext(), "", "Attendi...", false, true);
 		final Communicator comm;
 		comm = (Communicator) getActivity();
 		// ViewGroup l=(ViewGroup)view.findViewById(R.id.layoutTest);
 		ListView lv = (ListView) view.findViewById(R.id.listview_events);
 
 		if (MainActivity.getListEvents().size() == 0) {
+			dialog = ProgressDialog.show(view.getContext(), "", "Attendi...", false, true);
 			DownloadEventsTask taskEvents = new DownloadEventsTask(view, comm,
 					lv,dialog);
 			taskEvents.execute();

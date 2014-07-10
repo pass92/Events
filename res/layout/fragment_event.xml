@@ -2,16 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
-    <Button
-        android:id="@+id/button1DescriptionEvent"
+    <ImageView
+        android:id="@+id/image_event"
         android:layout_width="match_parent"
         android:layout_height="168dp"
-        android:background="@drawable/festa"
-        android:text="Button" />
+        android:background="@drawable/festa"/>
 
-    <Button
+     <Button
         android:id="@+id/button_map_event"
         android:layout_width="318dp"
         android:layout_height="63dp"
@@ -27,7 +26,7 @@
             android:id="@+id/button_description_event"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="DESCRIPTION" />
+            android:text="DESCRIPTION"/>
 
         <Button
             android:id="@+id/button_partecipa_event"
@@ -43,11 +42,19 @@
             android:text="PARTECIPANTI" />
     </LinearLayout>
 
-    <fragment
-        android:id="@+id/fragment_event"
-        android:name="com.example.events.Fragment_descritpion"
+    <TextView
+        android:id="@+id/descrizione_event"
         android:layout_width="match_parent"
-        android:layout_height="196dp" />
-    
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:enabled="true"
+        android:scrollbars = "vertical"
+        android:maxLines="100" />
 
+<!--     <fragment -->
+<!--         android:id="@+id/fragment_event1" -->
+<!--         android:name="com.example.events.Fragment_descritpion" -->
+<!--         android:layout_width="match_parent" -->
+<!--         android:layout_height="196dp" /> -->
+    
 </LinearLayout>

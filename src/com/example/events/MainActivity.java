@@ -96,7 +96,7 @@ public class MainActivity extends Activity implements Communicator {
 		// If the nav drawer is open, hide action items related to the content
 		// view
 		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-		menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
+		//menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -110,24 +110,25 @@ public class MainActivity extends Activity implements Communicator {
 		}
 		// Handle action buttons
 		switch (item.getItemId()) {
-		case R.id.action_websearch:
-			// create intent to perform web search for this planet
-			Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-			intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
-			// catch event that there's no activity to handle intent
-			if (intent.resolveActivity(getPackageManager()) != null) {
-				startActivity(intent);
-			} else {
-				Toast.makeText(this, R.string.app_not_available,
-						Toast.LENGTH_LONG).show();
-			}
-			return true;
+		//commentoto per futuro utilizzo dell'action 
+//		case R.id.action_websearch:
+//			// create intent to perform web search for this planet
+//			Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+//			intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
+//			// catch event that there's no activity to handle intent
+//			if (intent.resolveActivity(getPackageManager()) != null) {
+//				startActivity(intent);
+//			} else {
+//				Toast.makeText(this, R.string.app_not_available,
+//						Toast.LENGTH_LONG).show();
+//			}
+//			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
 
-	/* The click listner for ListView in the navigation drawer */
+	/* The click listener for ListView in the navigation drawer */
 	private class DrawerItemClickListener implements
 			ListView.OnItemClickListener {
 		@Override
@@ -142,10 +143,15 @@ public class MainActivity extends Activity implements Communicator {
 		switch (position) {
 		case 0:
 			System.out.println("eventi");
-			Fragment fragment5 = new Fragment_main();
-			FragmentManager fragmentManager4 = getFragmentManager();
-			fragmentManager4.beginTransaction()
-					.replace(R.id.content_frame, fragment5).commit();
+//			Fragment fragment5 = new Fragment_main();
+//			FragmentManager fragmentManager4 = getFragmentManager();
+//			fragmentManager4.beginTransaction()
+//					.replace(R.id.content_frame, fragment5).commit();
+			Fragment fragment = new Fragment_main();
+			FragmentManager manager = getFragmentManager();
+			FragmentTransaction transaction = manager.beginTransaction();
+			transaction.replace(R.id.content_frame, fragment, "basefragment");
+			transaction.commit();
 
 			break;
 		case 1:
@@ -174,10 +180,7 @@ public class MainActivity extends Activity implements Communicator {
 		case 4:
 			System.out.println("impostazioni");
 			Fragment fragmentImp = new Fragment_impostazioni();
-			FragmentManager fragmentManager3 = getFragmentManager();// levare e
-																	// mettere
-																	// all
-																	// inizio
+			FragmentManager fragmentManager3 = getFragmentManager();
 			fragmentManager3.beginTransaction()
 					.replace(R.id.content_frame, fragmentImp).commit();
 			break;
@@ -223,19 +226,22 @@ public class MainActivity extends Activity implements Communicator {
 	public void respond(String data, int id) {
 		// TODO Auto-generated method stub
 		if (data.equals("fragment_event")) {
-			System.out.println(data);
-			Fragment fragment2 = new Fragment_event();
-			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment2).commit();
+			Log.w("call fragment event", data);
+
+			Fragment fragment = new Fragment_event();
+			FragmentManager manager = getFragmentManager();
+			FragmentTransaction transaction = manager.beginTransaction();
+			transaction.replace(R.id.content_frame, fragment);
+			transaction.addToBackStack(null);
+			transaction.commit();
 		}
-		if (data.equals("fragment_i_miei_eventi")) {
-			System.out.println(data);
-			Fragment fragment3 = new Fragment_i_miei_eventi();
-			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment3).commit();
-		}
+//		if (data.equals("fragment_i_miei_eventi")) {
+//			System.out.println(data);
+//			Fragment fragment3 = new Fragment_i_miei_eventi();
+//			FragmentManager fragmentManager = getFragmentManager();
+//			fragmentManager.beginTransaction()
+//					.replace(R.id.content_frame, fragment3).commit();
+//		}
 
 	}
 
@@ -249,21 +255,6 @@ public class MainActivity extends Activity implements Communicator {
 		Intent intent = getIntent();
 		session = (Session) intent.getSerializableExtra("session");
 
-		final ProgressDialog pausingDialog = ProgressDialog.show(
-				MainActivity.this, "", "Loading..", true);
-		Thread boh = new Thread() {
-			public void run() {
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} // The length to 'pause' for
-				pausingDialog.dismiss();
-			}
-		};
-		boh.start();
-
 		Fragment fragment = new Fragment_main();
 		FragmentManager manager = getFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
@@ -271,8 +262,7 @@ public class MainActivity extends Activity implements Communicator {
 		transaction.addToBackStack(null);
 		transaction.commit();
 
-		// pulisco l'array contenente gli eventi
-		// events.clear();
+
 
 		mTitle = mDrawerTitle = getTitle();
 		// mPlanetTitles = getResources().getStringArray(R.array.planets_array);
@@ -319,32 +309,4 @@ public class MainActivity extends Activity implements Communicator {
 		}
 	}
 
-	/**
-	 * Fragment that appears in the "content_frame", shows a planet
-	 */
-	public static class PositionFragment extends Fragment {
-
-		public PositionFragment() {
-			// Empty constructor required for fragment subclasses
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_planet,
-					container, false);
-			int i = getArguments().getInt("position");
-
-			TextView vista = (TextView) rootView.findViewById(R.id.image);
-			String textForPrinting = "START: ";
-			for (int j = 0; j < events.size(); j++) {
-				String newString = "START: id: " + events.get(j).getId()
-						+ "Title: " + events.get(j).getTitle();// +"description"+
-																// events.get(j).getDescription()+"\n");
-				textForPrinting = textForPrinting + newString;
-			}
-			vista.setText(textForPrinting);
-			return rootView;
-		}
 	}
-}

@@ -28,6 +28,7 @@ import com.facebook.Response;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -51,11 +52,13 @@ public class DownloadEventsTask extends
 	View view;
 	Communicator comm;
 	ListView l;
+	private ProgressDialog dialog;
 
-	DownloadEventsTask(View view, Communicator comm, ListView l) {
+	DownloadEventsTask(View view, Communicator comm, ListView l,ProgressDialog dialog) {
 		this.view = view;
 		this.comm = comm;
 		this.l = l;
+		this.dialog=dialog;
 	}
 
 	@Override
@@ -115,7 +118,7 @@ public class DownloadEventsTask extends
 		Request.executeBatchAndWait(request);
 
 		// cliclo la lista di elementi scaricare l'immagine relativa all'evento
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 10; i++) {
 			String URLPhoto = events.get(i).getPhotoURL();
 			events.get(i).setPhoto(getBitmapFromURL(URLPhoto));
 			Log.w("URLImage", URLPhoto);
@@ -135,36 +138,7 @@ public class DownloadEventsTask extends
 		AdapterListView adapter = new AdapterListView(view.getContext(), events);
 		l.setAdapter(adapter);
 		
-//		for (int i = 0; i < events.size(); i++) {
-//			
-//			Button b11 = new Button(view.getContext());
-//			b11.setId(i);
-//			// b11.setId(events.get(i).getId().toString());
-//			b11.setText("" + events.get(i).getDescription());
-//			b11.setMaxHeight(70);
-//			BitmapDrawable bdrawable = new BitmapDrawable(events.get(i).getPhoto());
-//			
-//			b11.setBackgroundDrawable(bdrawable);
-//			
-//			b11.setOnClickListener(new OnClickListener() {
-//
-//				@Override
-//				public void onClick(View v) {
-//					// System.out.println(v.getId());
-//					MainActivity.setidEvents(v.getId());
-//
-//					comm.respond("fragment_event", v.getId());
-//					// TODO Auto-generated method stub
-//
-//				}
-//			});
-//
-//			l.addView(b11);
-////			Button b10 = new Button(view.getContext());
-////			b10.setText("" + events.get(i).getStart_time());
-////			b10.setHeight(75);
-////			l.addView(b10);
-//		}
+		if(dialog.isShowing()) dialog.dismiss();
 
 	}
 

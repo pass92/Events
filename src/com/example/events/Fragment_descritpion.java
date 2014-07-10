@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RemoteViews;
 import android.widget.TextView;
 
 public class Fragment_descritpion extends Fragment{
@@ -26,5 +27,12 @@ public class Fragment_descritpion extends Fragment{
 	 t.setText(""+events.get(id).getDescription());
 	 l.addView(t);
 	 return view;
+	}
+	
+	@Override
+	public void onDestroyView() {
+		// TODO Auto-generated method stub
+		super.onDestroyView();
+		getView().removeCallbacks(null);
 	}
 }

@@ -4,3 +4,13 @@ search?q=party&type=event&until=today&fields=id
 search?q=party&type=event&until=today&fields=id,venue
 search?q=party&type=event&fields=id,name,description,start_time,end_time,venue,location
 select eid,name,description,start_time from event where eid in (SELECT eid FROM event WHERE contains("{YOUR_LOCATION_NAME}")) and venue.id = {YOUR_LOCATION_ID} and start_time > now() order by start_time ASC
+SELECT pic_big, name, venue, location, start_time, eid FROM event WHERE eid IN (SELECT eid FROM event_member WHERE uid IN (SELECT uid2 FROM friend WHERE uid1 = me()) AND start_time > '. $created_time .' OR uid = me()) AND start_time > '. $created_time .' AND venue.longitude < \''. ($long+$offset) .'\' AND venue.latitude < \''. ($lat+$offset) .'\' AND venue.longitude > \''. ($long-$offset) .'\' AND venue.latitude > \''. ($lat-$offset) .'\' ORDER BY start_time ASC '. $limit;
+SELECT pic_big, name, venue, location, start_time, eid FROM event WHERE eid IN (SELECT eid FROM event_member WHERE uid IN (SELECT uid2 FROM friend WHERE uid1 = me()) AND venue.longitude < 46 AND venue.latitude 11 AND venue.longitude > 46.13 AND venue.latitude > 11.75
+SELECT name, pic_cover,start_time, end_time, location, description,venue FROM event WHERE creator IN (SELECT page_id FROM place WHERE distance(latitude, longitude, "40.1811", "44.5136") < 50000 limit 0,15000) and start_time > now() ORDER BY start_time desc limit 0,1500 
+
+
+
+//soluzione un po barbona!!
+select eid,name,description,start_time,venue from event where eid in (SELECT eid FROM event WHERE contains("{Trento}") or contains("{Rovereto}")) or contains("{Mori}") and start_time > now() order by start_time ASC
+
+//ottengo la mia posizione con latitudine e longitudine e ottengo vari paesi attorno a me!

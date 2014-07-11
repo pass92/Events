@@ -56,7 +56,7 @@ public class MainActivity extends Activity implements Communicator {
 
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
-	private String[] mPlanetTitles = { "Nome utente", "I miei Eventi",
+	private String[] mPlanetTitles = { "Eventi", "I miei Eventi",
 			"Crea Evento", "Cerca Evento", "Impostazioni" };
 
 	// sessione passata dopo il Login
@@ -150,7 +150,7 @@ public class MainActivity extends Activity implements Communicator {
 			Fragment fragment = new Fragment_main();
 			FragmentManager manager = getFragmentManager();
 			FragmentTransaction transaction = manager.beginTransaction();
-			transaction.replace(R.id.content_frame, fragment, "basefragment");
+			transaction.replace(R.id.content_frame, fragment);
 			transaction.commit();
 
 			break;
@@ -185,7 +185,7 @@ public class MainActivity extends Activity implements Communicator {
 					.replace(R.id.content_frame, fragmentImp).commit();
 			break;
 		default:
-			System.out.println("i???");
+			Log.w("MainActivity", "dafault");
 			break;
 		}
 		Bundle args = new Bundle();
@@ -232,7 +232,7 @@ public class MainActivity extends Activity implements Communicator {
 			FragmentManager manager = getFragmentManager();
 			FragmentTransaction transaction = manager.beginTransaction();
 			transaction.replace(R.id.content_frame, fragment);
-			transaction.addToBackStack(null);
+			transaction.addToBackStack("event_description");
 			transaction.commit();
 		}
 //		if (data.equals("fragment_i_miei_eventi")) {
@@ -259,7 +259,7 @@ public class MainActivity extends Activity implements Communicator {
 		FragmentManager manager = getFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.add(R.id.content_frame, fragment, "basefragment");
-		transaction.addToBackStack(null);
+		//transaction.addToBackStack(null);
 		transaction.commit();
 
 

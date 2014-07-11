@@ -46,7 +46,7 @@ public class DownloadEventsTask extends
 		AsyncTask<Void, Void, ArrayList<EventsHelper>> {
 
 	String fqlQuery = "select eid,name,description,start_time, pic_big from event where eid in (SELECT eid FROM event WHERE contains("
-			+ "'{Trento}'" + ")) order by start_time ASC";
+			+ "'{Trento}'" + ")) limit 10 "; // order by start_time ASC
 	Bundle params = new Bundle();
 	Session session;
 	View view;
@@ -54,11 +54,12 @@ public class DownloadEventsTask extends
 	ListView l;
 	private ProgressDialog dialog;
 
-	DownloadEventsTask(View view, Communicator comm, ListView l,ProgressDialog dialog) {
+	DownloadEventsTask(View view, Communicator comm, ListView l,
+			ProgressDialog dialog) {
 		this.view = view;
 		this.comm = comm;
 		this.l = l;
-		this.dialog=dialog;
+		this.dialog = dialog;
 	}
 
 	@Override
@@ -82,14 +83,10 @@ public class DownloadEventsTask extends
 						// Log.i(TAG, "Got results: " + response.toString());
 						try {
 							if (response != null) {
-
 								final JSONObject json = response
 										.getGraphObject().getInnerJSONObject();
 								JSONArray d = json.getJSONArray("data");
 								int l = (d != null ? d.length() : 0);
-								Log.d("Facebook-Example-events Request",
-										"d.length(): " + l);
-
 								for (int i = 0; i < l; i++) {
 									JSONObject o = d.getJSONObject(i);
 									String id = o.getString("eid");
@@ -108,6 +105,14 @@ public class DownloadEventsTask extends
 									f.setPhotoURL(photoURL);
 									events.add(f);
 								}
+								
+//
+//								//test impstazione call another events
+//								//
+//								JSONObject jo = json.getJSONObject("paging");
+	//							String nextPage = jo.getString("next");		
+		//d						Log.w("NEXT_PAGE", nextPage);
+								
 							}
 						} catch (JSONException e) {
 							Log.w("Facebook-Example", "JSON Error in response");
@@ -118,7 +123,7 @@ public class DownloadEventsTask extends
 		Request.executeBatchAndWait(request);
 
 		// cliclo la lista di elementi scaricare l'immagine relativa all'evento
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < events.size(); i++) {
 			String URLPhoto = events.get(i).getPhotoURL();
 			events.get(i).setPhoto(getBitmapFromURL(URLPhoto));
 			Log.w("URLImage", URLPhoto);
@@ -137,8 +142,9 @@ public class DownloadEventsTask extends
 		MainActivity.setListEvents(events);
 		AdapterListView adapter = new AdapterListView(view.getContext(), events);
 		l.setAdapter(adapter);
-		
-		if(dialog.isShowing()) dialog.dismiss();
+
+		if (dialog.isShowing())
+			dialog.dismiss();
 
 	}
 

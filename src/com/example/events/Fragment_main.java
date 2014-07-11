@@ -18,6 +18,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -28,12 +30,13 @@ public class Fragment_main extends Fragment {
 	Button b1;
 	private static List<EventsHelper> events;
 	private ProgressDialog dialog;
-	
-    //TEST DB istanze
-		private DbAdapter dbHelper;
-		private Cursor cursor;
-   //
-		
+
+	// TEST DB istanze
+	private DbAdapter dbHelper;
+	private Cursor cursor;
+	private  Boolean flag_loading= false;
+	//
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -61,7 +64,6 @@ public class Fragment_main extends Fragment {
 			AdapterListView adapter = new AdapterListView(view.getContext(),
 					(ArrayList<EventsHelper>) events);
 			lv.setAdapter(adapter);
-
 		}
 
 		// Aggiungo l'ascoltatore per aprire maggiori dettagli dall'elenco della
@@ -74,69 +76,109 @@ public class Fragment_main extends Fragment {
 				comm.respond("fragment_event", position);
 			}
 		});
-		
+
+		lv.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				// TODO Auto-generated method stub
+				final int lastItem = firstVisibleItem + visibleItemCount;
+				if (lastItem == totalItemCount) {
+					Log.w("ListView", "End");
+					if(flag_loading == false)
+	                {
+	                    flag_loading = true;
+	                    //additems();
+//	                    DownloadEventsTask taskEvents = new DownloadEventsTask(view, comm,
+//	        					lv, dialog);
+//	        			taskEvents.execute();
+	                }
+				}
+			}
+		});
+		// lv.setOnScrollListener(new OnScrollListener(){
+		//
+		// @Override
+		// public void onScroll(AbsListView view,
+		// int firstVisibleItem, int visibleItemCount,
+		// int totalItemCount) {
+		// //Algorithm to check if the last item is visible or not
+		// final int lastItem = firstVisibleItem + visibleItemCount;
+		// if(lastItem == totalItemCount){
+		// Log.w("ListView", "End");
+		// }
+		// }
+		// @Override
+		// public void onScrollStateChanged(AbsListView view,int scrollState) {
+		// //blank, not using this
+		// Log.w("ListView", "Scroll");
+		// }
+		// });
+
 		// ESPERIMENTI DB
-				dbHelper = new DbAdapter(this.getActivity().getApplicationContext());
-				dbHelper.open();
-				//RECORD DA INSERIRE MANUALMENTE PER PROVE
-				String id = "1";
-				String description = "Appuntamento a via C n11 alle 19:30";
-				String title = "Cena sushi";
-				String end_time = "23:00";
-				String start_time = "19:30";
-				String location = "via C n11";
-				String image = "http://image.jpeg";
-				String id2 = "2";
-				String description2 = "dormita di gruppo a roncobilaccio";
-				String title2 = "sleep";
-				String end_time2 = "00:00";
-				String start_time2 = "19:30";
-				String location2 = "prato piazzo";
-				String image2 = "http://image2.jpeg";
-		        
-				//ELIMINO ELEMENTI PER ID PER LE PROVE
-				dbHelper.deleteEvents(id);
-				dbHelper.deleteEvents(id2);
-				//CREO  2 EVENTI 
-				dbHelper.createEvents(id, image, title, description, start_time,
-						end_time, location);
-				dbHelper.createEvents(id2, image2, title2, description2, start_time2,
-						end_time2, location2);
-		        
-				// OK Cursor c=dbHelper.fetchEventsById();
-				// OK Cursor c=dbHelper.fetchAllEvents();
-				
-				//METODO DI RICERCA SU FILTRO 
-				Cursor c = dbHelper.fetchEventsByFilter("sushi");
-		        //SETTO IL CURSORE SUL PRIMO RECORD 
-				System.out.println("Curosor c=" + c.moveToFirst());
-				System.out.println("===================Risultato delle query:================ ");
-				//STAMPO TUTTI I CAMPI DEL RECORD
-				System.out.println("Curosor c=" + c.getString(0));
-				System.out.println("Curosor c=" + c.getString(1));
-				System.out.println("Curosor c=" + c.getString(2));
-				System.out.println("Curosor c=" + c.getString(3));
-				System.out.println("Curosor c=" + c.getString(4));
-				System.out.println("Curosor c=" + c.getString(5));
-				System.out.println("Curosor c=" + c.getString(6));
-				System.out.println("==================fine risultato query==================");
-				/*
-				 * NEL CASO VI FOSSERO PIU RECORD DA VERIFICARE FARE UN WHILE PER FAR 
-				 * SCORRERE IL CURSORE
-				 * while (!cursor.isAfterLast()) { Person person =
-				 * cursorToPerson(cursor); people.add(person); cursor.moveToNext(); }
-				 */
-				
-				
-				dbHelper.close();
-		        //CHIUDERE IL CURSORE
-				//cursor.close();
-				
-				// Fine DB
-		
-		
-		
-		
+		dbHelper = new DbAdapter(this.getActivity().getApplicationContext());
+		dbHelper.open();
+		// RECORD DA INSERIRE MANUALMENTE PER PROVE
+		String id = "1";
+		String description = "Appuntamento a via C n11 alle 19:30";
+		String title = "Cena sushi";
+		String end_time = "23:00";
+		String start_time = "19:30";
+		String location = "via C n11";
+		String image = "http://image.jpeg";
+		String id2 = "2";
+		String description2 = "dormita di gruppo a roncobilaccio";
+		String title2 = "sleep";
+		String end_time2 = "00:00";
+		String start_time2 = "19:30";
+		String location2 = "prato piazzo";
+		String image2 = "http://image2.jpeg";
+
+		// ELIMINO ELEMENTI PER ID PER LE PROVE
+		dbHelper.deleteEvents(id);
+		dbHelper.deleteEvents(id2);
+		// CREO 2 EVENTI
+		dbHelper.createEvents(id, image, title, description, start_time,
+				end_time, location);
+		dbHelper.createEvents(id2, image2, title2, description2, start_time2,
+				end_time2, location2);
+
+		// OK Cursor c=dbHelper.fetchEventsById();
+		// OK Cursor c=dbHelper.fetchAllEvents();
+
+		// METODO DI RICERCA SU FILTRO
+		Cursor c = dbHelper.fetchEventsByFilter("sushi");
+		// SETTO IL CURSORE SUL PRIMO RECORD
+		System.out.println("Curosor c=" + c.moveToFirst());
+		System.out
+				.println("===================Risultato delle query:================ ");
+		// STAMPO TUTTI I CAMPI DEL RECORD
+		System.out.println("Curosor c=" + c.getString(0));
+		System.out.println("Curosor c=" + c.getString(1));
+		System.out.println("Curosor c=" + c.getString(2));
+		System.out.println("Curosor c=" + c.getString(3));
+		System.out.println("Curosor c=" + c.getString(4));
+		System.out.println("Curosor c=" + c.getString(5));
+		System.out.println("Curosor c=" + c.getString(6));
+		System.out
+				.println("==================fine risultato query==================");
+		/*
+		 * NEL CASO VI FOSSERO PIU RECORD DA VERIFICARE FARE UN WHILE PER FAR
+		 * SCORRERE IL CURSORE while (!cursor.isAfterLast()) { Person person =
+		 * cursorToPerson(cursor); people.add(person); cursor.moveToNext(); }
+		 */
+
+		dbHelper.close();
+		// CHIUDERE IL CURSORE
+		// cursor.close();
+
+		// Fine DB
 
 		return view;
 	}

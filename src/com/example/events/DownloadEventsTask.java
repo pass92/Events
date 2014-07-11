@@ -47,8 +47,7 @@ import android.widget.ListView;
 public class DownloadEventsTask extends
 		AsyncTask<Void, Void, ArrayList<EventsHelper>> {
 
-	String fqlQuery = "select eid,name,description,start_time, pic_big from event where eid in (SELECT eid FROM event WHERE contains("
-			+ "'{Trento}'" + ")) limit 10 "; // order by start_time ASC
+	String fqlQuery;
 	Bundle params = new Bundle();
 	Session session;
 	View view;
@@ -58,14 +57,16 @@ public class DownloadEventsTask extends
 	private DbAdapter dbHelper;
 	private Cursor cursor;
 	private Context context;
+	private String city;
 
 	DownloadEventsTask(View view, Communicator comm, ListView l,
-			ProgressDialog dialog, Context context) {
+			ProgressDialog dialog, Context context,String city) {
 		this.view = view;
 		this.comm = comm;
 		this.l = l;
 		this.dialog = dialog;
 		this.context=context;
+		this.city =city;
 		dbHelper = new DbAdapter(context);
 	}
 
@@ -73,8 +74,12 @@ public class DownloadEventsTask extends
 	protected void onPreExecute() {
 		// TODO Auto-generated method stub
 		super.onPreExecute();
+		fqlQuery = "select eid,name,description,start_time, pic_big,venue from event where eid in (SELECT eid FROM event WHERE contains(\""
+				+city+ "\")) and start_time > now() order by start_time ASC limit 10 "; // order by start_time ASC
+		Log.w("OnPreExecute", fqlQuery);
 		params.putString("q", fqlQuery);
 		session = MainActivity.session;
+
 	}
 
 	@Override
@@ -103,7 +108,9 @@ public class DownloadEventsTask extends
 									String start_time = o
 											.getString("start_time");
 									String photoURL = o.getString("pic_big");
-
+									
+									//
+									
 									EventsHelper f = new EventsHelper();
 									f.setId(id);
 									f.setTitle(title);

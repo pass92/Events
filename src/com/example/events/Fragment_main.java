@@ -1,7 +1,9 @@
 package com.example.events;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import database.DbAdapter;
 import android.app.Fragment;
@@ -12,6 +14,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,8 +38,10 @@ public class Fragment_main extends Fragment {
 	// TEST DB istanze
 	private DbAdapter dbHelper;
 	private Cursor cursor;
-	private  Boolean flag_loading= false;
-	//
+	private Boolean flag_loading = false;
+
+	//Name city where the USER request a Events
+	String city;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -53,11 +59,41 @@ public class Fragment_main extends Fragment {
 		// ViewGroup l=(ViewGroup)view.findViewById(R.id.layoutTest);
 		ListView lv = (ListView) view.findViewById(R.id.listview_events);
 
+		/*
+		 * Get location from MainActivity
+		 * Print out on a Screen The City
+		 */
+		if (MainActivity.l != null) {
+			// get latitude and longitude of the location
+			double lng = MainActivity.l.getLongitude();
+			double lat = MainActivity.l.getLatitude();
+
+			Context context = view.getContext();
+			int duration = Toast.LENGTH_SHORT;
+
+			Geocoder gcd = new Geocoder(context, Locale.getDefault());
+			List<Address> addresses = null;
+			try {
+				addresses = gcd.getFromLocation(lat, lng, 1);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			if (addresses.size() > 0) {
+				city = addresses.get(0).getLocality();
+				Toast toast = Toast.makeText(context, "City:["
+						+ city +"]"+ Double.toString(lng)
+						+ " " + Double.toString(lat), duration);
+				toast.show();
+			}
+
+		
 		if (MainActivity.getListEvents().size() == 0) {
 			dialog = ProgressDialog.show(view.getContext(), "", "Attendi...",
 					false, true);
 			DownloadEventsTask taskEvents = new DownloadEventsTask(view, comm,
-					lv, dialog, view.getContext());
+					lv, dialog, view.getContext(),city);
 			taskEvents.execute();
 		} else {
 			events = MainActivity.getListEvents();
@@ -91,30 +127,19 @@ public class Fragment_main extends Fragment {
 				final int lastItem = firstVisibleItem + visibleItemCount;
 				if (lastItem == totalItemCount) {
 					Log.w("ListView", "End");
-					if(flag_loading == false)
-	                {
-	                    flag_loading = true;
-	                    //additems();
-//	                    DownloadEventsTask taskEvents = new DownloadEventsTask(view, comm,
-//	        					lv, dialog);
-//	        			taskEvents.execute();
-	                }
+					if (flag_loading == false) {
+						flag_loading = true;
+						// additems();
+						// DownloadEventsTask taskEvents = new
+						// DownloadEventsTask(view, comm,
+						// lv, dialog);
+						// taskEvents.execute();
+					}
 				}
 			}
 		});
+
 		
-
-		if (MainActivity.l != null) {
-			// get latitude and longitude of the location
-			double lng = MainActivity.l.getLongitude();
-			double lat = MainActivity.l.getLatitude();
-
-			Context context = view.getContext();
-			int duration = Toast.LENGTH_SHORT;
-
-			Toast toast = Toast
-					.makeText(context, Double.toString(lng) +" "+ Double.toString(lat), duration);
-			toast.show();
 		}
 
 		return view;

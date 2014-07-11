@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 import database.DbAdapter;
 import android.app.AlertDialog;
@@ -85,10 +86,8 @@ public class Fragment_crea_event extends Fragment {
 	        //SETTO IL CURSORE SUL PRIMO RECORD 
 			System.out.println("Curosor c=" + c.moveToFirst());
 			
-			/*
-			 * NEL CASO VI FOSSERO PIU RECORD DA VERIFICARE FARE UN WHILE PER FAR 
-			 * SCORRERE IL CURSORE*/
-			while (!c.isLast()) { 
+			
+			
 				System.out.println("===================Risultato delle query:================ ");
 				//STAMPO TUTTI I CAMPI DEL RECORD
 				System.out.println("Curosor c=" + c.getString(0));
@@ -102,16 +101,16 @@ public class Fragment_crea_event extends Fragment {
 				dbHelper.deleteEvents("2");
 				System.out.println("==================fine risultato query==================");
 				
-			    c.moveToNext(); }
+				
 			
 			
-			c.close();
+			
 		
 			
 			
 			dbHelper.close();
 	        //CHIUDERE IL CURSORE
-			//cursor.close();
+			c.close();
 			
 			// Fine DB
 			

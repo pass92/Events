@@ -102,6 +102,20 @@ public class Fragment_main extends Fragment {
 				}
 			}
 		});
+		
+
+		if (MainActivity.l != null) {
+			// get latitude and longitude of the location
+			double lng = MainActivity.l.getLongitude();
+			double lat = MainActivity.l.getLatitude();
+
+			Context context = view.getContext();
+			int duration = Toast.LENGTH_SHORT;
+
+			Toast toast = Toast
+					.makeText(context, Double.toString(lng) +" "+ Double.toString(lat), duration);
+			toast.show();
+		}
 
 		return view;
 	}

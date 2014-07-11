@@ -36,9 +36,6 @@ public class Fragment_impostazioni extends Fragment{
 			}
 		
 
-
-
-
 		S.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			Integer progressChanged = 0;
 

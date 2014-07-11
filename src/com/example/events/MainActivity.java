@@ -26,8 +26,12 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -67,6 +71,11 @@ public class MainActivity extends Activity implements Communicator {
 	// id da recuperare nel fragment_event
 	private static int id;
 
+	// location manager e variabili
+	LocationManager lm;
+	String provider;
+	static Location l;
+
 	static int getidEvents() {
 		return id;
 	}
@@ -87,6 +96,7 @@ public class MainActivity extends Activity implements Communicator {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
+
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -96,7 +106,7 @@ public class MainActivity extends Activity implements Communicator {
 		// If the nav drawer is open, hide action items related to the content
 		// view
 		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-		//menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
+		// menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -110,19 +120,19 @@ public class MainActivity extends Activity implements Communicator {
 		}
 		// Handle action buttons
 		switch (item.getItemId()) {
-		//commentoto per futuro utilizzo dell'action 
-//		case R.id.action_websearch:
-//			// create intent to perform web search for this planet
-//			Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-//			intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
-//			// catch event that there's no activity to handle intent
-//			if (intent.resolveActivity(getPackageManager()) != null) {
-//				startActivity(intent);
-//			} else {
-//				Toast.makeText(this, R.string.app_not_available,
-//						Toast.LENGTH_LONG).show();
-//			}
-//			return true;
+		// commentoto per futuro utilizzo dell'action
+		// case R.id.action_websearch:
+		// // create intent to perform web search for this planet
+		// Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+		// intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
+		// // catch event that there's no activity to handle intent
+		// if (intent.resolveActivity(getPackageManager()) != null) {
+		// startActivity(intent);
+		// } else {
+		// Toast.makeText(this, R.string.app_not_available,
+		// Toast.LENGTH_LONG).show();
+		// }
+		// return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -143,10 +153,10 @@ public class MainActivity extends Activity implements Communicator {
 		switch (position) {
 		case 0:
 			System.out.println("eventi");
-//			Fragment fragment5 = new Fragment_main();
-//			FragmentManager fragmentManager4 = getFragmentManager();
-//			fragmentManager4.beginTransaction()
-//					.replace(R.id.content_frame, fragment5).commit();
+			// Fragment fragment5 = new Fragment_main();
+			// FragmentManager fragmentManager4 = getFragmentManager();
+			// fragmentManager4.beginTransaction()
+			// .replace(R.id.content_frame, fragment5).commit();
 			Fragment fragment = new Fragment_main();
 			FragmentManager manager = getFragmentManager();
 			FragmentTransaction transaction = manager.beginTransaction();
@@ -235,13 +245,13 @@ public class MainActivity extends Activity implements Communicator {
 			transaction.addToBackStack("event_description");
 			transaction.commit();
 		}
-//		if (data.equals("fragment_i_miei_eventi")) {
-//			System.out.println(data);
-//			Fragment fragment3 = new Fragment_i_miei_eventi();
-//			FragmentManager fragmentManager = getFragmentManager();
-//			fragmentManager.beginTransaction()
-//					.replace(R.id.content_frame, fragment3).commit();
-//		}
+		// if (data.equals("fragment_i_miei_eventi")) {
+		// System.out.println(data);
+		// Fragment fragment3 = new Fragment_i_miei_eventi();
+		// FragmentManager fragmentManager = getFragmentManager();
+		// fragmentManager.beginTransaction()
+		// .replace(R.id.content_frame, fragment3).commit();
+		// }
 
 	}
 
@@ -255,14 +265,18 @@ public class MainActivity extends Activity implements Communicator {
 		Intent intent = getIntent();
 		session = (Session) intent.getSerializableExtra("session");
 
-		Fragment fragment = new Fragment_main();
-		FragmentManager manager = getFragmentManager();
-		FragmentTransaction transaction = manager.beginTransaction();
-		transaction.add(R.id.content_frame, fragment, "basefragment");
-		//transaction.addToBackStack(null);
-		transaction.commit();
+		lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		Criteria c = new Criteria();
+		provider = lm.getBestProvider(c, false);
+		l = lm.getLastKnownLocation(provider);
 
 
+		// Fragment fragment = new Fragment_main();
+		// FragmentManager manager = getFragmentManager();
+		// FragmentTransaction transaction = manager.beginTransaction();
+		// transaction.add(R.id.content_frame, fragment, "basefragment");
+		// //transaction.addToBackStack(null);
+		// transaction.commit();
 
 		mTitle = mDrawerTitle = getTitle();
 		// mPlanetTitles = getResources().getStringArray(R.array.planets_array);
@@ -309,4 +323,4 @@ public class MainActivity extends Activity implements Communicator {
 		}
 	}
 
-	}
+}

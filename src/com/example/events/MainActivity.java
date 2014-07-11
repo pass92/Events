@@ -89,7 +89,7 @@ public class MainActivity extends Activity implements Communicator {
 	}
 
 	public static void setListEvents(List<EventsHelper> listEvents) {
-		events = listEvents;
+		events.addAll(listEvents);
 	}
 
 	@Override

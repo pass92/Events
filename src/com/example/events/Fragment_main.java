@@ -33,16 +33,20 @@ import android.widget.Toast;
 public class Fragment_main extends Fragment {
 	Button b1;
 	private static List<EventsHelper> events;
-	private ProgressDialog dialog;
+	private static ProgressDialog dialog;
 
 	// TEST DB istanze
 	private DbAdapter dbHelper;
 	private Cursor cursor;
-	private Boolean flag_loading = false;
+	public static Boolean flag_loading = true;
 
 	//Name city where the USER request a Events
 	String city;
-
+	
+	//offset on query facebook and Limit
+	static Integer offsetQuery=0;
+	Integer limitQuery=5;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -57,7 +61,7 @@ public class Fragment_main extends Fragment {
 		final Communicator comm;
 		comm = (Communicator) getActivity();
 		// ViewGroup l=(ViewGroup)view.findViewById(R.id.layoutTest);
-		ListView lv = (ListView) view.findViewById(R.id.listview_events);
+		final ListView lv = (ListView) view.findViewById(R.id.listview_events);
 
 		/*
 		 * Get location from MainActivity
@@ -89,11 +93,12 @@ public class Fragment_main extends Fragment {
 			}
 
 		
+		//print on screen events
 		if (MainActivity.getListEvents().size() == 0) {
 			dialog = ProgressDialog.show(view.getContext(), "", "Attendi...",
 					false, true);
 			DownloadEventsTask taskEvents = new DownloadEventsTask(view, comm,
-					lv, dialog, view.getContext(),city);
+					lv, dialog, view.getContext(),city,offsetQuery,limitQuery);
 			taskEvents.execute();
 		} else {
 			events = MainActivity.getListEvents();
@@ -126,14 +131,17 @@ public class Fragment_main extends Fragment {
 				// TODO Auto-generated method stub
 				final int lastItem = firstVisibleItem + visibleItemCount;
 				if (lastItem == totalItemCount) {
-					Log.w("ListView", "End");
+					
 					if (flag_loading == false) {
+						Log.w("ListView", "End");
 						flag_loading = true;
-						// additems();
-						// DownloadEventsTask taskEvents = new
-						// DownloadEventsTask(view, comm,
-						// lv, dialog);
-						// taskEvents.execute();
+
+						dialog = ProgressDialog.show(view.getContext(), "", "Attendi...",
+								false, true);
+						offsetQuery += 10;
+						DownloadEventsTask taskEvents = new DownloadEventsTask(view, comm,
+								lv, dialog, view.getContext(),city,offsetQuery,limitQuery);
+						taskEvents.execute();
 					}
 				}
 			}

@@ -58,9 +58,11 @@ public class DownloadEventsTask extends
 	private Cursor cursor;
 	private Context context;
 	private String city;
+	private Integer offsetQuery;
+	private Integer limitQuery;
 
 	DownloadEventsTask(View view, Communicator comm, ListView l,
-			ProgressDialog dialog, Context context,String city) {
+			ProgressDialog dialog, Context context,String city,Integer offsetQuery,Integer limitQuery) {
 		this.view = view;
 		this.comm = comm;
 		this.l = l;
@@ -68,6 +70,8 @@ public class DownloadEventsTask extends
 		this.context=context;
 		this.city =city;
 		dbHelper = new DbAdapter(context);
+		this.offsetQuery=offsetQuery;
+		this.limitQuery=limitQuery;
 	}
 
 	@Override
@@ -75,7 +79,7 @@ public class DownloadEventsTask extends
 		// TODO Auto-generated method stub
 		super.onPreExecute();
 		fqlQuery = "select eid,name,description,start_time, pic_big,venue from event where eid in (SELECT eid FROM event WHERE contains(\""
-				+city+ "\")) and start_time > now() order by start_time ASC limit 10 "; // order by start_time ASC
+				+city+ "\")) and start_time > now() order by start_time ASC limit " + Integer.toString(limitQuery) + " offset "+ Integer.toString(offsetQuery); // order by start_time ASC
 		Log.w("OnPreExecute", fqlQuery);
 		params.putString("q", fqlQuery);
 		session = MainActivity.session;
@@ -159,9 +163,10 @@ public class DownloadEventsTask extends
 		// for (int i = 0; i < result.size(); i++)
 		// Log.w("Name: ", result.get(i).getTitle());
 		MainActivity.setListEvents(events);
-		AdapterListView adapter = new AdapterListView(view.getContext(), events);
+		events=(ArrayList<EventsHelper>) MainActivity.getListEvents();
+		AdapterListView adapter = new AdapterListView(view.getContext(),events);
 		l.setAdapter(adapter);
-
+		Fragment_main.flag_loading=false;
 		if (dialog.isShowing())
 			dialog.dismiss();
 

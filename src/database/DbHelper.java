@@ -12,25 +12,27 @@ import android.util.Log;
 public class DbHelper extends SQLiteOpenHelper{
 	
 	public static final String TABLE_EVENTS = "Events"; 
+	 public static final String COLUMN_TABLEID = "idtable"; 
 	 public static final String COLUMN_ID = "id"; 
 	 public static final String COLUMN_IMAGE = "image"; 
 	 public static final String COLUMN_TITLE = "title"; 
 	 public static final String COLUMN_DESCRIPTION = "description";
 	 public static final String COLUMN_START_TIME = "startTime";
 	 public static final String COLUMN_END_TIME = "endTime";
-	public static final String COLUMN_LOCATION = "location";
+	 public static final String COLUMN_LOCATION = "location";
 	
 	
 	
 	 
 	 
 	 private static final String DATABASE_NAME = "events.db"; 
-	 private static final int DATABASE_VERSION = 3; 
+	 private static final int DATABASE_VERSION = 4; 
 	 
 	 // Database creation sql statement 
 	 private static final String DATABASE_CREATE = "create table " 
 	 + TABLE_EVENTS + "( " 
-	 + COLUMN_ID + " integer primary key not null, " 
+	 + COLUMN_TABLEID + " integer primary key autoincrement, "
+	 + COLUMN_ID + " integer not null, " 
 	 + COLUMN_IMAGE + " text ," 
 	 + COLUMN_TITLE + " text ," 
 	 + COLUMN_DESCRIPTION + " text ," 

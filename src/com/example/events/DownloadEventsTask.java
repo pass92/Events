@@ -25,11 +25,13 @@ import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Response;
 
+import database.DbAdapter;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -53,13 +55,18 @@ public class DownloadEventsTask extends
 	Communicator comm;
 	ListView l;
 	private ProgressDialog dialog;
+	private DbAdapter dbHelper;
+	private Cursor cursor;
+	private Context context;
 
 	DownloadEventsTask(View view, Communicator comm, ListView l,
-			ProgressDialog dialog) {
+			ProgressDialog dialog, Context context) {
 		this.view = view;
 		this.comm = comm;
 		this.l = l;
 		this.dialog = dialog;
+		this.context=context;
+		dbHelper = new DbAdapter(context);
 	}
 
 	@Override
@@ -104,6 +111,11 @@ public class DownloadEventsTask extends
 									f.setStart_time(start_time);
 									f.setPhotoURL(photoURL);
 									events.add(f);
+									dbHelper.open();
+									
+									dbHelper.createEvents(id, photoURL, title, description, start_time,
+												"0", "0");
+									dbHelper.close();
 								}
 								
 //

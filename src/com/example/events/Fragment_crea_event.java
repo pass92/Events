@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import database.DbAdapter;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.ContentResolver;
@@ -39,6 +40,10 @@ public class Fragment_crea_event extends Fragment {
 	
 	private static int RESULT_ACTIVITY = 1;
 	private static int RESULT_CODE = -1;
+	//TEST DB istanze
+			private DbAdapter dbHelper;
+			private Cursor cursor;
+	   //
 	Button b1=null;
 	ImageView image = null;
 	@Override 
@@ -50,6 +55,72 @@ public class Fragment_crea_event extends Fragment {
 	 final EditText t1=(EditText)view.findViewById(R.id.editText_addTitle);
 	 final EditText t2=(EditText)view.findViewById(R.id.editText_addDescription);
 	 image=(ImageView)view.findViewById(R.id.imageView_addImg);
+	 
+	 
+	 
+	 
+	 
+	 
+	// ESPERIMENTI DB
+			dbHelper = new DbAdapter(this.getActivity().getApplicationContext());
+			dbHelper.open();
+			//System.out.println("eliminato? :"+dbHelper.deleteEvents("1484968545052144"));
+			//RECORD DA INSERIRE MANUALMENTE PER PROVE
+			
+	        /*
+			//ELIMINO ELEMENTI PER ID PER LE PROVE
+			dbHelper.deleteEvents(id);
+			dbHelper.deleteEvents(id2);
+			//CREO  2 EVENTI */
+			//dbHelper.createEvents(id, image, title, description, start_time,
+			//		end_time, location);
+		    //dbHelper.createEvents(id2, image2, title2, description2, start_time2,
+			//		end_time2, location2);/*
+			// OK Cursor c=dbHelper.fetchEventsById();
+			Cursor c=dbHelper.fetchAllEvents();
+			System.out.println("numero di righe:="+c.getCount());
+			this.getActivity().startManagingCursor(c);
+			//METODO DI RICERCA SU FILTRO 
+			//Cursor c = dbHelper.fetchEventsByFilter("sushi");
+	        //SETTO IL CURSORE SUL PRIMO RECORD 
+			System.out.println("Curosor c=" + c.moveToFirst());
+			
+			/*
+			 * NEL CASO VI FOSSERO PIU RECORD DA VERIFICARE FARE UN WHILE PER FAR 
+			 * SCORRERE IL CURSORE*/
+			while (!c.isLast()) { 
+				System.out.println("===================Risultato delle query:================ ");
+				//STAMPO TUTTI I CAMPI DEL RECORD
+				System.out.println("Curosor c=" + c.getString(0));
+				System.out.println("Curosor c=" + c.getString(1));
+				System.out.println("Curosor c=" + c.getString(2));
+				System.out.println("Curosor c=" + c.getString(3));
+				System.out.println("Curosor c=" + c.getString(4));
+				System.out.println("Curosor c=" + c.getString(5));
+				System.out.println("Curosor c=" + c.getString(6));
+				dbHelper.deleteEvents("1");
+				dbHelper.deleteEvents("2");
+				System.out.println("==================fine risultato query==================");
+				
+			    c.moveToNext(); }
+			
+			
+			c.close();
+		
+			
+			
+			dbHelper.close();
+	        //CHIUDERE IL CURSORE
+			//cursor.close();
+			
+			// Fine DB
+			
+	 
+	 
+	 
+	 
+	 
+	 
 	 
 	 image.setOnClickListener(new OnClickListener() {
        

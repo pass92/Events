@@ -57,7 +57,7 @@ public class Fragment_main extends Fragment {
 			dialog = ProgressDialog.show(view.getContext(), "", "Attendi...",
 					false, true);
 			DownloadEventsTask taskEvents = new DownloadEventsTask(view, comm,
-					lv, dialog);
+					lv, dialog, view.getContext());
 			taskEvents.execute();
 		} else {
 			events = MainActivity.getListEvents();

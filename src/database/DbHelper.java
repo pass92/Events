@@ -26,13 +26,12 @@ public class DbHelper extends SQLiteOpenHelper{
 	 
 	 
 	 private static final String DATABASE_NAME = "events.db"; 
-	 private static final int DATABASE_VERSION = 4; 
+	 private static final int DATABASE_VERSION = 7; 
 	 
 	 // Database creation sql statement 
 	 private static final String DATABASE_CREATE = "create table " 
 	 + TABLE_EVENTS + "( " 
-	 + COLUMN_TABLEID + " integer primary key autoincrement, "
-	 + COLUMN_ID + " integer not null, " 
+	 + COLUMN_ID + " integer primary key, " 
 	 + COLUMN_IMAGE + " text ," 
 	 + COLUMN_TITLE + " text ," 
 	 + COLUMN_DESCRIPTION + " text ," 

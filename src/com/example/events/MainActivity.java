@@ -151,19 +151,19 @@ public class MainActivity extends Activity implements Communicator {
 	private void selectItem(int position) {
 		// update the main content by replacing fragments
 		Fragment fragment;
-		//fragment = this.getFragmentManager().findFragmentByTag("main");
+		// fragment = this.getFragmentManager().findFragmentByTag("main");
 		// FragmentManager manager = getFragmentManager();
 		// FragmentTransaction transaction = manager.beginTransaction();
 
 		switch (position) {
 		case 0:
 
-			 System.out.println("eventi");
-			 fragment = new Fragment_main();
-			 FragmentManager manager = getFragmentManager();
-			 FragmentTransaction transaction = manager.beginTransaction();
-			 transaction.add(R.id.content_frame, fragment,"main");
-			 transaction.commit();
+			System.out.println("eventi");
+			fragment = new Fragment_main();
+			FragmentManager manager = getFragmentManager();
+			FragmentTransaction transaction = manager.beginTransaction();
+			transaction.replace(R.id.content_frame, fragment, "main");
+			transaction.commit();
 			break;
 		case 1:
 			System.out.println("i miei eventi");
@@ -183,9 +183,10 @@ public class MainActivity extends Activity implements Communicator {
 			break;
 		case 3:
 			System.out.println("cerca evento");
-			fragment=new Fragment_Cerca();
+			fragment = new Fragment_Cerca();
 			FragmentManager fragmentManager33 = getFragmentManager();
-			fragmentManager33.beginTransaction().replace(R.id.content_frame, fragment).commit();
+			fragmentManager33.beginTransaction()
+					.replace(R.id.content_frame, fragment).commit();
 
 			break;
 		case 4:
@@ -316,12 +317,21 @@ public class MainActivity extends Activity implements Communicator {
 			selectItem(0);
 		}
 	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		// TODO Auto-generated method stub
+		super.onSaveInstanceState(outState);
+		outState.putBoolean("justCall", true);
+	}
+
+
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
 	}
-	
+
 	@Override
 	protected void onStop() {
 		// TODO Auto-generated method stub

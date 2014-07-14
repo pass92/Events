@@ -1,32 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-
-    <ScrollView
-        android:id="@+id/scrollView1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="394dp"
-            android:orientation="vertical" >
-
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="match_parent"
-                android:layout_height="192dp"
-                android:background="@drawable/festa"
-                android:text="Button" />
-
-            <Button
-                android:id="@+id/button1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Elimina" />
-        </LinearLayout>
-    </ScrollView>
-
-</LinearLayout>
+    tools:context=".MainActivity"
+    >
+ 
+    <ListView
+       android:id="@+id/listview_my_events"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       /> 
+ 
+</RelativeLayout>

@@ -44,7 +44,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 
-public class DownloadEventsTask extends
+public class DownloadMyEvents extends
 		AsyncTask<Void, Void, ArrayList<EventsHelper>> {
 
 	String fqlQuery;
@@ -63,35 +63,23 @@ public class DownloadEventsTask extends
 	private AdapterListView adapter;
 	private static Integer start = 0;
 
-	DownloadEventsTask(View view, Communicator comm, ListView l,
-			ProgressDialog dialog, Context context, String city,
-			Integer offsetQuery, Integer limitQuery, AdapterListView adapter) {
+	DownloadMyEvents(View view, ListView l,
+			ProgressDialog dialog, Context context) {
 		this.view = view;
-		this.comm = comm;
 		this.l = l;
 		this.dialog = dialog;
 		this.context = context;
-		this.city = city;
-		dbHelper = new DbAdapter(context);
-		this.offsetQuery = offsetQuery;
-		this.limitQuery = limitQuery;
-		this.adapter = adapter;
+
 	}
 
 	@Override
 	protected void onPreExecute() {
 		// TODO Auto-generated method stub
 		super.onPreExecute();
-		fqlQuery = "select eid,name,description,start_time, pic_big,venue from event where eid in (SELECT eid FROM event WHERE contains(\""
-				+ city
-				+ "\")) and start_time > now() order by start_time ASC limit "
-				+ Integer.toString(limitQuery)
-				+ " offset "
-				+ Integer.toString(offsetQuery); // order by start_time ASC
+		fqlQuery = "select eid,name,description,start_time, pic_big,venue from event where eid in (SELECT eid,rsvp_status FROM event_member WHERE uid=me() and rsvp_status=\""+"attending"+"\")";
 		Log.w("OnPreExecute", fqlQuery);
 		params.putString("q", fqlQuery);
 		session = MainActivity.session;
-
 	}
 
 	@Override
@@ -120,9 +108,7 @@ public class DownloadEventsTask extends
 									String start_time = o
 											.getString("start_time");
 									String photoURL = o.getString("pic_big");
-
-									//
-
+									
 									EventsHelper f = new EventsHelper();
 									f.setId(id);
 									f.setTitle(title);
@@ -130,21 +116,7 @@ public class DownloadEventsTask extends
 									f.setStart_time(start_time);
 									f.setPhotoURL(photoURL);
 									events.add(f);
-									// dbHelper.open();
-									//
-									// dbHelper.createEvents(id, photoURL,
-									// title,
-									// description, start_time, "0", "0");
-									// dbHelper.close();
 								}
-
-								//
-								// //test impstazione call another events
-								// //
-								// JSONObject jo = json.getJSONObject("paging");
-								// String nextPage = jo.getString("next");
-								// d Log.w("NEXT_PAGE", nextPage);
-
 							}
 						} catch (JSONException e) {
 							Log.w("Facebook-Example", "JSON Error in response");
@@ -154,6 +126,9 @@ public class DownloadEventsTask extends
 				});
 		Request.executeBatchAndWait(request);
 
+		
+		
+		
 		// cliclo la lista di elementi scaricare l'immagine relativa all'evento
 		for (int i = 0; i < events.size(); i++) {
 			String URLPhoto = events.get(i).getPhotoURL();
@@ -169,14 +144,9 @@ public class DownloadEventsTask extends
 		// TODO Auto-generated method stub
 		super.onPostExecute(events);
 		Log.w("Async Task", "on post excute");
-		// for (int i = 0; i < result.size(); i++)
-		// Log.w("Name: ", result.get(i).getTitle());
-		
-		//da scommentare
-		MainActivity.setListEvents(events);
 
 		adapter = new AdapterListView(view.getContext(),
-				(ArrayList<EventsHelper>) MainActivity.getListEvents());
+				(ArrayList<EventsHelper>) events);
 		l.setAdapter(adapter);
 		adapter.notifyDataSetChanged();
 

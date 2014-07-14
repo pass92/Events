@@ -14,6 +14,14 @@ public class EventsHelper {
 	private GeoPoint point;
 	private String start_time;
 	private String end_time;
+	private String rsvp_status;
+	
+	public String getRsvp_status() {
+		return rsvp_status;
+	}
+	public void setRsvp_status(String rsvp_status) {
+		this.rsvp_status = rsvp_status;
+	}
 	public String getId() {
 		return id;
 	}

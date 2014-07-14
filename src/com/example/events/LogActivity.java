@@ -57,7 +57,6 @@ public class LogActivity extends Activity {
         }
 
         updateView();
-        finish();
     }
 
     @Override
@@ -91,6 +90,7 @@ public class LogActivity extends Activity {
         	intent.putExtra("session", session);
         	//intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         	startActivity(intent);
+        	finish();
         } else {
             buttonLogin.setOnClickListener(new OnClickListener() {
                 public void onClick(View view) { onClickLogin(); }

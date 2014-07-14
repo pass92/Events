@@ -1,5 +1,9 @@
 package com.example.events;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -14,6 +18,9 @@ public class Fragment_i_miei_eventi extends Fragment {
 	private ProgressDialog dialog;
 	private ListView listView;
 	private Communicator comm;
+	private List<EventsHelper> events;
+	private AdapterListView adapter;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle saveInstanceState) {
@@ -22,11 +29,20 @@ public class Fragment_i_miei_eventi extends Fragment {
 
 		comm = (Communicator) getActivity();
 		listView = (ListView) view.findViewById(R.id.listview_my_events);
-		dialog = ProgressDialog.show(view.getContext(), "", "Attendi...",
-				false, true);
-		DownloadMyEvents taskEvents = new DownloadMyEvents(view, listView,
-				dialog, view.getContext());
-		taskEvents.execute();
+
+		if (saveInstanceState != null) {
+			events = (List<EventsHelper>) saveInstanceState
+					.getSerializable("events");
+			adapter = new AdapterListView(view.getContext(),
+					(ArrayList<EventsHelper>) events);
+			listView.setAdapter(adapter);
+		} else {
+			dialog = ProgressDialog.show(view.getContext(), "", "Attendi...",
+					false, true);
+			DownloadMyEvents taskEvents = new DownloadMyEvents(view, listView,
+					dialog, view.getContext(), events);
+			taskEvents.execute();
+		}
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -36,8 +52,16 @@ public class Fragment_i_miei_eventi extends Fragment {
 				comm.respond("fragment_event", position);
 			}
 		});
-		
+
 		return view;
 	}
 
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		// TODO Auto-generated method stub
+		super.onSaveInstanceState(outState);
+		Bundle args = new Bundle();
+		args.putSerializable("events", (Serializable) events);
+		outState.putAll(args);
+	}
 }

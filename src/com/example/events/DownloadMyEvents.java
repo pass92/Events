@@ -54,22 +54,17 @@ public class DownloadMyEvents extends
 	Communicator comm;
 	ListView l;
 	private ProgressDialog dialog;
-	private DbAdapter dbHelper;
-	private Cursor cursor;
-	private Context context;
-	private String city;
-	private Integer offsetQuery;
-	private Integer limitQuery;
 	private AdapterListView adapter;
-	private static Integer start = 0;
+	private List<EventsHelper> events;
+	private Context context;
 
 	DownloadMyEvents(View view, ListView l,
-			ProgressDialog dialog, Context context) {
+			ProgressDialog dialog, Context context,List<EventsHelper> events) {
 		this.view = view;
 		this.l = l;
 		this.dialog = dialog;
 		this.context = context;
-
+		this.events=events;
 	}
 
 	@Override
@@ -140,13 +135,14 @@ public class DownloadMyEvents extends
 	}
 
 	@Override
-	protected void onPostExecute(ArrayList<EventsHelper> events) {
+	protected void onPostExecute(ArrayList<EventsHelper> result) {
 		// TODO Auto-generated method stub
-		super.onPostExecute(events);
+		super.onPostExecute(result);
 		Log.w("Async Task", "on post excute");
 
+		events = result;
 		adapter = new AdapterListView(view.getContext(),
-				(ArrayList<EventsHelper>) events);
+				(ArrayList<EventsHelper>) result);
 		l.setAdapter(adapter);
 		adapter.notifyDataSetChanged();
 

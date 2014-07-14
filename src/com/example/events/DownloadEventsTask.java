@@ -181,7 +181,6 @@ public class DownloadEventsTask extends
 		Fragment_main.flag_loading = false;
 		if (dialog.isShowing())
 			dialog.dismiss();
-
 	}
 
 	public Bitmap getBitmapFromURL(String imageUrl) {

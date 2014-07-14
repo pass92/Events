@@ -1,6 +1,7 @@
 package com.example.events;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -22,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -32,7 +34,7 @@ import android.widget.Toast;
 
 public class Fragment_main extends Fragment {
 	Button b1;
-	private static List<EventsHelper> events;
+	private List<EventsHelper> events;
 	private static ProgressDialog dialog;
 
 	// TEST DB istanze
@@ -50,6 +52,7 @@ public class Fragment_main extends Fragment {
 	//offset on query facebook and Limit
 	static Integer offsetQuery=0;
 	Integer limitQuery=10;
+
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,7 @@ public class Fragment_main extends Fragment {
 		super.onCreate(savedInstanceState);
 	}
 
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle saveInstanceState) {

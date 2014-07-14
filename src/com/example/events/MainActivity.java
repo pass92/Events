@@ -151,36 +151,26 @@ public class MainActivity extends Activity implements Communicator {
 	private void selectItem(int position) {
 		// update the main content by replacing fragments
 		Fragment fragment;
-		fragment = this.getFragmentManager().findFragmentByTag("main");
-//		FragmentManager manager = getFragmentManager();
-//		FragmentTransaction transaction = manager.beginTransaction();
-		
+		//fragment = this.getFragmentManager().findFragmentByTag("main");
+		// FragmentManager manager = getFragmentManager();
+		// FragmentTransaction transaction = manager.beginTransaction();
+
 		switch (position) {
 		case 0:
-			System.out.println("eventi");
-			fragment = new Fragment_main();
-			FragmentManager manager = getFragmentManager();
-			FragmentTransaction transaction = manager.beginTransaction();
-			transaction.replace(R.id.content_frame, fragment,"main");
-			transaction.commit();
-			
-//			if (fragment == null) {
-//	            fragment = new Fragment_main();
-//	            transaction.replace(android.R.id.content, fragment, "main");
-//	        } else {
-//	            if (fragment.isDetached()) {
-//	            	transaction.attach(fragment);
-//	            }
-//	        }
-			
 
+			 System.out.println("eventi");
+			 fragment = new Fragment_main();
+			 FragmentManager manager = getFragmentManager();
+			 FragmentTransaction transaction = manager.beginTransaction();
+			 transaction.add(R.id.content_frame, fragment,"main");
+			 transaction.commit();
 			break;
 		case 1:
 			System.out.println("i miei eventi");
 			fragment = new Fragment_i_miei_eventi();
 			FragmentManager fragmentManager = getFragmentManager();
 			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment,"main").commit();
+					.replace(R.id.content_frame, fragment, "main").commit();
 
 			break;
 		case 2:
@@ -188,7 +178,7 @@ public class MainActivity extends Activity implements Communicator {
 			fragment = new Fragment_crea_event();
 			FragmentManager fragmentManager2 = getFragmentManager();
 			fragmentManager2.beginTransaction()
-					.replace(R.id.content_frame, fragment,"main").commit();
+					.replace(R.id.content_frame, fragment, "main").commit();
 
 			break;
 		case 3:
@@ -203,7 +193,7 @@ public class MainActivity extends Activity implements Communicator {
 			fragment = new Fragment_impostazioni();
 			FragmentManager fragmentManager3 = getFragmentManager();
 			fragmentManager3.beginTransaction()
-					.replace(R.id.content_frame, fragment,"main").commit();
+					.replace(R.id.content_frame, fragment, "main").commit();
 			break;
 		default:
 			Log.w("MainActivity", "dafault");
@@ -325,6 +315,17 @@ public class MainActivity extends Activity implements Communicator {
 		if (savedInstanceState == null) {
 			selectItem(0);
 		}
+	}
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+	}
+	
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
 	}
 
 }

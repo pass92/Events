@@ -57,6 +57,7 @@ public class LogActivity extends Activity {
         }
 
         updateView();
+        finish();
     }
 
     @Override

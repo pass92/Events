@@ -46,8 +46,8 @@ public class AdapterListViewCercaEvent extends ArrayAdapter<EventsHelper> {
 	            // 4. Set the text for textView 
 	            
 	            
-	            titleView.setText(events.get(position).getTitle());
-	            dataView.setText(events.get(position).getStart_time());
+	            titleView.setText(eventsmain.get(position).getTitle());
+	            dataView.setText(eventsmain.get(position).getStart_time());
 	            imageView.setImageBitmap(eventsmain.get(position).getPhoto());
 	            
 	            // 5. retrn rowView

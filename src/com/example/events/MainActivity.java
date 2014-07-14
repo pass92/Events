@@ -193,6 +193,9 @@ public class MainActivity extends Activity implements Communicator {
 			break;
 		case 3:
 			System.out.println("cerca evento");
+			fragment=new Fragment_Cerca();
+			FragmentManager fragmentManager33 = getFragmentManager();
+			fragmentManager33.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
 			break;
 		case 4:

@@ -12,6 +12,21 @@ import android.widget.RemoteViews;
 import android.widget.TextView;
 
 public class Fragment_descritpion extends Fragment{
+	
+	
+	List<EventsHelper> events;
+	
+	@Override 
+	 public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle saveInstanceState){
+	 View view= inflater.inflate(R.layout.fragment_description,container,false);
+	 events=MainActivity.getListEvents();
+	 TextView tx=(TextView)view.findViewById(R.id.textView_eventdescription);
+		tx.setText(events.get(MainActivity.getidEvents()).getDescription());
+		
+		
+	return view;
+	
+/*COSE VECCHIE 
 	// Array per contenere eventi scaricati da Facebook
 		private static List<EventsHelper> events;
 		private int id;
@@ -34,5 +49,7 @@ public class Fragment_descritpion extends Fragment{
 		// TODO Auto-generated method stub
 		super.onDestroyView();
 		getView().removeCallbacks(null);
+	}
+*/
 	}
 }

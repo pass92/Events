@@ -1,5 +1,7 @@
 package com.example.events;
 
+import android.app.Fragment;
+
 import java.util.List;
 
 import android.app.Activity;
@@ -22,7 +24,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Fragment_event extends Fragment {
+public class Fragment_cerca_event extends Fragment{
+
 	
 	List<EventsHelper> events;
 
@@ -30,9 +33,10 @@ public class Fragment_event extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		events = MainActivity.getListEvents();
+		events=Fragment_Cerca.getEventcerca();
+		
+		
 	}
-	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle saveInstanceState) {
 		Log.w("Fragment_event", "On Create View");
@@ -41,20 +45,16 @@ public class Fragment_event extends Fragment {
 		Fragment fragment=new Fragment_descritpion();
 		FragmentManager manager = getFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(R.id.content_frame2, fragment, "descriptionfragment");
+        transaction.add(R.id.content_frame2, fragment, "descriptionfragment");
         transaction.commit();
 		
-		
-		
-		
-		
 		ImageView imageEvent = (ImageView) view.findViewById(R.id.image_event);
-//cosa vecchia		TextView descizione = (TextView) view.findViewById(R.id.descrizione_event);
+		//cosa vecchia			TextView descizione = (TextView) view.findViewById(R.id.descrizione_event);
 		
 		BitmapDrawable bdrawable = new BitmapDrawable(events.get(MainActivity.getidEvents()).getPhoto());
 		imageEvent.setBackgroundDrawable(bdrawable);
-		//cosa vecchia			descizione.setText(events.get(MainActivity.getidEvents()).getDescription());
-		//cosa vecchia			descizione.setMovementMethod(new ScrollingMovementMethod());
+//cosa vecchia			descizione.setText(events.get(MainActivity.getidEvents()).getDescription());
+//cosa vecchia			descizione.setMovementMethod(new ScrollingMovementMethod());
 //		final Fragment_descritpion fragment = new Fragment_descritpion();
 //		final Fragment_partecipant fragment2 = new Fragment_partecipant();
 //
@@ -146,3 +146,6 @@ public class Fragment_event extends Fragment {
 	}
 	
 }
+
+
+

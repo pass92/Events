@@ -43,7 +43,7 @@ public class Fragment_Cerca extends Fragment {
 	private  static List<EventsHelper> eventsmain;
 	private static List<EventsHelper> cercaevents = new ArrayList<EventsHelper>();
 	
-	static List<EventsHelper> getEventcerca(){
+	public static List<EventsHelper> getEventcerca(){
 		return cercaevents;
 		
 	}

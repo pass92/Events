@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:text="PARTECIPANTI" />
     </LinearLayout>
-
+<!-- Cosa vecchia
     <TextView
         android:id="@+id/descrizione_event"
         android:layout_width="match_parent"
@@ -50,11 +50,10 @@
         android:enabled="true"
         android:scrollbars = "vertical"
         android:maxLines="100" />
-
-<!--     <fragment -->
-<!--         android:id="@+id/fragment_event1" -->
-<!--         android:name="com.example.events.Fragment_descritpion" -->
-<!--         android:layout_width="match_parent" -->
-<!--         android:layout_height="196dp" /> -->
+-->
+    <FrameLayout
+        android:id="@+id/content_frame2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" /> 
     
 </LinearLayout>

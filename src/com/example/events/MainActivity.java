@@ -250,7 +250,7 @@ public class MainActivity extends Activity implements Communicator {
 		}
 		if (data.equals("fragment_eventcerca_descrizione")) {
 		 System.out.println(data);
-		 Fragment fragment3 = new Fragment_eventcerca_descrizione();
+		 Fragment fragment3 = new Fragment_cerca_event();
 		 FragmentManager fragmentManager = getFragmentManager();
 		 fragmentManager.beginTransaction()
 		 .replace(R.id.content_frame, fragment3).commit();

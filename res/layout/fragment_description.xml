@@ -7,7 +7,7 @@
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="0.71" >
 
         <LinearLayout
@@ -16,8 +16,16 @@
             android:layout_height="match_parent"
             android:orientation="vertical" >
 
+            <TextView
+                android:id="@+id/textView_eventdescription"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Large Text"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
         </LinearLayout>
     </ScrollView>
 
 </LinearLayout>
+
+

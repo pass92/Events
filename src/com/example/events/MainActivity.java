@@ -21,14 +21,12 @@ import com.facebook.model.GraphUser;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.location.Criteria;
@@ -47,7 +45,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -155,26 +152,26 @@ public class MainActivity extends Activity implements Communicator {
 		// update the main content by replacing fragments
 		Fragment fragment;
 		fragment = this.getFragmentManager().findFragmentByTag("main");
-		FragmentManager manager = getFragmentManager();
-		FragmentTransaction transaction = manager.beginTransaction();
+//		FragmentManager manager = getFragmentManager();
+//		FragmentTransaction transaction = manager.beginTransaction();
 		
 		switch (position) {
 		case 0:
-//			System.out.println("eventi");
-//			fragment = new Fragment_main();
-//			FragmentManager manager = getFragmentManager();
-//			FragmentTransaction transaction = manager.beginTransaction();
-//			transaction.replace(R.id.content_frame, fragment,"main");
-//			transaction.commit();
+			System.out.println("eventi");
+			fragment = new Fragment_main();
+			FragmentManager manager = getFragmentManager();
+			FragmentTransaction transaction = manager.beginTransaction();
+			transaction.replace(R.id.content_frame, fragment,"main");
+			transaction.commit();
 			
-			if (fragment == null) {
-	            fragment = Fragment.instantiate(this, "Fragment_main");
-	            transaction.replace(android.R.id.content, fragment, "main");
-	        } else {
-	            if (fragment.isDetached()) {
-	            	transaction.attach(fragment);
-	            }
-	        }
+//			if (fragment == null) {
+//	            fragment = new Fragment_main();
+//	            transaction.replace(android.R.id.content, fragment, "main");
+//	        } else {
+//	            if (fragment.isDetached()) {
+//	            	transaction.attach(fragment);
+//	            }
+//	        }
 			
 
 			break;
@@ -196,9 +193,7 @@ public class MainActivity extends Activity implements Communicator {
 			break;
 		case 3:
 			System.out.println("cerca evento");
-			Fragment_Cerca fragment_cerca=new Fragment_Cerca();
-			FragmentManager fragmentManager33 = getFragmentManager();
-			fragmentManager33.beginTransaction().replace(R.id.content_frame, fragment_cerca).commit();
+
 			break;
 		case 4:
 			System.out.println("impostazioni");

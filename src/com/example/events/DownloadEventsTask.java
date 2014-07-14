@@ -60,18 +60,22 @@ public class DownloadEventsTask extends
 	private String city;
 	private Integer offsetQuery;
 	private Integer limitQuery;
+	private AdapterListView adapter;
+	private static Integer start = 0;
 
 	DownloadEventsTask(View view, Communicator comm, ListView l,
-			ProgressDialog dialog, Context context,String city,Integer offsetQuery,Integer limitQuery) {
+			ProgressDialog dialog, Context context, String city,
+			Integer offsetQuery, Integer limitQuery, AdapterListView adapter) {
 		this.view = view;
 		this.comm = comm;
 		this.l = l;
 		this.dialog = dialog;
-		this.context=context;
-		this.city =city;
+		this.context = context;
+		this.city = city;
 		dbHelper = new DbAdapter(context);
-		this.offsetQuery=offsetQuery;
-		this.limitQuery=limitQuery;
+		this.offsetQuery = offsetQuery;
+		this.limitQuery = limitQuery;
+		this.adapter = adapter;
 	}
 
 	@Override
@@ -79,7 +83,11 @@ public class DownloadEventsTask extends
 		// TODO Auto-generated method stub
 		super.onPreExecute();
 		fqlQuery = "select eid,name,description,start_time, pic_big,venue from event where eid in (SELECT eid FROM event WHERE contains(\""
-				+city+ "\")) and start_time > now() order by start_time ASC limit " + Integer.toString(limitQuery) + " offset "+ Integer.toString(offsetQuery); // order by start_time ASC
+				+ city
+				+ "\")) and start_time > now() order by start_time ASC limit "
+				+ Integer.toString(limitQuery)
+				+ " offset "
+				+ Integer.toString(offsetQuery); // order by start_time ASC
 		Log.w("OnPreExecute", fqlQuery);
 		params.putString("q", fqlQuery);
 		session = MainActivity.session;
@@ -112,9 +120,9 @@ public class DownloadEventsTask extends
 									String start_time = o
 											.getString("start_time");
 									String photoURL = o.getString("pic_big");
-									
+
 									//
-									
+
 									EventsHelper f = new EventsHelper();
 									f.setId(id);
 									f.setTitle(title);
@@ -122,20 +130,21 @@ public class DownloadEventsTask extends
 									f.setStart_time(start_time);
 									f.setPhotoURL(photoURL);
 									events.add(f);
-									dbHelper.open();
-									
-									dbHelper.createEvents(id, photoURL, title, description, start_time,
-												"0", "0");
-									dbHelper.close();
+									// dbHelper.open();
+									//
+									// dbHelper.createEvents(id, photoURL,
+									// title,
+									// description, start_time, "0", "0");
+									// dbHelper.close();
 								}
-								
-//
-//								//test impstazione call another events
-//								//
-//								JSONObject jo = json.getJSONObject("paging");
-	//							String nextPage = jo.getString("next");		
-		//d						Log.w("NEXT_PAGE", nextPage);
-								
+
+								//
+								// //test impstazione call another events
+								// //
+								// JSONObject jo = json.getJSONObject("paging");
+								// String nextPage = jo.getString("next");
+								// d Log.w("NEXT_PAGE", nextPage);
+
 							}
 						} catch (JSONException e) {
 							Log.w("Facebook-Example", "JSON Error in response");
@@ -163,10 +172,13 @@ public class DownloadEventsTask extends
 		// for (int i = 0; i < result.size(); i++)
 		// Log.w("Name: ", result.get(i).getTitle());
 		MainActivity.setListEvents(events);
-		events=(ArrayList<EventsHelper>) MainActivity.getListEvents();
-		AdapterListView adapter = new AdapterListView(view.getContext(),events);
+
+		adapter = new AdapterListView(view.getContext(),
+				(ArrayList<EventsHelper>) MainActivity.getListEvents());
 		l.setAdapter(adapter);
-		Fragment_main.flag_loading=false;
+		adapter.notifyDataSetChanged();
+
+		Fragment_main.flag_loading = false;
 		if (dialog.isShowing())
 			dialog.dismiss();
 

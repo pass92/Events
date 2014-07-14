@@ -153,37 +153,45 @@ public class MainActivity extends Activity implements Communicator {
 
 	private void selectItem(int position) {
 		// update the main content by replacing fragments
+		Fragment fragment;
+		fragment = this.getFragmentManager().findFragmentByTag("main");
+		FragmentManager manager = getFragmentManager();
+		FragmentTransaction transaction = manager.beginTransaction();
+		
 		switch (position) {
 		case 0:
-			System.out.println("eventi");
-			// Fragment fragment5 = new Fragment_main();
-			// FragmentManager fragmentManager4 = getFragmentManager();
-			// fragmentManager4.beginTransaction()
-			// .replace(R.id.content_frame, fragment5).commit();
-			Fragment fragment = new Fragment_main();
-			FragmentManager manager = getFragmentManager();
-			FragmentTransaction transaction = manager.beginTransaction();
-			transaction.replace(R.id.content_frame, fragment);
-			transaction.commit();
+//			System.out.println("eventi");
+//			fragment = new Fragment_main();
+//			FragmentManager manager = getFragmentManager();
+//			FragmentTransaction transaction = manager.beginTransaction();
+//			transaction.replace(R.id.content_frame, fragment,"main");
+//			transaction.commit();
+			
+			if (fragment == null) {
+	            fragment = Fragment.instantiate(this, "Fragment_main");
+	            transaction.replace(android.R.id.content, fragment, "main");
+	        } else {
+	            if (fragment.isDetached()) {
+	            	transaction.attach(fragment);
+	            }
+	        }
+			
 
 			break;
 		case 1:
 			System.out.println("i miei eventi");
-			Fragment fragment3 = new Fragment_i_miei_eventi();
+			fragment = new Fragment_i_miei_eventi();
 			FragmentManager fragmentManager = getFragmentManager();
 			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment3).commit();
+					.replace(R.id.content_frame, fragment,"main").commit();
 
 			break;
 		case 2:
 			System.out.println("crea evento");
-			Fragment fragment4 = new Fragment_crea_event();
-			FragmentManager fragmentManager2 = getFragmentManager();// levare e
-																	// mettere
-																	// all
-																	// inizio
+			fragment = new Fragment_crea_event();
+			FragmentManager fragmentManager2 = getFragmentManager();
 			fragmentManager2.beginTransaction()
-					.replace(R.id.content_frame, fragment4).commit();
+					.replace(R.id.content_frame, fragment,"main").commit();
 
 			break;
 		case 3:
@@ -194,15 +202,16 @@ public class MainActivity extends Activity implements Communicator {
 			break;
 		case 4:
 			System.out.println("impostazioni");
-			Fragment fragmentImp = new Fragment_impostazioni();
+			fragment = new Fragment_impostazioni();
 			FragmentManager fragmentManager3 = getFragmentManager();
 			fragmentManager3.beginTransaction()
-					.replace(R.id.content_frame, fragmentImp).commit();
+					.replace(R.id.content_frame, fragment,"main").commit();
 			break;
 		default:
 			Log.w("MainActivity", "dafault");
 			break;
 		}
+
 		Bundle args = new Bundle();
 		args.putInt("position", position);
 
@@ -274,14 +283,6 @@ public class MainActivity extends Activity implements Communicator {
 		Criteria c = new Criteria();
 		provider = lm.getBestProvider(c, false);
 		l = lm.getLastKnownLocation(provider);
-
-
-		// Fragment fragment = new Fragment_main();
-		// FragmentManager manager = getFragmentManager();
-		// FragmentTransaction transaction = manager.beginTransaction();
-		// transaction.add(R.id.content_frame, fragment, "basefragment");
-		// //transaction.addToBackStack(null);
-		// transaction.commit();
 
 		mTitle = mDrawerTitle = getTitle();
 		// mPlanetTitles = getResources().getStringArray(R.array.planets_array);

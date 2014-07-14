@@ -16,7 +16,7 @@ import android.widget.TextView;
 public class AdapterListView extends ArrayAdapter<EventsHelper> {
  
         private final Context context;
-        private final ArrayList<EventsHelper> events;
+        private final List<EventsHelper> events;
  
         public AdapterListView(Context context, ArrayList<EventsHelper> events) {
  
@@ -52,4 +52,9 @@ public class AdapterListView extends ArrayAdapter<EventsHelper> {
             // 5. retrn rowView
             return rowView;
         }
+        public List getListDisplayed() { return this.events; }
+        public void setListEvent(EventsHelper event){
+        	this.events.add(event);
+        }
+        
 }

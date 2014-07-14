@@ -39,19 +39,22 @@ public class Fragment_main extends Fragment {
 	private DbAdapter dbHelper;
 	private Cursor cursor;
 	public static Boolean flag_loading = true;
+	private static boolean start= false;
+	
+	//adapter listView
+	private AdapterListView adapter;
 
 	//Name city where the USER request a Events
 	String city;
 	
 	//offset on query facebook and Limit
 	static Integer offsetQuery=0;
-	Integer limitQuery=5;
+	Integer limitQuery=10;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-
 	}
 
 	@Override
@@ -71,10 +74,11 @@ public class Fragment_main extends Fragment {
 			// get latitude and longitude of the location
 			double lng = MainActivity.l.getLongitude();
 			double lat = MainActivity.l.getLatitude();
-
+			Log.wtf("Lng lat","Long:"+ Double.toString(lng));
+			
 			Context context = view.getContext();
 			int duration = Toast.LENGTH_SHORT;
-
+			
 			Geocoder gcd = new Geocoder(context, Locale.getDefault());
 			List<Address> addresses = null;
 			try {
@@ -91,14 +95,15 @@ public class Fragment_main extends Fragment {
 						+ " " + Double.toString(lat), duration);
 				toast.show();
 			}
-
+		}
 		
 		//print on screen events
-		if (MainActivity.getListEvents().size() == 0) {
+		if (!start) {
+			start=true;
 			dialog = ProgressDialog.show(view.getContext(), "", "Attendi...",
 					false, true);
 			DownloadEventsTask taskEvents = new DownloadEventsTask(view, comm,
-					lv, dialog, view.getContext(),city,offsetQuery,limitQuery);
+					lv, dialog, view.getContext(),city,offsetQuery,limitQuery,adapter);
 			taskEvents.execute();
 		} else {
 			events = MainActivity.getListEvents();
@@ -140,7 +145,7 @@ public class Fragment_main extends Fragment {
 								false, true);
 						offsetQuery += 10;
 						DownloadEventsTask taskEvents = new DownloadEventsTask(view, comm,
-								lv, dialog, view.getContext(),city,offsetQuery,limitQuery);
+								lv, dialog, view.getContext(),city,offsetQuery,limitQuery,adapter);
 						taskEvents.execute();
 					}
 				}
@@ -148,7 +153,7 @@ public class Fragment_main extends Fragment {
 		});
 
 		
-		}
+		
 
 		return view;
 	}

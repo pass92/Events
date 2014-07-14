@@ -37,9 +37,7 @@ public class Fragment_main extends Fragment {
 	private List<EventsHelper> events;
 	private static ProgressDialog dialog;
 
-	// TEST DB istanze
-	private DbAdapter dbHelper;
-	private Cursor cursor;
+	
 	public static Boolean flag_loading = true;
 	private static boolean start= false;
 	
@@ -122,6 +120,7 @@ public class Fragment_main extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
+				
 				MainActivity.setidEvents(position);
 				comm.respond("fragment_event", position);
 			}

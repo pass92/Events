@@ -248,13 +248,13 @@ public class MainActivity extends Activity implements Communicator {
 			transaction.addToBackStack("event_description");
 			transaction.commit();
 		}
-		// if (data.equals("fragment_i_miei_eventi")) {
-		// System.out.println(data);
-		// Fragment fragment3 = new Fragment_i_miei_eventi();
-		// FragmentManager fragmentManager = getFragmentManager();
-		// fragmentManager.beginTransaction()
-		// .replace(R.id.content_frame, fragment3).commit();
-		// }
+		if (data.equals("fragment_eventcerca_descrizione")) {
+		 System.out.println(data);
+		 Fragment fragment3 = new Fragment_eventcerca_descrizione();
+		 FragmentManager fragmentManager = getFragmentManager();
+		 fragmentManager.beginTransaction()
+		 .replace(R.id.content_frame, fragment3).commit();
+	    }
 
 	}
 

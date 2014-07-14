@@ -18,6 +18,7 @@ public class AdapterListViewCercaEvent extends ArrayAdapter<EventsHelper> {
 	        private final ArrayList<EventsHelper> eventsmain;
 	        private final Context context;
 	        private final ArrayList<EventsHelper> events;
+	        private int id;
 	 
 	        public AdapterListViewCercaEvent(Context context, ArrayList<EventsHelper> events) {
 	 
@@ -25,6 +26,7 @@ public class AdapterListViewCercaEvent extends ArrayAdapter<EventsHelper> {
 	            eventsmain=(ArrayList<EventsHelper>) MainActivity.getListEvents();
 	            this.context = context;
 	            this.events = events;
+	            
 	        }
 	 
 	        @Override
@@ -46,12 +48,13 @@ public class AdapterListViewCercaEvent extends ArrayAdapter<EventsHelper> {
 	            // 4. Set the text for textView 
 	            
 	            
-	            titleView.setText(eventsmain.get(position).getTitle());
-	            dataView.setText(eventsmain.get(position).getStart_time());
-	            imageView.setImageBitmap(eventsmain.get(position).getPhoto());
+	            titleView.setText(events.get(position).getTitle());
+	            dataView.setText(events.get(position).getStart_time());
+	            imageView.setImageBitmap(events.get(position).getPhoto());
 	            
 	            // 5. retrn rowView
 	            return rowView;
 	        }
+	        
 	}
 

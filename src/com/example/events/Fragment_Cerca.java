@@ -5,9 +5,11 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import database.DbAdapter;
 import android.app.Fragment;
+import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,10 +24,12 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodSession.EventCallback;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView.OnEditorActionListener;
 
@@ -35,15 +39,23 @@ public class Fragment_Cerca extends Fragment {
 	private DbAdapter dbHelper;
 	private Cursor cursor;
 	private Communicator comm;
+	private int id;
+	private  static List<EventsHelper> eventsmain;
+	private static List<EventsHelper> cercaevents = new ArrayList<EventsHelper>();
 	
+	static List<EventsHelper> getEventcerca(){
+		return cercaevents;
+		
+	}
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle saveInstanceState) {
 	   View view = inflater.inflate(R.layout.fragment_cerca, container, false);
 	   final ListView lv=(ListView)view.findViewById(R.id.listView_cerca);
 	   final TextView tx=(TextView)view.findViewById(R.id.editText_crea_event);
 	   comm = (Communicator) getActivity();
+	   eventsmain=MainActivity.getListEvents();
 	   tx.setOnFocusChangeListener(new OnFocusChangeListener() {
-		   
+	   
 		
 	@Override
 		public void onFocusChange(View v, boolean hasFocus) {
@@ -66,7 +78,9 @@ public class Fragment_Cerca extends Fragment {
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			filter=new String(tx.getText().toString());
-			ArrayList <EventsHelper> events=new ArrayList();	
+			cercaevents=new ArrayList<EventsHelper>();
+			
+		    
 			
 			
 		    dbHelper = new DbAdapter(getActivity().getApplicationContext());
@@ -91,7 +105,19 @@ public class Fragment_Cerca extends Fragment {
 					eventHelper.setTitle(c.getString(2));
 					eventHelper.setStart_time(c.getString(4));
 					//eventHelper.setPhoto();
-					events.add(eventHelper);
+					///test
+					
+				for(int i=0;i<eventsmain.size();i++){
+					System.out.println("id eventsmain: "+eventsmain.get(i).getId()+"== "+c.getString(0));
+					if ((eventsmain.get(i).getId()).equals(c.getString(0))){
+						cercaevents.add(eventsmain.get(i));
+						System.out.println("trovatoooooo");
+					}
+						
+				}
+					
+					////testfine
+				
 					
 					
 					System.out.println("===================Risultato delle query:================ ");
@@ -109,45 +135,35 @@ public class Fragment_Cerca extends Fragment {
 
 				
 				}
-				System.out.println("grandezza lista: "+events.size());
+				System.out.println("grandezza lista: "+cercaevents.size());
 				
 				AdapterListViewCercaEvent adapter = new AdapterListViewCercaEvent(getActivity().getApplicationContext(),
-						(ArrayList<EventsHelper>) events);
+						(ArrayList<EventsHelper>) cercaevents);
+
+								
 				lv.setAdapter(adapter);
 				lv.setOnItemClickListener(new OnItemClickListener() {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
 						MainActivity.setidEvents(position);
-						comm.respond("fragment_event", position);
+						comm.respond("fragment_eventcerca_descrizione", position);
 					}
-				});
-
-                //manca aggiungere photo quindi convertire photoUrL con task asincrono vedi pass
-/*
-	public Bitmap getBitmapFromURL(String imageUrl) {
-		try {
-			URL url = new URL(imageUrl);
-			HttpURLConnection connection = (HttpURLConnection) url
-					.openConnection();
-			connection.setDoInput(true);
-			connection.connect();
-			InputStream input = connection.getInputStream();
-			Bitmap myBitmap = BitmapFactory.decodeStream(input);
-			return myBitmap;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	
-	
-	events.get(i).setPhoto(getBitmapFromURL(URLPhoto));
-	
-	*/
-				
+				});			
 			
+			}
+			else{
+				Context context = getActivity().getApplicationContext();
+				CharSequence text = "Nessun Evento trovato!";
+				int duration = Toast.LENGTH_SHORT;
+				AdapterListViewCercaEvent adapter = new AdapterListViewCercaEvent(getActivity().getApplicationContext(),
+						(ArrayList<EventsHelper>) cercaevents);
+
+								
+				lv.setAdapter(adapter);
+
+				Toast toast = Toast.makeText(context, text, duration);
+				toast.show();
 			}
 			
 			

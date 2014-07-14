@@ -124,18 +124,15 @@ public class DownloadEventsTask extends
 									//
 
 									EventsHelper f = new EventsHelper();
-									f.setId(id);
+                                    f.setId(id);
 									f.setTitle(title);
 									f.setDescription(description);
 									f.setStart_time(start_time);
 									f.setPhotoURL(photoURL);
 									events.add(f);
-									// dbHelper.open();
-									//
-									// dbHelper.createEvents(id, photoURL,
-									// title,
-									// description, start_time, "0", "0");
-									// dbHelper.close();
+									dbHelper.open();
+									dbHelper.createEvents(id, photoURL,title,description, start_time, "0", "0");
+									dbHelper.close();
 								}
 
 								//

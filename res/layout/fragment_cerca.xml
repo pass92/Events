@@ -4,13 +4,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-   
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:text="Inserire parola chiave per la ricerca" />
 
     <EditText
         android:id="@+id/editText_crea_event"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="inserire parola chiave"
+        android:text=""
         android:ems="10" />
 
     <Button

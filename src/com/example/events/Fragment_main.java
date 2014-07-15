@@ -34,7 +34,7 @@ import android.widget.Toast;
 
 public class Fragment_main extends Fragment {
 	Button b1;
-	private List<EventsHelper> events;
+	private List<EventsHelper> events = new ArrayList<EventsHelper>();
 	private static ProgressDialog dialog;
 
 	
@@ -68,6 +68,10 @@ public class Fragment_main extends Fragment {
 		// ViewGroup l=(ViewGroup)view.findViewById(R.id.layoutTest);
 		final ListView lv = (ListView) view.findViewById(R.id.listview_events);
 
+		//set adapter
+		adapter = new AdapterListView(view.getContext(),events);
+		lv.setAdapter(adapter);
+		
 		/*
 		 * Get location from MainActivity
 		 * Print out on a Screen The City
@@ -105,10 +109,10 @@ public class Fragment_main extends Fragment {
 			dialog = ProgressDialog.show(view.getContext(), "", "Attendi...",
 					false, true);
 			DownloadEventsTask taskEvents = new DownloadEventsTask(view, comm,
-					lv, dialog, view.getContext(),city,offsetQuery,limitQuery,adapter);
+					lv, dialog, view.getContext(),city,offsetQuery,limitQuery,adapter,(ArrayList<EventsHelper>) events);
 			taskEvents.execute();
 		} else {
-			events = MainActivity.getListEvents();
+			//events = MainActivity.getListEvents();
 			AdapterListView adapter = new AdapterListView(view.getContext(),
 					(ArrayList<EventsHelper>) events);
 			lv.setAdapter(adapter);
@@ -148,7 +152,7 @@ public class Fragment_main extends Fragment {
 								false, true);
 						offsetQuery += 10;
 						DownloadEventsTask taskEvents = new DownloadEventsTask(view, comm,
-								lv, dialog, view.getContext(),city,offsetQuery,limitQuery,adapter);
+								lv, dialog, view.getContext(),city,offsetQuery,limitQuery,adapter,(ArrayList<EventsHelper>) events);
 						taskEvents.execute();
 					}
 				}

@@ -62,10 +62,11 @@ public class DownloadEventsTask extends
 	private Integer limitQuery;
 	private AdapterListView adapter;
 	private static Integer start = 0;
+	private List<EventsHelper> events;
 
 	DownloadEventsTask(View view, Communicator comm, ListView l,
 			ProgressDialog dialog, Context context, String city,
-			Integer offsetQuery, Integer limitQuery, AdapterListView adapter) {
+			Integer offsetQuery, Integer limitQuery, AdapterListView adapter,List<EventsHelper> events) {
 		this.view = view;
 		this.comm = comm;
 		this.l = l;
@@ -76,6 +77,7 @@ public class DownloadEventsTask extends
 		this.offsetQuery = offsetQuery;
 		this.limitQuery = limitQuery;
 		this.adapter = adapter;
+		this.events = events;
 	}
 
 	@Override
@@ -84,7 +86,7 @@ public class DownloadEventsTask extends
 		super.onPreExecute();
 		fqlQuery = "select eid,name,description,start_time, pic_big,venue from event where eid in (SELECT eid FROM event WHERE contains(\""
 				+ city
-				+ "\")) and start_time > now() order by start_time ASC limit "
+				+ "\") or creator=me()) and start_time > now() order by start_time ASC limit "
 				+ Integer.toString(limitQuery)
 				+ " offset "
 				+ Integer.toString(offsetQuery); // order by start_time ASC
@@ -162,20 +164,15 @@ public class DownloadEventsTask extends
 	}
 
 	@Override
-	protected void onPostExecute(ArrayList<EventsHelper> events) {
+	protected void onPostExecute(ArrayList<EventsHelper> result) {
 		// TODO Auto-generated method stub
-		super.onPostExecute(events);
+		super.onPostExecute(result);
 		Log.w("Async Task", "on post excute");
-		// for (int i = 0; i < result.size(); i++)
-		// Log.w("Name: ", result.get(i).getTitle());
-		
-		//da scommentare
-		MainActivity.setListEvents(events);
 
-		adapter = new AdapterListView(view.getContext(),
-				(ArrayList<EventsHelper>) MainActivity.getListEvents());
-		l.setAdapter(adapter);
-		adapter.notifyDataSetChanged();
+		for (int i = 0; i < result.size(); i++) {
+			events.add(result.get(i));
+	        adapter.notifyDataSetChanged();
+		}
 
 		Fragment_main.flag_loading = false;
 		if (dialog.isShowing())

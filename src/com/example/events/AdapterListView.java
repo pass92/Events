@@ -18,10 +18,10 @@ public class AdapterListView extends ArrayAdapter<EventsHelper> {
         private final Context context;
         private final List<EventsHelper> events;
  
-        public AdapterListView(Context context, ArrayList<EventsHelper> events) {
+        public AdapterListView(Context context, List<EventsHelper> events) {
  
             super(context, R.layout.row,events);
- 
+
             this.context = context;
             this.events = events;
         }

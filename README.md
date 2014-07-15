@@ -19,15 +19,13 @@ DA FARE
 ====
 -chiamata doppia metodo onCreate() in MainActivity
 
--gestione scroll events impedire di aggionare tutta la lista
-
--fragment_event aggiungere i fragment al suo interno per visualizzare i partecipanti a quell'evento
+-get venue(latutude,longitude) from events for each event
 
 -fragment_event gestire con query facebook partecipa all'evento selezionato
 
 -fragment_event gestione mappa
 
--get venue(latutude,longitude) from events for each event
+-sistemazioni layout
 
 -gestione filtro con distanza dalla propria posizione!
 

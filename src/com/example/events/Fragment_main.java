@@ -1,6 +1,7 @@
 package com.example.events;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ import android.widget.Toast;
 
 public class Fragment_main extends Fragment {
 	Button b1;
-	private List<EventsHelper> events = new ArrayList<EventsHelper>();
+	private static List<EventsHelper> events = new ArrayList<EventsHelper>();
 	private static ProgressDialog dialog;
 
 	
@@ -104,7 +105,7 @@ public class Fragment_main extends Fragment {
 		}
 		
 		//print on screen events
-		if (!start) {
+		if (events.size()==0) {
 			start=true;
 			dialog = ProgressDialog.show(view.getContext(), "", "Attendi...",
 					false, true);
@@ -159,11 +160,9 @@ public class Fragment_main extends Fragment {
 			}
 		});
 
-		
-		
-
 		return view;
 	}
+
 }
 /*
  * Bitmap contact_pic; //a picture to show in drawable Drawable drawable=new

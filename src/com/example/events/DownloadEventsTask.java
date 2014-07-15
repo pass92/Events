@@ -173,7 +173,7 @@ public class DownloadEventsTask extends
 			events.add(result.get(i));
 	        adapter.notifyDataSetChanged();
 		}
-
+		MainActivity.setListEvents(result);
 		Fragment_main.flag_loading = false;
 		if (dialog.isShowing())
 			dialog.dismiss();

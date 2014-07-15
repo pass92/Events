@@ -10,11 +10,12 @@ public class EventsHelper {
 	private String description;
 	private String photoURL;
 	private Bitmap photo;
-	private String location;
 	private GeoPoint point;
 	private String start_time;
 	private String end_time;
 	private String rsvp_status;
+	private Double latitude;
+	private Double longitude;
 	
 	public String getRsvp_status() {
 		return rsvp_status;
@@ -46,12 +47,6 @@ public class EventsHelper {
 	public void setPhoto(Bitmap photo) {
 		this.photo = photo;
 	}
-	public String getLocation() {
-		return location;
-	}
-	public void setLocation(String location) {
-		this.location = location;
-	}
 	public GeoPoint getPoint() {
 		return point;
 	}
@@ -75,6 +70,18 @@ public class EventsHelper {
 	}
 	public void setPhotoURL(String photoURL) {
 		this.photoURL = photoURL;
+	}
+	public Double getLatitude() {
+		return latitude;
+	}
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
+	}
+	public Double getLongitude() {
+		return longitude;
+	}
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
 	}
 	
 	

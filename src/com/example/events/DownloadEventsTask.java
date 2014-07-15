@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Response;
+import com.google.android.maps.GeoPoint;
 
 import database.DbAdapter;
 import android.app.Fragment;
@@ -123,15 +124,20 @@ public class DownloadEventsTask extends
 											.getString("start_time");
 									String photoURL = o.getString("pic_big");
 
-									//
-
+									JSONObject venue = o.getJSONObject("venue");
+									Double latitude = venue.getDouble("latitude");
+									Double longitude = venue.getDouble("longitude");
+									
 									EventsHelper f = new EventsHelper();
                                     f.setId(id);
 									f.setTitle(title);
 									f.setDescription(description);
 									f.setStart_time(start_time);
 									f.setPhotoURL(photoURL);
+									f.setLatitude(latitude);
+									f.setLongitude(longitude);
 									events.add(f);
+									
 									dbHelper.open();
 									dbHelper.createEvents(id, photoURL,title,description, start_time, "0", "0");
 									dbHelper.close();

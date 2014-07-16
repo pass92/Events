@@ -52,12 +52,18 @@ public class LogActivity extends Activity {
             }
             Session.setActiveSession(session);
             if (session.getState().equals(SessionState.CREATED_TOKEN_LOADED)) {
-                session.openForRead(new Session.OpenRequest(this).setPermissions(Arrays.asList("public_profile","user_likes", "user_status","user_events")).setCallback(statusCallback));
+                session.openForRead(new Session.OpenRequest(this).setPermissions(Arrays.asList("public_profile","user_likes", "user_status","user_events","user_website")).setCallback(statusCallback));
             }
+            
+            buttonLogin.setOnClickListener(new OnClickListener() {
+                public void onClick(View view) { onClickLogin(); }
+            });
         }
-
+        else{
+        //commentata per evitare le chiamate doppie!!
         updateView();
-    }
+        }
+	}
 
     @Override
     public void onStart() {
@@ -90,6 +96,7 @@ public class LogActivity extends Activity {
         	intent.putExtra("session", session);
         	//intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         	startActivity(intent);
+        	finish();
         } else {
             buttonLogin.setOnClickListener(new OnClickListener() {
                 public void onClick(View view) { onClickLogin(); }

@@ -1,7 +1,13 @@
 package com.example.events;
 
+import java.io.IOException;
+import java.io.Serializable;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import database.DbAdapter;
 import android.app.Fragment;
@@ -12,12 +18,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -28,22 +37,31 @@ import android.widget.Toast;
 
 public class Fragment_main extends Fragment {
 	Button b1;
-	private static List<EventsHelper> events;
-	private ProgressDialog dialog;
+	private static List<EventsHelper> events = new ArrayList<EventsHelper>();
+	private static ProgressDialog dialog;
 
-	// TEST DB istanze
-	private DbAdapter dbHelper;
-	private Cursor cursor;
-	private  Boolean flag_loading= false;
-	//
+	
+	public static Boolean flag_loading = true;
+	private static boolean start= false;
+	
+	//adapter listView
+	private AdapterListView adapter;
 
+	//Name city where the USER request a Events
+	String city="";
+	
+	//offset on query facebook and Limit
+	static Integer offsetQuery=0;
+	Integer limitQuery=10;
+
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-
 	}
 
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle saveInstanceState) {
@@ -51,16 +69,88 @@ public class Fragment_main extends Fragment {
 		final Communicator comm;
 		comm = (Communicator) getActivity();
 		// ViewGroup l=(ViewGroup)view.findViewById(R.id.layoutTest);
-		ListView lv = (ListView) view.findViewById(R.id.listview_events);
+		final ListView lv = (ListView) view.findViewById(R.id.listview_events);
 
-		if (MainActivity.getListEvents().size() == 0) {
+		//set adapter
+		adapter = new AdapterListView(view.getContext(),events);
+		lv.setAdapter(adapter);
+		
+		/*
+		 * Get location from MainActivity
+		 * Print out on a Screen The City
+		 */
+		//if (MainActivity.currentBestLocation != null) {
+			// get latitude and longitude of the location
+//			double lng = MainActivity.currentBestLocation.getLongitude();
+//			double lat = MainActivity.currentBestLocation.getLatitude();
+//			Log.wtf("Lng lat","Long:"+ Double.toString(lng));
+//			
+//			Context context = view.getContext();
+//			int duration = Toast.LENGTH_SHORT;
+//			
+//			Geocoder gcd = new Geocoder(context, Locale.getDefault());
+//			List<Address> addresses = null;
+//			try {
+//				addresses = gcd.getFromLocation(lat, lng, 1);
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+			
+//			if (addresses.size() > 0) {
+//				city = addresses.get(0).getLocality();
+//				Toast toast = Toast.makeText(context, "City:["
+//						+ city +"]"+ Double.toString(lng)
+//						+ " " + Double.toString(lat), duration);
+//				toast.show();
+//			}
+		//}
+		double latitude = 0;
+		double longitude = 0;
+			GPSTracker gps = gps = new GPSTracker(view.getContext());
+			if(gps.canGetLocation()){
+                
+                latitude = gps.getLatitude();
+                longitude = gps.getLongitude();
+                 
+                // \n is for new line
+                //Toast.makeText(view.getContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();    
+            }else{
+                // can't get location
+                // GPS or Network is not enabled
+                // Ask user to enable GPS/network in settings
+                gps.showSettingsAlert();
+            }
+		
+			Geocoder geocoder;
+			List<Address> addresses=null;
+			geocoder = new Geocoder(view.getContext(), Locale.getDefault());
+			try {
+				addresses = geocoder.getFromLocation(latitude, longitude, 1);
+				//Toast.makeText(view.getContext(),"Your Location is - \nLat: " + latitude + "\nLong: " + longitude +"\n"+ addresses.get(0).getAddressLine(1) , Toast.LENGTH_LONG).show();    
+				String Str = addresses.get(0).getAddressLine(1);
+
+				String[] Res = Str.split("[\\p{Punct}\\s]+");
+				Toast.makeText(view.getContext(), "["+Res[1]+"]" , Toast.LENGTH_LONG).show();
+				city=Res[1];
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+		
+		//print on screen events
+		if (events.size()==0) {
+			start=true;
 			dialog = ProgressDialog.show(view.getContext(), "", "Attendi...",
 					false, true);
 			DownloadEventsTask taskEvents = new DownloadEventsTask(view, comm,
-					lv, dialog);
+					lv, dialog, view.getContext(),city,offsetQuery,limitQuery,adapter,(ArrayList<EventsHelper>) events);
 			taskEvents.execute();
 		} else {
-			events = MainActivity.getListEvents();
+			//events = MainActivity.getListEvents();
 			AdapterListView adapter = new AdapterListView(view.getContext(),
 					(ArrayList<EventsHelper>) events);
 			lv.setAdapter(adapter);
@@ -72,6 +162,7 @@ public class Fragment_main extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
+				
 				MainActivity.setidEvents(position);
 				comm.respond("fragment_event", position);
 			}
@@ -90,21 +181,25 @@ public class Fragment_main extends Fragment {
 				// TODO Auto-generated method stub
 				final int lastItem = firstVisibleItem + visibleItemCount;
 				if (lastItem == totalItemCount) {
-					Log.w("ListView", "End");
-					if(flag_loading == false)
-	                {
-	                    flag_loading = true;
-	                    //additems();
-//	                    DownloadEventsTask taskEvents = new DownloadEventsTask(view, comm,
-//	        					lv, dialog);
-//	        			taskEvents.execute();
-	                }
+					
+					if (flag_loading == false) {
+						Log.w("ListView", "End");
+						flag_loading = true;
+
+						dialog = ProgressDialog.show(view.getContext(), "", "Attendi...",
+								false, true);
+						offsetQuery += 10;
+						DownloadEventsTask taskEvents = new DownloadEventsTask(view, comm,
+								lv, dialog, view.getContext(),city,offsetQuery,limitQuery,adapter,(ArrayList<EventsHelper>) events);
+						taskEvents.execute();
+					}
 				}
 			}
 		});
 
 		return view;
 	}
+
 }
 /*
  * Bitmap contact_pic; //a picture to show in drawable Drawable drawable=new

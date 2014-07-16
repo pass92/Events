@@ -44,9 +44,6 @@ public class Fragment_impostazioni extends Fragment implements NoticeDialogLIste
 			}
 		
 
-
-
-
 		S.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			Integer progressChanged = 0;
 

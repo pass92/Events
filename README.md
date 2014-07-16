@@ -5,30 +5,32 @@ Developers
 ======
 
 Luca Passerini - 
-Mattia Chenet - 
-Kristian Segnana
-
+Kristian Segnana -
+Mattia Chenet
 
 Link Utili
 =========
 
 https://developers.facebook.com/docs/android/app-events/
 
-http://itunes.apple.com/app/yoogoin-events/id593275592?ign-mpt=uo%3D6&mt=8
-
 
 DA FARE
 ====
--capire bene come funzionano le api di facebook
 
--e inizialmente stampare le info personali 
+-get venue(latutude,longitude) from events for each event
 
--interagire con il graphObject che mi ritorna il taskasyncrono
+-fragment_event gestire con query facebook partecipa all'evento selezionato
 
-SUCCESSIVAMENTE
+-fragment_event gestione mappa
 
--request eventi ed inseririrli in una listView
+-sistemazioni layout
 
--aggiungere fragment impostazioni
+-gestione filtro con distanza dalla propria posizione!
 
-C'E' UN MACELLO DI ROBA DA FARE.... HAHHHA :P
+-gestione filtri in base alle preferenze!
+
+
+
+-Video
+
+-compilazione carte applicazione

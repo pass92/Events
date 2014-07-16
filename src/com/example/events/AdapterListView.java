@@ -16,12 +16,17 @@ import android.widget.TextView;
 public class AdapterListView extends ArrayAdapter<EventsHelper> {
  
         private final Context context;
-        private final ArrayList<EventsHelper> events;
- 
-        public AdapterListView(Context context, ArrayList<EventsHelper> events) {
+        private final List<EventsHelper> events;
+        private String year;
+        private String day;
+        private String month;
+        private String hour;
+        private String time;
+        
+        public AdapterListView(Context context, List<EventsHelper> events) {
  
             super(context, R.layout.row,events);
- 
+
             this.context = context;
             this.events = events;
         }
@@ -46,10 +51,27 @@ public class AdapterListView extends ArrayAdapter<EventsHelper> {
             BitmapDrawable bdrawable = new BitmapDrawable(events.get(position).getPhoto());
             imageView.setBackgroundDrawable(bdrawable);
             
+            time=new String(events.get(position).getStart_time());
+            year=new String(time.substring(0, 4));
+            month=new String(time.substring(5,7));
+            day=new String(time.substring(8, 10));
+            if(time.length()>=16){
+            	hour=new String(time.substring(11, 16));
+            }
+            else{
+            	hour=new String("null");
+            }
+            time=new String(day+"/"+month+"/"+year+" alle "+hour);
+            
             titleView.setText(events.get(position).getTitle());
-            dataView.setText(events.get(position).getStart_time());
+            dataView.setText(time);
             
             // 5. retrn rowView
             return rowView;
         }
+        public List getListDisplayed() { return this.events; }
+        public void setListEvent(EventsHelper event){
+        	this.events.add(event);
+        }
+        
 }

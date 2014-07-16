@@ -26,10 +26,15 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -47,7 +52,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 @SuppressLint("NewApi")
-public class MainActivity extends Activity implements Communicator {
+public class MainActivity extends FragmentActivity implements Communicator {
 
 	private static final String TAG = "MainActivity";
 	private DrawerLayout mDrawerLayout;
@@ -56,7 +61,7 @@ public class MainActivity extends Activity implements Communicator {
 
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
-	private String[] mPlanetTitles = { "Eventi", "I miei Eventi",
+	private String[] mPlanetTitles = { "Events", "I miei Eventi",
 			"Crea Evento", "Cerca Evento", "Impostazioni" };
 
 	// sessione passata dopo il Login
@@ -66,6 +71,13 @@ public class MainActivity extends Activity implements Communicator {
 	private static List<EventsHelper> events = new ArrayList<EventsHelper>();
 	// id da recuperare nel fragment_event
 	private static int id;
+
+	// location manager e variabili
+	public static Location currentBestLocation = null;
+
+	LocationManager lm;
+	String provider;
+	private Object isGPSEnabled;
 
 	static int getidEvents() {
 		return id;
@@ -80,13 +92,14 @@ public class MainActivity extends Activity implements Communicator {
 	}
 
 	public static void setListEvents(List<EventsHelper> listEvents) {
-		events = listEvents;
+		events.addAll(listEvents);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
+
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -96,7 +109,7 @@ public class MainActivity extends Activity implements Communicator {
 		// If the nav drawer is open, hide action items related to the content
 		// view
 		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-		//menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
+		// menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -110,19 +123,19 @@ public class MainActivity extends Activity implements Communicator {
 		}
 		// Handle action buttons
 		switch (item.getItemId()) {
-		//commentoto per futuro utilizzo dell'action 
-//		case R.id.action_websearch:
-//			// create intent to perform web search for this planet
-//			Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-//			intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
-//			// catch event that there's no activity to handle intent
-//			if (intent.resolveActivity(getPackageManager()) != null) {
-//				startActivity(intent);
-//			} else {
-//				Toast.makeText(this, R.string.app_not_available,
-//						Toast.LENGTH_LONG).show();
-//			}
-//			return true;
+		// commentoto per futuro utilizzo dell'action
+		// case R.id.action_websearch:
+		// // create intent to perform web search for this planet
+		// Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+		// intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
+		// // catch event that there's no activity to handle intent
+		// if (intent.resolveActivity(getPackageManager()) != null) {
+		// startActivity(intent);
+		// } else {
+		// Toast.makeText(this, R.string.app_not_available,
+		// Toast.LENGTH_LONG).show();
+		// }
+		// return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -140,54 +153,59 @@ public class MainActivity extends Activity implements Communicator {
 
 	private void selectItem(int position) {
 		// update the main content by replacing fragments
+		Fragment fragment;
+		fragment = getFragmentManager().findFragmentById(R.id.content_frame);
+		// FragmentManager manager = getFragmentManager();
+		// FragmentTransaction transaction = manager.beginTransaction();
+
 		switch (position) {
 		case 0:
 			System.out.println("eventi");
-//			Fragment fragment5 = new Fragment_main();
-//			FragmentManager fragmentManager4 = getFragmentManager();
-//			fragmentManager4.beginTransaction()
-//					.replace(R.id.content_frame, fragment5).commit();
-			Fragment fragment = new Fragment_main();
+
+			// if (fragment == null) {
+			fragment = new Fragment_main();
 			FragmentManager manager = getFragmentManager();
 			FragmentTransaction transaction = manager.beginTransaction();
-			transaction.replace(R.id.content_frame, fragment);
+			transaction.replace(R.id.content_frame, fragment, "main");
 			transaction.commit();
-
+			// }
 			break;
 		case 1:
 			System.out.println("i miei eventi");
-			Fragment fragment3 = new Fragment_i_miei_eventi();
+			fragment = new Fragment_i_miei_eventi();
 			FragmentManager fragmentManager = getFragmentManager();
 			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment3).commit();
+					.replace(R.id.content_frame, fragment).commit();
 
 			break;
 		case 2:
 			System.out.println("crea evento");
-			Fragment fragment4 = new Fragment_crea_event();
-			FragmentManager fragmentManager2 = getFragmentManager();// levare e
-																	// mettere
-																	// all
-																	// inizio
+			fragment = new Fragment_crea_event();
+			FragmentManager fragmentManager2 = getFragmentManager();
 			fragmentManager2.beginTransaction()
-					.replace(R.id.content_frame, fragment4).commit();
+					.replace(R.id.content_frame, fragment).commit();
 
 			break;
 		case 3:
 			System.out.println("cerca evento");
+			fragment = new Fragment_cerca();
+			FragmentManager fragmentManager33 = getFragmentManager();
+			fragmentManager33.beginTransaction()
+					.replace(R.id.content_frame, fragment).commit();
 
 			break;
 		case 4:
 			System.out.println("impostazioni");
-			Fragment fragmentImp = new Fragment_impostazioni();
+			fragment = new Fragment_impostazioni();
 			FragmentManager fragmentManager3 = getFragmentManager();
 			fragmentManager3.beginTransaction()
-					.replace(R.id.content_frame, fragmentImp).commit();
+					.replace(R.id.content_frame, fragment).commit();
 			break;
 		default:
 			Log.w("MainActivity", "dafault");
 			break;
 		}
+
 		Bundle args = new Bundle();
 		args.putInt("position", position);
 
@@ -235,13 +253,13 @@ public class MainActivity extends Activity implements Communicator {
 			transaction.addToBackStack("event_description");
 			transaction.commit();
 		}
-//		if (data.equals("fragment_i_miei_eventi")) {
-//			System.out.println(data);
-//			Fragment fragment3 = new Fragment_i_miei_eventi();
-//			FragmentManager fragmentManager = getFragmentManager();
-//			fragmentManager.beginTransaction()
-//					.replace(R.id.content_frame, fragment3).commit();
-//		}
+		if (data.equals("fragment_eventcerca_descrizione")) {
+			System.out.println(data);
+			Fragment fragment3 = new Fragment_cerca_event();
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.beginTransaction()
+					.replace(R.id.content_frame, fragment3).commit();
+		}
 
 	}
 
@@ -255,14 +273,16 @@ public class MainActivity extends Activity implements Communicator {
 		Intent intent = getIntent();
 		session = (Session) intent.getSerializableExtra("session");
 
-		Fragment fragment = new Fragment_main();
-		FragmentManager manager = getFragmentManager();
-		FragmentTransaction transaction = manager.beginTransaction();
-		transaction.add(R.id.content_frame, fragment, "basefragment");
-		//transaction.addToBackStack(null);
-		transaction.commit();
+		// get location
+		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		Criteria c = new Criteria();
+		provider = lm.getBestProvider(c, false);
+		currentBestLocation = lm.getLastKnownLocation(provider);
 
-
+		// if (!enabled) {
+		// Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+		// startActivity(intent);
+		// }
 
 		mTitle = mDrawerTitle = getTitle();
 		// mPlanetTitles = getResources().getStringArray(R.array.planets_array);
@@ -309,4 +329,25 @@ public class MainActivity extends Activity implements Communicator {
 		}
 	}
 
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		outState.putBoolean("justCall", true);
+		super.onSaveInstanceState(outState);
+
 	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+	}
+
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+	}
+
+	
+
+}

@@ -14,3 +14,5 @@ SELECT name, pic_cover,start_time, end_time, location, description,venue FROM ev
 select eid,name,description,start_time,venue from event where eid in (SELECT eid FROM event WHERE contains("{Trento}") or contains("{Rovereto}")) or contains("{Mori}") and start_time > now() order by start_time ASC
 
 //ottengo la mia posizione con latitudine e longitudine e ottengo vari paesi attorno a me!
+
+search?q=trento&type=event&after=today&fields=id,name,location,venue,cover,start_time

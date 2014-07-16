@@ -12,17 +12,7 @@ public class DbAdapter {
 	private Context context;
 	private SQLiteDatabase database;
 	private DbHelper dbHelper;
-	// Database fields
-	//public static final String TABLE_EVENTS = "Events";
-	//public static final String COLUMN_ID = "id";
-	//public static final String COLUMN_IMAGE = "image";
 	
-	//public static final String COLUMN_TITLE = "title";
-	//public static final String COLUMN_DESCRIPTION = "description";
-	//public static final String COLUMN_START_TIME = "startTime";
-	//public static final String COLUMN_END_TIME = "endTime";
-	//public static final String COLUMN_LOCATION = "location";
-
 	public DbAdapter(Context context) {
 	    this.context = context;
 	  }

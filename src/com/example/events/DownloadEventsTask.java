@@ -88,7 +88,7 @@ public class DownloadEventsTask extends
 		super.onPreExecute();
 		fqlQuery = "select eid,name,description,start_time, pic_big,venue from event where eid in (SELECT eid FROM event WHERE contains(\""
 				+ city
-				+ "\") ) and start_time > now() order by start_time ASC limit "
+				+ "\") or contains(\""+"Italy"+"\") ) and start_time > now() order by start_time ASC limit "
 				+ Integer.toString(limitQuery)
 				+ " offset "
 				+ Integer.toString(offsetQuery); // order by start_time ASC

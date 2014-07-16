@@ -11,22 +11,23 @@
         android:background="@drawable/festa"/>
 
      <Button
-        android:id="@+id/button_map_event"
-        android:layout_width="318dp"
-        android:layout_height="63dp"
-        android:background="@drawable/maps"
-        android:text="" />
+         android:id="@+id/button_map_event"
+         android:paddingTop="10dp"
+         android:layout_width="match_parent"
+         android:layout_height="63dp"
+         android:background="@drawable/mappa"
+         android:text="" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="33dp"
-        android:background="#000000" >
+        android:layout_height="40dp"
+        android:background="#2a2a2a" >
 
         <Button
             android:id="@+id/button_description_event"
-            android:layout_width="wrap_content"
+            android:layout_width="115dp"
             android:layout_height="wrap_content"
-            android:text="DESCRIPTION"/>
+            android:text="DESCRIPTION" />
 
         <Button
             android:id="@+id/button_partecipa_event"
@@ -37,7 +38,7 @@
 
         <Button
             android:id="@+id/button_partecipant_event"
-            android:layout_width="wrap_content"
+            android:layout_width="115dp"
             android:layout_height="wrap_content"
             android:text="PARTECIPANTI" />
     </LinearLayout>
@@ -53,6 +54,7 @@
 -->
     <FrameLayout
         android:id="@+id/content_frame2"
+        android:background="#000000"
         android:layout_width="match_parent"
         android:layout_height="match_parent" /> 
     

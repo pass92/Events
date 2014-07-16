@@ -8,6 +8,7 @@
         android:id="@+id/textView1"
         android:layout_width="match_parent"
         android:layout_height="36dp"
+        android:textColor="@android:color/white"
         android:text="Inserire parola chiave per la ricerca" />
 
     <EditText
@@ -15,6 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text=""
+        android:cursorVisible="true"
+        android:textColor="@android:color/white"
         android:ems="10" />
 
     <Button

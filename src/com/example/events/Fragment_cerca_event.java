@@ -33,7 +33,7 @@ public class Fragment_cerca_event extends Fragment{
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		events=Fragment_Cerca.getEventcerca();
+		events=Fragment_cerca.getEventcerca();
 		
 		
 	}
@@ -42,7 +42,7 @@ public class Fragment_cerca_event extends Fragment{
 		Log.w("Fragment_event", "On Create View");
 		View view = inflater.inflate(R.layout.fragment_event, container, false);
 		
-		Fragment fragment=new Fragment_descritpion();
+		Fragment fragment=new Fragment_cerca_event_descrizione();
 		FragmentManager manager = getFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.add(R.id.content_frame2, fragment, "descriptionfragment");
@@ -83,7 +83,7 @@ public class Fragment_cerca_event extends Fragment{
 				// TODO Auto-generated method stub
 				FragmentManager manager = getFragmentManager();
 				FragmentTransaction transaction = manager.beginTransaction();
-				Fragment_descritpion fragment = new Fragment_descritpion();
+				Fragment fragment = new Fragment_cerca_event_descrizione();
 				transaction.replace(R.id.content_frame2, fragment,
 						"description_event");
 				transaction.commit();

@@ -5,10 +5,10 @@
 
     <ImageView
         android:id="@+id/image_view_event"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_alignParentLeft="true"
-        android:paddingLeft="5dp" >
+      >
     </ImageView>
 
     <TextView
@@ -16,6 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/image_view_event"
+        android:textColor="@android:color/white"
         android:paddingLeft="5dp"
         android:textSize="12sp" >
     </TextView>
@@ -26,6 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/image_view_event"
         android:layout_below="@+id/title_event"
+        android:textColor="@android:color/white"
         android:paddingLeft="5dp"
         android:textSize="12sp" /> 
 

@@ -33,7 +33,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView.OnEditorActionListener;
 
-public class Fragment_Cerca extends Fragment {
+public class Fragment_cerca extends Fragment {
 	
 	private String filter;
 	private DbAdapter dbHelper;
@@ -146,6 +146,7 @@ public class Fragment_Cerca extends Fragment {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
+						System.out.println("there: "+position);
 						MainActivity.setidEvents(position);
 						comm.respond("fragment_eventcerca_descrizione", position);
 					}

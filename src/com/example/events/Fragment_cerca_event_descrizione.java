@@ -3,7 +3,7 @@ package com.example.events;
 	import java.util.List;
 
 	import com.example.events.EventsHelper;
-	import com.example.events.Fragment_Cerca;
+	import com.example.events.Fragment_cerca;
 	import com.example.events.MainActivity;
 	import com.example.events.R;
 
@@ -22,8 +22,8 @@ package com.example.events;
 		@Override 
 		 public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle saveInstanceState){
 		 View view= inflater.inflate(R.layout.fragment_description,container,false);
-		 events=Fragment_Cerca.getEventcerca();
-			
+		 events=Fragment_cerca.getEventcerca();
+			System.out.println("here: "+MainActivity.getidEvents());
 		 TextView tx=(TextView)view.findViewById(R.id.textView_eventdescription);
 			tx.setText(events.get(MainActivity.getidEvents()).getDescription());
 			

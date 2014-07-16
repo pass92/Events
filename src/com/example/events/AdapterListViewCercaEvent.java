@@ -19,6 +19,11 @@ public class AdapterListViewCercaEvent extends ArrayAdapter<EventsHelper> {
 	        private final Context context;
 	        private final ArrayList<EventsHelper> events;
 	        private int id;
+	        private String year;
+	        private String day;
+	        private String month;
+	        private String hour;
+	        private String time;
 	 
 	        public AdapterListViewCercaEvent(Context context, ArrayList<EventsHelper> events) {
 	 
@@ -46,10 +51,21 @@ public class AdapterListViewCercaEvent extends ArrayAdapter<EventsHelper> {
 	            
 	            //List<EventsHelper> events = MainActivity.getListEvents();
 	            // 4. Set the text for textView 
+	            time=new String(events.get(position).getStart_time());
+	            year=new String(time.substring(0, 4));
+	            month=new String(time.substring(5,7));
+	            day=new String(time.substring(8, 10));
+	            if(time.length()>=16){
+	            	hour=new String(time.substring(11, 16));
+	            }
+	            else{
+	            	hour=new String("null");
+	            }
+	            time=new String(day+"/"+month+"/"+year+" alle "+hour);
 	            
 	            
 	            titleView.setText(events.get(position).getTitle());
-	            dataView.setText(events.get(position).getStart_time());
+	            dataView.setText(time);
 	            imageView.setImageBitmap(events.get(position).getPhoto());
 	            
 	            // 5. retrn rowView

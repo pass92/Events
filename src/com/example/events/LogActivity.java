@@ -55,13 +55,15 @@ public class LogActivity extends Activity {
                 session.openForRead(new Session.OpenRequest(this).setPermissions(Arrays.asList("public_profile","user_likes", "user_status","user_events")).setCallback(statusCallback));
             }
             
-            updateView();
+            buttonLogin.setOnClickListener(new OnClickListener() {
+                public void onClick(View view) { onClickLogin(); }
+            });
         }
         else{
         //commentata per evitare le chiamate doppie!!
         updateView();
         }
-    }
+	}
 
     @Override
     public void onStart() {

@@ -5,9 +5,8 @@ Developers
 ======
 
 Luca Passerini - 
-Mattia Chenet - 
-Kristian Segnana
-
+Kristian Segnana -
+Mattia Chenet
 
 Link Utili
 =========
@@ -17,7 +16,6 @@ https://developers.facebook.com/docs/android/app-events/
 
 DA FARE
 ====
--chiamata doppia metodo onCreate() in MainActivity
 
 -get venue(latutude,longitude) from events for each event
 

@@ -61,7 +61,7 @@ public class MainActivity extends FragmentActivity implements Communicator {
 
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
-	private String[] mPlanetTitles = { "Eventi", "I miei Eventi",
+	private String[] mPlanetTitles = { "Events", "I miei Eventi",
 			"Crea Evento", "Cerca Evento", "Impostazioni" };
 
 	// sessione passata dopo il Login

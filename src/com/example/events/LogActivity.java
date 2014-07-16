@@ -52,7 +52,7 @@ public class LogActivity extends Activity {
             }
             Session.setActiveSession(session);
             if (session.getState().equals(SessionState.CREATED_TOKEN_LOADED)) {
-                session.openForRead(new Session.OpenRequest(this).setPermissions(Arrays.asList("public_profile","user_likes", "user_status","user_events")).setCallback(statusCallback));
+                session.openForRead(new Session.OpenRequest(this).setPermissions(Arrays.asList("public_profile","user_likes", "user_status","user_events","user_website")).setCallback(statusCallback));
             }
             
             buttonLogin.setOnClickListener(new OnClickListener() {

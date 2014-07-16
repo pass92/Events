@@ -34,6 +34,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -51,7 +52,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 @SuppressLint("NewApi")
-public class MainActivity extends Activity implements Communicator {
+public class MainActivity extends FragmentActivity implements Communicator {
 
 	private static final String TAG = "MainActivity";
 	private DrawerLayout mDrawerLayout;
@@ -72,9 +73,11 @@ public class MainActivity extends Activity implements Communicator {
 	private static int id;
 
 	// location manager e variabili
+	public static Location currentBestLocation = null;
+
 	LocationManager lm;
 	String provider;
-	static Location l;
+	private Object isGPSEnabled;
 
 	static int getidEvents() {
 		return id;
@@ -151,7 +154,7 @@ public class MainActivity extends Activity implements Communicator {
 	private void selectItem(int position) {
 		// update the main content by replacing fragments
 		Fragment fragment;
-		fragment = getFragmentManager().findFragmentByTag("main");
+		fragment = getFragmentManager().findFragmentById(R.id.content_frame);
 		// FragmentManager manager = getFragmentManager();
 		// FragmentTransaction transaction = manager.beginTransaction();
 
@@ -159,13 +162,13 @@ public class MainActivity extends Activity implements Communicator {
 		case 0:
 			System.out.println("eventi");
 
-			if (fragment == null) {
-				fragment = new Fragment_main();
-				FragmentManager manager = getFragmentManager();
-				FragmentTransaction transaction = manager.beginTransaction();
-				transaction.replace(R.id.content_frame, fragment, "main");
-				transaction.commit();
-			}
+			// if (fragment == null) {
+			fragment = new Fragment_main();
+			FragmentManager manager = getFragmentManager();
+			FragmentTransaction transaction = manager.beginTransaction();
+			transaction.replace(R.id.content_frame, fragment, "main");
+			transaction.commit();
+			// }
 			break;
 		case 1:
 			System.out.println("i miei eventi");
@@ -270,10 +273,16 @@ public class MainActivity extends Activity implements Communicator {
 		Intent intent = getIntent();
 		session = (Session) intent.getSerializableExtra("session");
 
-		lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		// get location
+		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		Criteria c = new Criteria();
 		provider = lm.getBestProvider(c, false);
-		l = lm.getLastKnownLocation(provider);
+		currentBestLocation = lm.getLastKnownLocation(provider);
+
+		// if (!enabled) {
+		// Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+		// startActivity(intent);
+		// }
 
 		mTitle = mDrawerTitle = getTitle();
 		// mPlanetTitles = getResources().getStringArray(R.array.planets_array);
@@ -322,9 +331,9 @@ public class MainActivity extends Activity implements Communicator {
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		// TODO Auto-generated method stub
-		super.onSaveInstanceState(outState);
 		outState.putBoolean("justCall", true);
+		super.onSaveInstanceState(outState);
+
 	}
 
 	@Override
@@ -338,5 +347,7 @@ public class MainActivity extends Activity implements Communicator {
 		// TODO Auto-generated method stub
 		super.onStop();
 	}
+
+	
 
 }

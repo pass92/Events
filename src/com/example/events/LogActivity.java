@@ -54,9 +54,13 @@ public class LogActivity extends Activity {
             if (session.getState().equals(SessionState.CREATED_TOKEN_LOADED)) {
                 session.openForRead(new Session.OpenRequest(this).setPermissions(Arrays.asList("public_profile","user_likes", "user_status","user_events")).setCallback(statusCallback));
             }
+            
+            updateView();
         }
-
+        else{
+        //commentata per evitare le chiamate doppie!!
         updateView();
+        }
     }
 
     @Override

@@ -31,8 +31,6 @@ DA FARE
 
 -gestione filtri in base alle preferenze!
 
--Testare get Position
-
 
 
 -Video

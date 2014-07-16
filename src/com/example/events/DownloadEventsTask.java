@@ -67,7 +67,8 @@ public class DownloadEventsTask extends
 
 	DownloadEventsTask(View view, Communicator comm, ListView l,
 			ProgressDialog dialog, Context context, String city,
-			Integer offsetQuery, Integer limitQuery, AdapterListView adapter,List<EventsHelper> events) {
+			Integer offsetQuery, Integer limitQuery, AdapterListView adapter,
+			List<EventsHelper> events) {
 		this.view = view;
 		this.comm = comm;
 		this.l = l;
@@ -87,7 +88,7 @@ public class DownloadEventsTask extends
 		super.onPreExecute();
 		fqlQuery = "select eid,name,description,start_time, pic_big,venue from event where eid in (SELECT eid FROM event WHERE contains(\""
 				+ city
-				+ "\") or creator=me()) and start_time > now() order by start_time ASC limit "
+				+ "\") ) and start_time > now() order by start_time ASC limit "
 				+ Integer.toString(limitQuery)
 				+ " offset "
 				+ Integer.toString(offsetQuery); // order by start_time ASC
@@ -124,12 +125,21 @@ public class DownloadEventsTask extends
 											.getString("start_time");
 									String photoURL = o.getString("pic_big");
 
-									JSONObject venue = o.getJSONObject("venue");
-									Double latitude = venue.getDouble("latitude");
-									Double longitude = venue.getDouble("longitude");
-									
+									Double latitude = null;
+									Double longitude = null;
+									try {
+										JSONObject venue = o
+												.getJSONObject("venue");
+										latitude = venue.getDouble("latitude");
+										longitude = venue
+												.getDouble("longitude");
+									} catch (Exception e) {
+										Log.w("Facebook-Example", e.getCause()
+												+ "JSON Error in response");
+									}
+
 									EventsHelper f = new EventsHelper();
-                                    f.setId(id);
+									f.setId(id);
 									f.setTitle(title);
 									f.setDescription(description);
 									f.setStart_time(start_time);
@@ -137,9 +147,10 @@ public class DownloadEventsTask extends
 									f.setLatitude(latitude);
 									f.setLongitude(longitude);
 									events.add(f);
-									
+
 									dbHelper.open();
-									dbHelper.createEvents(id, photoURL,title,description, start_time, "0", "0");
+									dbHelper.createEvents(id, photoURL, title,
+											description, start_time, "0", "0");
 									dbHelper.close();
 								}
 
@@ -177,7 +188,7 @@ public class DownloadEventsTask extends
 
 		for (int i = 0; i < result.size(); i++) {
 			events.add(result.get(i));
-	        adapter.notifyDataSetChanged();
+			adapter.notifyDataSetChanged();
 		}
 		MainActivity.setListEvents(result);
 		Fragment_main.flag_loading = false;

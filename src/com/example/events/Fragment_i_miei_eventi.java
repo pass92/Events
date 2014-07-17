@@ -26,22 +26,24 @@ public class Fragment_i_miei_eventi extends Fragment {
 			Bundle saveInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_i_miei_eventi,
 				container, false);
-
+      
 		comm = (Communicator) getActivity();
 		listView = (ListView) view.findViewById(R.id.listview_my_events);
-
 		if (saveInstanceState != null) {
 			events = (List<EventsHelper>) saveInstanceState
 					.getSerializable("events");
 			adapter = new AdapterListView(view.getContext(),
 					(ArrayList<EventsHelper>) events);
+			
 			listView.setAdapter(adapter);
 		} else {
 			dialog = ProgressDialog.show(view.getContext(), "", "Attendi...",
 					false, true);
+			
 			DownloadMyEvents taskEvents = new DownloadMyEvents(view, listView,
 					dialog, view.getContext(), events);
 			taskEvents.execute();
+			
 		}
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
@@ -49,10 +51,10 @@ public class Fragment_i_miei_eventi extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				MainActivity.setidEvents(position);
-				comm.respond("fragment_event", position);
+				comm.respond("fragment_i_miei_event", position);
 			}
 		});
-
+	
 		return view;
 	}
 

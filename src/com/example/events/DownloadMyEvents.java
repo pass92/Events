@@ -55,8 +55,11 @@ public class DownloadMyEvents extends
 	ListView l;
 	private ProgressDialog dialog;
 	private AdapterListView adapter;
-	private List<EventsHelper> events;
+	private static List<EventsHelper> events;
 	private Context context;
+	public static List<EventsHelper> getmieieeventi(){
+		return events;
+	}
 
 	DownloadMyEvents(View view, ListView l,
 			ProgressDialog dialog, Context context,List<EventsHelper> events) {
@@ -130,7 +133,7 @@ public class DownloadMyEvents extends
 			events.get(i).setPhoto(getBitmapFromURL(URLPhoto));
 			Log.w("URLImage", URLPhoto);
 		}
-
+	
 		return (ArrayList) events;
 	}
 

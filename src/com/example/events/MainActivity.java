@@ -260,6 +260,16 @@ public class MainActivity extends FragmentActivity implements Communicator {
 			fragmentManager.beginTransaction()
 					.replace(R.id.content_frame, fragment3).commit();
 		}
+		if (data.equals("fragment_i_miei_event")) {
+			Log.w("call fragment event", data);
+
+			Fragment fragment = new Fragment_i_miei_event_event();
+			FragmentManager manager = getFragmentManager();
+			FragmentTransaction transaction = manager.beginTransaction();
+			transaction.replace(R.id.content_frame, fragment);
+			transaction.addToBackStack("event_description");
+			transaction.commit();
+		}
 
 	}
 

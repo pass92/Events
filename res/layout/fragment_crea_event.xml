@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_weight="0.04"
-        android:background="@drawable/maps"
+        android:background="@drawable/mappa"
         android:text="POSIZIONE:" />
 
     <LinearLayout

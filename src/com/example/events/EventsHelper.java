@@ -1,6 +1,5 @@
 package com.example.events;
 
-import com.google.android.maps.GeoPoint;
 
 import android.graphics.Bitmap;
 
@@ -10,7 +9,6 @@ public class EventsHelper {
 	private String description;
 	private String photoURL;
 	private Bitmap photo;
-	private GeoPoint point;
 	private String start_time;
 	private String end_time;
 	private String rsvp_status;
@@ -47,12 +45,7 @@ public class EventsHelper {
 	public void setPhoto(Bitmap photo) {
 		this.photo = photo;
 	}
-	public GeoPoint getPoint() {
-		return point;
-	}
-	public void setPoint(GeoPoint point) {
-		this.point = point;
-	}
+
 	public String getStart_time() {
 		return start_time;
 	}

@@ -1,6 +1,5 @@
 package database;
 
-import com.google.android.maps.GeoPoint;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

@@ -24,7 +24,6 @@ import org.json.JSONObject;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Response;
-import com.google.android.maps.GeoPoint;
 
 import database.DbAdapter;
 import android.app.Fragment;
@@ -108,8 +107,8 @@ public class DownloadEventsTask extends
 
 		Request request = new Request(
 				session,
-				"/me",
-				null, HttpMethod.GET, new Request.Callback() {
+				"/fql",
+				this.params, HttpMethod.GET, new Request.Callback() {
 					@Override
 					public void onCompleted(Response response) {
 						// Log.i(TAG, "Got results: " + response.toString());
@@ -174,9 +173,9 @@ public class DownloadEventsTask extends
 				});
 		Request.executeBatchAndWait(request);
 
-//		new Request(
+//		Request request = new Request(
 //			    session,
-//			    "/search?fields=name&q=conference&type=event",
+//			    "search?q=Trento&type=event&fields=id,name ,start_time,location,venue,cover",
 //			    null,
 //			    HttpMethod.GET,
 //			    new Request.Callback() {
@@ -240,7 +239,8 @@ public class DownloadEventsTask extends
 ////					}
 //			        }
 //			    }
-//			).executeAndWait();
+//			);
+//		Request.executeBatchAndWait(request);
 //		
 //		
 //		// cliclo la lista di elementi scaricare l'immagine relativa all'evento

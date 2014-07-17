@@ -1,6 +1,7 @@
 package com.example.events;
 
 import java.util.List;
+import java.util.Locale;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -136,9 +137,15 @@ public class Fragment_i_miei_event_event extends Fragment {
 		super.onDestroy();
 	}
 	public void invokeGoogleMaps() {
-		Intent intent = new Intent(
-				android.content.Intent.ACTION_VIEW,
-				Uri.parse("http://maps.google.com/maps? saaddr==Bolzano&daddr=Trento"));
+		// Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+		// Uri.parse("http://maps.google.com/maps?daddr="
+		// + events.get(MainActivity.getidEvents()).getLongitude()
+		// + "," + events.get(MainActivity.getidEvents()).getLatitude()));
+		// this.startActivity(intent);
+		String uri = String.format(Locale.ITALY, "geo:0,0?q=address",
+				events.get(MainActivity.getidEvents()).getLatitude(), events
+						.get(MainActivity.getidEvents()).getLongitude());
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
 		this.startActivity(intent);
 	}
 	

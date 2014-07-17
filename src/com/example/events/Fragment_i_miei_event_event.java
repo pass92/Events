@@ -68,7 +68,7 @@ public class Fragment_i_miei_event_event extends Fragment {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 
-				//invokeGoogleMaps();
+				invokeGoogleMaps();
 
 			}
 		});

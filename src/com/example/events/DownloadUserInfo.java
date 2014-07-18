@@ -57,33 +57,6 @@ public class DownloadUserInfo extends AsyncTask<Void, Void, UserHelper> {
 		});
 		request.executeBatchAndWait(request);
 
-
-//		Request request1 = new Request(session, "/"+MainActivity.infoUserLogged.getId()+"/picture?redirect=false",
-//				null, HttpMethod.GET, new Request.Callback() {
-//					@Override
-//					public void onCompleted(Response response) {
-//						// Log.i(TAG, "Got results: " + response.toString());
-//						try {
-//							if (response != null) {
-//								final JSONObject json = response.getGraphObject()
-//										.getInnerJSONObject();
-//								JSONObject d = (JSONObject) json.get("data");
-//								//int l = (d != null ? d.length() : 0);
-//								//for (int i = 0; i < l; i++) {
-//									//JSONObject o = d.getJSONObject(i);
-//
-//									String url = d.getString("url");
-//
-//									MainActivity.infoUserLogged.setUrlImage(url);
-//							//}
-//							}
-//						} catch (JSONException e) {
-//							Log.w("Facebook-Example", "JSON Error in response");
-//						}
-//					}
-//
-//				});
-//		Request.executeBatchAndWait(request1);
 		
 		MainActivity.infoUserLogged.setUrlImage("https://graph.facebook.com/"+MainActivity.infoUserLogged.getId()  +"/picture");
 		String URLPhoto = MainActivity.infoUserLogged.getUrlImage();

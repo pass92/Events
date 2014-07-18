@@ -132,6 +132,7 @@ public class Fragment_event extends Fragment {
 				FragmentTransaction transaction = manager.beginTransaction();
 				transaction.replace(R.id.content_frame2, fragment2,
 						"partecipa_event");
+				
 				transaction.commit();
 
 			}
@@ -154,16 +155,26 @@ public class Fragment_event extends Fragment {
 	}
 
 	public void invokeGoogleMaps() {
-		// Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-		// Uri.parse("http://maps.google.com/maps?daddr="
-		// + events.get(MainActivity.getidEvents()).getLongitude()
-		// + "," + events.get(MainActivity.getidEvents()).getLatitude()));
-		// this.startActivity(intent);
-		String uri = String.format(Locale.ITALY, "geo:0,0?q=address",
+		
+		/*String uri = String.format(Locale.ITALY, "geo:0,0?q=address",
 				events.get(MainActivity.getidEvents()).getLatitude(), events
 						.get(MainActivity.getidEvents()).getLongitude());
+		
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+		System.out.println("lat: "+events.get(MainActivity.getidEvents()).getLatitude());
+		System.out.println("long: "+events.get(MainActivity.getidEvents()).getLongitude());
 		this.startActivity(intent);
+		*/
+		if(events.get(MainActivity.getidEvents()).getLatitude()==null){
+			
+		}
+		else{
+		//String uri = "geo:"+ events.get(MainActivity.getidEvents()).getLatitude() + "," + events.get(MainActivity.getidEvents()).getLongitude();
+			String uri="geo:0,0?q="+events.get(MainActivity.getidEvents()).getLatitude() +","+events.get(MainActivity.getidEvents()).getLongitude();
+			
+			startActivity(new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri)));
+		}
+		
 	}
 
 }

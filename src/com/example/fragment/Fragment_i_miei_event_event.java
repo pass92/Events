@@ -153,11 +153,15 @@ public class Fragment_i_miei_event_event extends Fragment {
 		// + events.get(MainActivity.getidEvents()).getLongitude()
 		// + "," + events.get(MainActivity.getidEvents()).getLatitude()));
 		// this.startActivity(intent);
-		String uri = String.format(Locale.ITALY, "geo:0,0?q=address",
-				events.get(MainActivity.getidEvents()).getLatitude(), events
-						.get(MainActivity.getidEvents()).getLongitude());
-		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-		this.startActivity(intent);
+       if(events.get(MainActivity.getidEvents()).getLatitude()==null){
+			
+		}
+		else{
+		//String uri = "geo:"+ events.get(MainActivity.getidEvents()).getLatitude() + "," + events.get(MainActivity.getidEvents()).getLongitude();
+			String uri="geo:0,0?q="+events.get(MainActivity.getidEvents()).getLatitude() +","+events.get(MainActivity.getidEvents()).getLongitude();
+			
+			startActivity(new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri)));
+		}
 	}
 	
 }

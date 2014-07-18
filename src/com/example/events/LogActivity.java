@@ -94,7 +94,7 @@ public class LogActivity extends Activity {
         Session session = Session.getActiveSession();
         if (session.isOpened()) {
         	intent.putExtra("session", session);
-        	intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        	//intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         	startActivity(intent);
         	finish();
         } else {

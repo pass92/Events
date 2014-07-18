@@ -172,8 +172,4 @@ public class Fragment_main extends Fragment {
 	}
 
 }
-/*
- * Bitmap contact_pic; //a picture to show in drawable Drawable drawable=new
- * BitmapDrawable(contact_pic); Drawable d =new
- * BitmapDrawable(getResources(),bitmap);
- */
+

@@ -79,9 +79,16 @@ TextView tx=(TextView)view.findViewById(R.id.text_NomeUtente);
 				final Context context=getActivity();
 				AlertDialog.Builder alert = new AlertDialog.Builder(context);
 	            alert.setTitle("Alert Dialog"); //Set Alert dialog title here
-	            alert.setMessage("Enter Location"); //Message here
+	            alert.setMessage("Enter TAG"); //Message here
 	            final ViewGroup newView = (ViewGroup) LayoutInflater.from(view.getContext()).inflate(R.layout.list_item_example,mContainerView,false);
-	           
+	           newView.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					System.out.println("view: "+v.getId());
+					
+				}
+			});
 	            newView.findViewById(R.id.delete_button).setOnClickListener(new View.OnClickListener() {
 		            @Override
 		            public void onClick(View view) {
@@ -102,8 +109,13 @@ TextView tx=(TextView)view.findViewById(R.id.text_NomeUtente);
 	                	if(mContainerView.getChildCount()<=4){
 	                	 mContainerView.addView(newView, 0);
 	                     String srt = input.getEditableText().toString();
-	                     ((TextView) newView.findViewById(android.R.id.text1)).setText(srt);
-	                     Toast.makeText(context,srt,Toast.LENGTH_LONG).show();                
+	                     if(srt.equals("")){
+	                    	 ((TextView) newView.findViewById(android.R.id.text1)).setText("default"); 
+	                     }
+	                     else{
+	                          ((TextView) newView.findViewById(android.R.id.text1)).setText(srt);
+	                    // Toast.makeText(context,srt,Toast.LENGTH_LONG).show(); 
+	                     }
 	                } // End of onClick(DialogInterface dialog, int whichButton)
 	                }
 	            }); //End of alert.setPositiveButton
@@ -138,7 +150,7 @@ TextView tx=(TextView)view.findViewById(R.id.text_NomeUtente);
                 
 				Session.setActiveSession(null);
 				
-				  // definisco l'intenzione  
+				 // definisco l'intenzione  
 	            Intent intent = new Intent(getActivity().getApplicationContext(),LogActivity.class);  
 	            // passo all'attivazione dell'activity Pagina.java   
 	            startActivity(intent);

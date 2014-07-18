@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="130dp"
-        android:background="@drawable/accediFacebook"
+        android:background="@drawable/accedifacebook"
         android:text="" />
 
     <TextView

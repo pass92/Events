@@ -5,9 +5,11 @@ package com.example.events;
 
 import com.example.events.Dialogfragment.NoticeDialogLIstener;
 
+import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.*;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,16 +73,13 @@ public class Fragment_impostazioni extends Fragment implements NoticeDialogLIste
 			
 			public void onClick(View v) {
 				
-				DialogFragment filtroDIalog = new Dialogfragment();
-				filtroDIalog.show(getFragmentManager(), "missiles");
-				
-				final ViewGroup newView = (ViewGroup) LayoutInflater.from(view.getContext()).inflate(R.layout.list_item_example,mContainerView,false);
-
-		        // Set the text in the new row to a random country.
-		        ((TextView) newView.findViewById(android.R.id.text1)).setText("ciao");
-
-		        // Set a click listener for the "X" button in the row that will remove the row.
-		        newView.findViewById(R.id.delete_button).setOnClickListener(new View.OnClickListener() {
+				final Context context=getActivity();
+				AlertDialog.Builder alert = new AlertDialog.Builder(context);
+	            alert.setTitle("Alert Dialog"); //Set Alert dialog title here
+	            alert.setMessage("Enter Location"); //Message here
+	            final ViewGroup newView = (ViewGroup) LayoutInflater.from(view.getContext()).inflate(R.layout.list_item_example,mContainerView,false);
+	           
+	            newView.findViewById(R.id.delete_button).setOnClickListener(new View.OnClickListener() {
 		            @Override
 		            public void onClick(View view) {
 		                // Remove the row from its parent (the container view).
@@ -89,17 +89,49 @@ public class Fragment_impostazioni extends Fragment implements NoticeDialogLIste
 
 		                
 		            }
-		        });
-
-		        // Because mContainerView has android:animateLayoutChanges set to true,
-		        // adding this view is automatically animated.
-		        mContainerView.addView(newView, 0);
+	            });
+	 
+	            // Set an EditText view to get user input 
+	            final EditText input = new EditText(context);
+	            alert.setView(input);
+	            alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+	                public void onClick(DialogInterface dialog, int whichButton) {
+	                	if(mContainerView.getChildCount()<=4){
+	                	 mContainerView.addView(newView, 0);
+	                     String srt = input.getEditableText().toString();
+	                     ((TextView) newView.findViewById(android.R.id.text1)).setText(srt);
+	                     Toast.makeText(context,srt,Toast.LENGTH_LONG).show();                
+	                } // End of onClick(DialogInterface dialog, int whichButton)
+	                }
+	            }); //End of alert.setPositiveButton
+	            alert.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+	                 public void onClick(DialogInterface dialog, int whichButton) {
+	                    // Canceled.
+	                	
+	                      dialog.cancel();
+	                 }
+	            }); //End of alert.setNegativeButton
+	                AlertDialog alertDialog = alert.create();
+	                alertDialog.show();
+	              
+				
+			}
+				
+				
+				
+			
+		});
+		
+		Button b=(Button)view.findViewById(R.id.button_logout);
+		b.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
 				
 			}
 		});
-		
-		
-		
 		
 			
 

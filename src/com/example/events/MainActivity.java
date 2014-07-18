@@ -204,9 +204,11 @@ public class MainActivity extends Activity implements Communicator {
 		case 4:
 			System.out.println("impostazioni");
 			fragment = new Fragment_impostazioni();
-			FragmentManager fragmentManager6 = getFragmentManager();
-			fragmentManager6.beginTransaction()
-					.replace(R.id.content_frame, fragment).commit();
+			FragmentManager fragmentManager7 = getFragmentManager();
+			FragmentTransaction transaction7=fragmentManager7.beginTransaction();
+			transaction7.replace(R.id.content_frame, fragment);
+			transaction7.addToBackStack("myscreen2347");
+			transaction7.commit();
 			break;
 		default:
 			Log.w("MainActivity", "dafault");

@@ -110,7 +110,8 @@ public class DownloadFriendsWhoParticipate extends
 
 				});
 		Request.executeBatchAndWait(request);
-
+		
+		///picture?redirect=false
 		// // cliclo la lista di elementi scaricare l'immagine relativa
 		// all'evento
 		// for (int i = 0; i < events.size(); i++) {

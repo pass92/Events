@@ -65,6 +65,9 @@ public class MainActivity extends Activity implements Communicator {
 	private String[] mPlanetTitles = { "Events", "I miei Eventi",
 			"Crea Evento", "Cerca Evento", "Impostazioni" };
 
+	//info logged user
+	private static UserHelper infoUserLogged=null;
+	
 	// sessione passata dopo il Login
 	static Session session;
 
@@ -297,10 +300,42 @@ public class MainActivity extends Activity implements Communicator {
 		setContentView(R.layout.activity_main);
 		// Log.v(TAG, "OnCreate");
 
+	
 		/* make the API call */
 		Intent intent = getIntent();
 		session = (Session) intent.getSerializableExtra("session");
 
+		//get info User
+		new Request(
+			    session,
+			    "/me",
+			    null,
+			    HttpMethod.GET,
+			    new Request.Callback() {
+			        public void onCompleted(Response response) {
+			        	try {
+							if (response != null) {
+								final JSONObject json = response
+										.getGraphObject().getInnerJSONObject();
+								JSONArray d = json.getJSONArray("data");
+								int l = (d != null ? d.length() : 0);
+								for (int i = 0; i < l; i++) {
+									JSONObject o = d.getJSONObject(i);
+									String id = o.getString("id");
+									String name = o.getString("name");
+									infoUserLogged.setId(id);
+									infoUserLogged.setName(name);;
+								}
+								}
+							}catch (Exception e) {
+								// TODO: handle exception
+							}
+			        	
+			        }
+			    }
+			).executeAsync();
+		
+		
 		// get location
 		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		Criteria c = new Criteria();

@@ -6,6 +6,7 @@ public class UserHelper {
 
 	private String id;
 	private String name;
+	private String surname;
 	private String urlImage;
 	private Bitmap image;
 	public String getId() {
@@ -31,6 +32,12 @@ public class UserHelper {
 	}
 	public void setImage(Bitmap image) {
 		this.image = image;
+	}
+	public String getSurname() {
+		return surname;
+	}
+	public void setSurname(String surname) {
+		this.surname = surname;
 	}
 	
 	

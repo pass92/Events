@@ -16,6 +16,7 @@ import com.facebook.Request;
 import com.facebook.Request.GraphUserListCallback;
 import com.facebook.Response;
 import com.facebook.Session;
+import com.facebook.android.Facebook;
 import com.facebook.model.GraphObject;
 import com.facebook.model.GraphUser;
 
@@ -79,6 +80,12 @@ public class MainActivity extends Activity implements Communicator {
 	String provider;
 	private Object isGPSEnabled;
 
+	//FAcebook4j
+	//
+	//---------------------
+	//Facebook facebook = new FacebookFactory().getInstance();
+	
+	
 	static int getidEvents() {
 		return id;
 	}
@@ -154,7 +161,7 @@ public class MainActivity extends Activity implements Communicator {
 	private void selectItem(int position) {
 		// update the main content by replacing fragments
 		Fragment fragment;
-		fragment = getFragmentManager().findFragmentById(R.id.content_frame);
+		//fragment = getFragmentManager().findFragmentById(R.id.content_frame);
 		// FragmentManager manager = getFragmentManager();
 		// FragmentTransaction transaction = manager.beginTransaction();
 
@@ -259,7 +266,6 @@ public class MainActivity extends Activity implements Communicator {
 			FragmentManager manager = getFragmentManager();
 			FragmentTransaction transaction = manager.beginTransaction();
 			transaction.replace(R.id.content_frame, fragment);
-			transaction.addToBackStack("event_description");
 			transaction.commit();
 		}
 		if (data.equals("fragment_eventcerca_descrizione")) {

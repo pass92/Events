@@ -16,3 +16,5 @@ select eid,name,description,start_time,venue from event where eid in (SELECT eid
 //ottengo la mia posizione con latitudine e longitudine e ottengo vari paesi attorno a me!
 
 search?q=trento&type=event&after=today&fields=id,name,location,venue,cover,start_time
+
+SELECT uid, name, pic FROM user WHERE uid IN (SELECT uid FROM event_member WHERE eid = 1507242569509050 AND rsvp_status = 'attending' AND uid IN (SELECT uid2 FROM friend WHERE uid1 = me()))

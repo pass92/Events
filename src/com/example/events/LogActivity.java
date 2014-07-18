@@ -52,7 +52,7 @@ public class LogActivity extends Activity {
             }
             Session.setActiveSession(session);
             if (session.getState().equals(SessionState.CREATED_TOKEN_LOADED)) {
-                session.openForRead(new Session.OpenRequest(this).setPermissions(Arrays.asList("public_profile","user_events","rsvp_event")).setCallback(statusCallback));
+                session.openForRead(new Session.OpenRequest(this).setPermissions(Arrays.asList("public_profile","user_events")).setCallback(statusCallback));
             }
             
             buttonLogin.setOnClickListener(new OnClickListener() {
@@ -107,7 +107,7 @@ public class LogActivity extends Activity {
     private void onClickLogin() {
         Session session = Session.getActiveSession();
         if (!session.isOpened() && !session.isClosed()) {
-            session.openForRead(new Session.OpenRequest(this).setPermissions(Arrays.asList("public_profile","user_events","rsvp_event")).setCallback(statusCallback));
+            session.openForRead(new Session.OpenRequest(this).setPermissions(Arrays.asList("public_profile","user_events")).setCallback(statusCallback));
         } else {
             Session.openActiveSession(this, true, statusCallback);
         }

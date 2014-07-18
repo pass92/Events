@@ -1,9 +1,15 @@
-package com.example.events;
+package com.example.fragment;
 
 import android.app.Fragment;
 
 import java.util.List;
 import java.util.Locale;
+
+import com.example.events.MainActivity;
+import com.example.events.R;
+import com.example.events.R.id;
+import com.example.events.R.layout;
+import com.example.helper.EventsHelper;
 
 import android.app.Activity;
 import android.app.Fragment;

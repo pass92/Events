@@ -1,5 +1,10 @@
-package com.example.events;
+package com.example.download;
 
+import com.example.adapter.AdapterListView;
+import com.example.events.MainActivity;
+import com.example.fragment.Fragment_main;
+import com.example.helper.Communicator;
+import com.example.helper.EventsHelper;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Response;
@@ -50,7 +55,7 @@ public class DownloadEventsTask extends
 	private static Integer start = 0;
 	private List<EventsHelper> events;
 
-	DownloadEventsTask(View view, Communicator comm, ListView l,
+	public DownloadEventsTask(View view, Communicator comm, ListView l,
 			ProgressDialog dialog, Context context, String city,
 			Integer offsetQuery, Integer limitQuery, AdapterListView adapter,
 			List<EventsHelper> events) {

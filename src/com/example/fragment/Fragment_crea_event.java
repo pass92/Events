@@ -1,4 +1,4 @@
-package com.example.events;
+package com.example.fragment;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -6,6 +6,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+
+import com.example.events.R;
+import com.example.events.R.id;
+import com.example.events.R.layout;
 
 import database.DbAdapter;
 import android.app.AlertDialog;

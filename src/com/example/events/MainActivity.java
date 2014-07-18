@@ -14,6 +14,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.example.download.DownloadUserInfo;
+import com.example.fragment.Fragment_cerca;
+import com.example.fragment.Fragment_cerca_event;
+import com.example.fragment.Fragment_crea_event;
+import com.example.fragment.Fragment_event;
+import com.example.fragment.Fragment_i_miei_event_event;
+import com.example.fragment.Fragment_i_miei_eventi;
+import com.example.fragment.Fragment_impostazioni;
+import com.example.fragment.Fragment_main;
+import com.example.helper.Communicator;
+import com.example.helper.EventsHelper;
+import com.example.helper.UserHelper;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Request.GraphUserListCallback;
@@ -75,7 +87,7 @@ public class MainActivity extends Activity implements Communicator {
 
 	
 	// sessione passata dopo il Login
-	static Session session;
+	public static Session session;
 
 	// Array per contenere eventi scaricati da Facebook
 	private static List<EventsHelper> events = new ArrayList<EventsHelper>();
@@ -95,11 +107,11 @@ public class MainActivity extends Activity implements Communicator {
 	//Facebook facebook = new FacebookFactory().getInstance();
 	
 	
-	static int getidEvents() {
+	public static int getidEvents() {
 		return id;
 	}
 
-	static void setidEvents(int id2) {
+	public static void setidEvents(int id2) {
 		id = id2;
 	}
 

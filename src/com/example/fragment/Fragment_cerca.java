@@ -1,4 +1,4 @@
-package com.example.events;
+package com.example.fragment;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -6,6 +6,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.example.adapter.AdapterListViewCercaEvent;
+import com.example.events.MainActivity;
+import com.example.events.R;
+import com.example.events.R.id;
+import com.example.events.R.layout;
+import com.example.helper.Communicator;
+import com.example.helper.EventsHelper;
 
 import database.DbAdapter;
 import android.app.Fragment;

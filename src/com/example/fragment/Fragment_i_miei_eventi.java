@@ -1,8 +1,17 @@
-package com.example.events;
+package com.example.fragment;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.example.adapter.AdapterListView;
+import com.example.download.DownloadMyEvents;
+import com.example.events.MainActivity;
+import com.example.events.R;
+import com.example.events.R.id;
+import com.example.events.R.layout;
+import com.example.helper.Communicator;
+import com.example.helper.EventsHelper;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;

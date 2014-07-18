@@ -1,4 +1,4 @@
-package com.example.events;
+package com.example.fragment;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -8,6 +8,16 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.example.adapter.AdapterListView;
+import com.example.download.DownloadEventsTask;
+import com.example.events.MainActivity;
+import com.example.events.R;
+import com.example.events.R.id;
+import com.example.events.R.layout;
+import com.example.helper.Communicator;
+import com.example.helper.EventsHelper;
+import com.example.helper.GPSTracker;
 
 import database.DbAdapter;
 import android.app.Fragment;

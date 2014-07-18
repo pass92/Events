@@ -1,5 +1,9 @@
-package com.example.events;
+package com.example.download;
 
+import com.example.adapter.AdapterUser;
+import com.example.events.MainActivity;
+import com.example.helper.Communicator;
+import com.example.helper.UserHelper;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Request.GraphUserListCallback;
@@ -57,7 +61,7 @@ public class DownloadFriendsWhoParticipate extends
 	private Context context;
 	private String idEvent;
 
-	DownloadFriendsWhoParticipate(View view, ListView l, Context context,
+	public DownloadFriendsWhoParticipate(View view, ListView l, Context context,
 			List<UserHelper> user, String idEvent, AdapterUser adapter) {
 		this.view = view;
 		this.l = l;

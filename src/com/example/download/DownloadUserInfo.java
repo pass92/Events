@@ -1,4 +1,4 @@
-package com.example.events;
+package com.example.download;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,6 +10,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.example.events.MainActivity;
+import com.example.helper.UserHelper;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Response;

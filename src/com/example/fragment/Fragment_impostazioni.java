@@ -1,6 +1,11 @@
-package com.example.events;
+package com.example.fragment;
 
+import com.example.events.LogActivity;
+import com.example.events.MainActivity;
+import com.example.events.R;
 import com.example.events.Dialogfragment.NoticeDialogLIstener;
+import com.example.events.R.id;
+import com.example.events.R.layout;
 import com.facebook.Session;
 import com.facebook.widget.ProfilePictureView;
 

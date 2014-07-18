@@ -1,4 +1,4 @@
-package com.example.events;
+package com.example.helper;
  
 import android.app.AlertDialog;
 import android.app.Service;

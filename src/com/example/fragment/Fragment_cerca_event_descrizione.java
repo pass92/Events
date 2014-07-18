@@ -1,18 +1,20 @@
-package com.example.events;
+package com.example.fragment;
 
 	import java.util.List;
 
-	import com.example.events.EventsHelper;
-	import com.example.events.Fragment_cerca;
-	import com.example.events.MainActivity;
-	import com.example.events.R;
+import com.example.events.MainActivity;
+import com.example.events.R;
+import com.example.events.R.id;
+import com.example.events.R.layout;
+import com.example.fragment.Fragment_cerca;
+import com.example.helper.EventsHelper;
 
 	import android.app.Fragment;
-	import android.os.Bundle;
-	import android.view.LayoutInflater;
-	import android.view.View;
-	import android.view.ViewGroup;
-	import android.widget.TextView;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 
 	public class Fragment_cerca_event_descrizione extends Fragment{

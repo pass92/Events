@@ -1,5 +1,10 @@
-package com.example.events;
+package com.example.download;
 
+import com.example.adapter.AdapterListView;
+import com.example.events.MainActivity;
+import com.example.fragment.Fragment_main;
+import com.example.helper.Communicator;
+import com.example.helper.EventsHelper;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Request.GraphUserListCallback;
@@ -61,7 +66,7 @@ public class DownloadMyEvents extends
 		return events;
 	}
 
-	DownloadMyEvents(View view, ListView l,
+	public DownloadMyEvents(View view, ListView l,
 			ProgressDialog dialog, Context context,List<EventsHelper> events) {
 		this.view = view;
 		this.l = l;

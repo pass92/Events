@@ -113,6 +113,10 @@ public class Fragment_i_miei_event_event extends Fragment {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Fragment fragment2= new Fragment_partecipant();
+				Bundle args = new Bundle();
+				args.putString("id", events.get(
+						MainActivity.getidEvents()).getId());
+				fragment2.setArguments(args);
 				FragmentManager manager = getFragmentManager();
 				FragmentTransaction transaction = manager.beginTransaction();
 				transaction.replace(R.id.content_frame2, fragment2,

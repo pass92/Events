@@ -34,6 +34,7 @@ public class Fragment_partecipant extends Fragment {
 		super.onCreate(savedInstanceState);
 		Bundle args = getArguments();
 		IdEvent = args.getString("id");
+		
 	}
 	
 	

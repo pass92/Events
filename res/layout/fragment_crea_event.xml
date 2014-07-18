@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1.93"
-        android:src="@drawable/com_facebook_button_grey_focused" />
+        android:background="@drawable/images" />
 
     <Button
         android:id="@+id/button_addPosition"
@@ -30,12 +30,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.05"
             android:text="TITOLO :"
+            android:textColor="@android:color/white"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <EditText
             android:id="@+id/editText_addTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+             android:textColor="@android:color/white"
             android:layout_weight="0.05"
             android:ems="10" >
 
@@ -52,6 +54,7 @@
             android:id="@+id/textView_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+             android:textColor="@android:color/white"
             android:text="DESCRIZIONE:"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -60,6 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+             android:textColor="@android:color/white"
             android:ems="10"
             android:inputType="textMultiLine" />
 

@@ -7,8 +7,8 @@ public class EventsHelper {
 	private String id;
 	private String title;
 	private String description;
-	private String photoURL;
-	private Bitmap photo;
+	private String photoURL=null;
+	private Bitmap photo=null;
 	private String start_time;
 	private String end_time;
 	private String rsvp_status;

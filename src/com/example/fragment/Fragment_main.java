@@ -85,7 +85,7 @@ public class Fragment_main extends Fragment {
 		adapter = new AdapterListView(view.getContext(),events);
 		lv.setAdapter(adapter);
 		
-
+		
 		double latitude = 0;
 		double longitude = 0;
 			GPSTracker gps = gps = new GPSTracker(view.getContext());

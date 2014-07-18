@@ -1,5 +1,8 @@
 package com.example.events;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -30,6 +33,8 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -66,7 +71,7 @@ public class MainActivity extends Activity implements Communicator {
 			"Crea Evento", "Cerca Evento", "Impostazioni" };
 
 	//info logged user
-	private static UserHelper infoUserLogged=null;
+	public static UserHelper infoUserLogged = new UserHelper();
 	
 	// sessione passata dopo il Login
 	static Session session;
@@ -305,37 +310,12 @@ public class MainActivity extends Activity implements Communicator {
 		Intent intent = getIntent();
 		session = (Session) intent.getSerializableExtra("session");
 
-		//get info User
-		new Request(
-			    session,
-			    "/me",
-			    null,
-			    HttpMethod.GET,
-			    new Request.Callback() {
-			        public void onCompleted(Response response) {
-			        	try {
-							if (response != null) {
-								final JSONObject json = response
-										.getGraphObject().getInnerJSONObject();
-								JSONArray d = json.getJSONArray("data");
-								int l = (d != null ? d.length() : 0);
-								for (int i = 0; i < l; i++) {
-									JSONObject o = d.getJSONObject(i);
-									String id = o.getString("id");
-									String name = o.getString("name");
-									infoUserLogged.setId(id);
-									infoUserLogged.setName(name);;
-								}
-								}
-							}catch (Exception e) {
-								// TODO: handle exception
-							}
-			        	
-			        }
-			    }
-			).executeAsync();
 		
-		
+        DownloadUserInfo infoUset = new DownloadUserInfo();
+        infoUset.execute();
+
+        
+        
 		// get location
 		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		Criteria c = new Criteria();

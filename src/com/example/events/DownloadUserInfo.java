@@ -1,9 +1,13 @@
 package com.example.events;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.facebook.HttpMethod;
@@ -53,21 +57,39 @@ public class DownloadUserInfo extends AsyncTask<Void, Void, UserHelper> {
 		});
 		request.executeBatchAndWait(request);
 
-		ImageView user_picture;
-		URL img_value = null;
-		try {
-			img_value = new URL("http://graph.facebook.com/"
-					+ MainActivity.infoUserLogged.getId() + "/picture?type=large");
-			Bitmap mIcon1 = BitmapFactory.decodeStream(img_value
-					.openConnection().getInputStream());
-			MainActivity.infoUserLogged.setImage(mIcon1);
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+//		Request request1 = new Request(session, "/"+MainActivity.infoUserLogged.getId()+"/picture?redirect=false",
+//				null, HttpMethod.GET, new Request.Callback() {
+//					@Override
+//					public void onCompleted(Response response) {
+//						// Log.i(TAG, "Got results: " + response.toString());
+//						try {
+//							if (response != null) {
+//								final JSONObject json = response.getGraphObject()
+//										.getInnerJSONObject();
+//								JSONObject d = (JSONObject) json.get("data");
+//								//int l = (d != null ? d.length() : 0);
+//								//for (int i = 0; i < l; i++) {
+//									//JSONObject o = d.getJSONObject(i);
+//
+//									String url = d.getString("url");
+//
+//									MainActivity.infoUserLogged.setUrlImage(url);
+//							//}
+//							}
+//						} catch (JSONException e) {
+//							Log.w("Facebook-Example", "JSON Error in response");
+//						}
+//					}
+//
+//				});
+//		Request.executeBatchAndWait(request1);
+		
+		MainActivity.infoUserLogged.setUrlImage("https://graph.facebook.com/"+MainActivity.infoUserLogged.getId()  +"/picture");
+		String URLPhoto = MainActivity.infoUserLogged.getUrlImage();
+		Log.w("INFO", "INFO"+ URLPhoto);
+		MainActivity.infoUserLogged.setImage(getBitmapFromURL(URLPhoto));
+
 		
 		
 		return null;
@@ -77,7 +99,23 @@ public class DownloadUserInfo extends AsyncTask<Void, Void, UserHelper> {
 	protected void onPostExecute(UserHelper result) {
 		// TODO Auto-generated method stub
 		super.onPostExecute(result);
-		Log.w("INFO", "INFO"+ MainActivity.infoUserLogged.getName()+MainActivity.infoUserLogged.getId());
+		
+	}
+	
+	public Bitmap getBitmapFromURL(String imageUrl) {
+		try {
+			URL url = new URL(imageUrl);
+			HttpURLConnection connection = (HttpURLConnection) url
+					.openConnection();
+			connection.setDoInput(true);
+			connection.connect();
+			InputStream input = connection.getInputStream();
+			Bitmap myBitmap = BitmapFactory.decodeStream(input);
+			return myBitmap;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }

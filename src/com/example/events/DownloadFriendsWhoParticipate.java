@@ -1,5 +1,3 @@
-
-
 package com.example.events;
 
 import com.facebook.HttpMethod;
@@ -49,23 +47,24 @@ import android.widget.ListView;
 public class DownloadFriendsWhoParticipate extends
 		AsyncTask<Void, Void, ArrayList<UserHelper>> {
 
-
 	Session session;
 	View view;
 	Communicator comm;
 	ListView l;
 	private ProgressDialog dialog;
-	private AdapterListView adapter;
-	private static List<UserHelper> user;
+	private AdapterUser adapter;
+	private final List<UserHelper> user;
 	private Context context;
 	private String idEvent;
 
-	DownloadFriendsWhoParticipate(View view, ListView l, Context context,List<UserHelper> user,String idEvent) {
+	DownloadFriendsWhoParticipate(View view, ListView l, Context context,
+			List<UserHelper> user, String idEvent, AdapterUser adapter) {
 		this.view = view;
 		this.l = l;
 		this.context = context;
-		this.user=user;
+		this.user = user;
 		this.idEvent = idEvent;
+		this.adapter = adapter;
 	}
 
 	@Override
@@ -78,11 +77,11 @@ public class DownloadFriendsWhoParticipate extends
 	@Override
 	protected ArrayList<UserHelper> doInBackground(Void... params) {
 		// TODO Auto-generated method stub
-		final List<UserHelper> user = new ArrayList<UserHelper>();
+		final List<UserHelper> user1 = new ArrayList<UserHelper>();
 		Log.w("Async Task", "doInBackground start!");
 
-		Request request = new Request(session, "/"+ idEvent +"/attending", null,
-				HttpMethod.GET, new Request.Callback() {
+		Request request = new Request(session, "/" + idEvent + "/attending",
+				null, HttpMethod.GET, new Request.Callback() {
 					@Override
 					public void onCompleted(Response response) {
 						// Log.i(TAG, "Got results: " + response.toString());
@@ -96,12 +95,12 @@ public class DownloadFriendsWhoParticipate extends
 									JSONObject o = d.getJSONObject(i);
 
 									String name = o.getString("name");
-									//String urlImage = o.getString("pic_big");
-									
+									// String urlImage = o.getString("pic_big");
+
 									UserHelper f = new UserHelper();
 									f.setName(name);
-									//f.setUrlImage(urlImage);
-									user.add(f);
+									// f.setUrlImage(urlImage);
+									user1.add(f);
 								}
 							}
 						} catch (JSONException e) {
@@ -112,17 +111,15 @@ public class DownloadFriendsWhoParticipate extends
 				});
 		Request.executeBatchAndWait(request);
 
-		
-		
-		
-//		// cliclo la lista di elementi scaricare l'immagine relativa all'evento
-//		for (int i = 0; i < events.size(); i++) {
-//			String URLPhoto = events.get(i).getPhotoURL();
-//			events.get(i).setPhoto(getBitmapFromURL(URLPhoto));
-//			Log.w("URLImage", URLPhoto);
-	//}
-	
-		return (ArrayList) user;
+		// // cliclo la lista di elementi scaricare l'immagine relativa
+		// all'evento
+		// for (int i = 0; i < events.size(); i++) {
+		// String URLPhoto = events.get(i).getPhotoURL();
+		// events.get(i).setPhoto(getBitmapFromURL(URLPhoto));
+		// Log.w("URLImage", URLPhoto);
+		// }
+
+		return (ArrayList<UserHelper>) user1;
 	}
 
 	@Override
@@ -131,15 +128,16 @@ public class DownloadFriendsWhoParticipate extends
 		super.onPostExecute(result);
 		Log.w("Async Task", "on post excute");
 
-		user = result;
-		//adapter = new AdapterListView(view.getContext(),
-			//	(ArrayList<UserHelper>) result);
-		l.setAdapter(adapter);
-		adapter.notifyDataSetChanged();
+		
+		for (int i = 0; i < result.size(); i++) {
+			user.add(result.get(i));
+			adapter.notifyDataSetChanged();
+		}
 
-		Fragment_main.flag_loading = false;
-		if (dialog.isShowing())
-			dialog.dismiss();
+
+		// Fragment_main.flag_loading = false;
+		// if (dialog.isShowing())
+		// dialog.dismiss();
 	}
 
 	public Bitmap getBitmapFromURL(String imageUrl) {

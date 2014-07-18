@@ -75,36 +75,7 @@ public class Fragment_main extends Fragment {
 		adapter = new AdapterListView(view.getContext(),events);
 		lv.setAdapter(adapter);
 		
-		/*
-		 * Get location from MainActivity
-		 * Print out on a Screen The City
-		 */
-		//if (MainActivity.currentBestLocation != null) {
-			// get latitude and longitude of the location
-//			double lng = MainActivity.currentBestLocation.getLongitude();
-//			double lat = MainActivity.currentBestLocation.getLatitude();
-//			Log.wtf("Lng lat","Long:"+ Double.toString(lng));
-//			
-//			Context context = view.getContext();
-//			int duration = Toast.LENGTH_SHORT;
-//			
-//			Geocoder gcd = new Geocoder(context, Locale.getDefault());
-//			List<Address> addresses = null;
-//			try {
-//				addresses = gcd.getFromLocation(lat, lng, 1);
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-			
-//			if (addresses.size() > 0) {
-//				city = addresses.get(0).getLocality();
-//				Toast toast = Toast.makeText(context, "City:["
-//						+ city +"]"+ Double.toString(lng)
-//						+ " " + Double.toString(lat), duration);
-//				toast.show();
-//			}
-		//}
+
 		double latitude = 0;
 		double longitude = 0;
 			GPSTracker gps = gps = new GPSTracker(view.getContext());

@@ -5,9 +5,10 @@
 
     <ImageView
         android:id="@+id/image_view_user"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_alignParentLeft="true"
+        android:background="@drawable/facebook_default_profile"
       >
     </ImageView>
 
@@ -17,8 +18,8 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/image_view_event"
         android:textColor="@android:color/white"
-        android:paddingLeft="5dp"
-        android:textSize="12sp" >
+        android:paddingLeft="35dp"
+        android:textSize="15sp" >
     </TextView>
 
 </RelativeLayout>

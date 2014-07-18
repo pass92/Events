@@ -10,11 +10,11 @@
         android:layout_height="wrap_content"
         android:paddingTop="10dp" >
 
-        <com.facebook.widget.ProfilePictureView
+        <ImageView
             android:id="@+id/profilePictureView1"
             android:layout_width="72dp"
             android:layout_height="63dp" >
-        </com.facebook.widget.ProfilePictureView>
+        </ImageView>
 
         <TextView
             android:id="@+id/text_NomeUtente"

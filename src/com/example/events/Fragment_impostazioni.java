@@ -5,6 +5,7 @@ package com.example.events;
 
 import com.example.events.Dialogfragment.NoticeDialogLIstener;
 import com.facebook.Session;
+import com.facebook.widget.ProfilePictureView;
 
 import android.app.AlertDialog;
 import android.app.DialogFragment;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Button;
@@ -33,7 +35,9 @@ public class Fragment_impostazioni extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle saveInstanceState){
 		final View view= inflater.inflate(R.layout.fragment_impostazioni,container,false);
 TextView tx=(TextView)view.findViewById(R.id.text_NomeUtente);
-
+tx.setText(""+MainActivity.infoUserLogged.getName());
+ImageView img=(ImageView)view.findViewById(R.id.profilePictureView1);
+img.setImageBitmap(MainActivity.infoUserLogged.getImage());
 		SeekBar S = (SeekBar)view.findViewById(R.id.seekBar1);
 		final TextView T = (TextView) view.findViewById(R.id.textkm);
 		final ViewGroup mContainerView = (ViewGroup) view.findViewById(R.id.cont);

@@ -52,7 +52,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 @SuppressLint("NewApi")
-public class MainActivity extends FragmentActivity implements Communicator {
+public class MainActivity extends Activity implements Communicator {
 
 	private static final String TAG = "MainActivity";
 	private DrawerLayout mDrawerLayout;
@@ -167,6 +167,7 @@ public class MainActivity extends FragmentActivity implements Communicator {
 			FragmentManager manager = getFragmentManager();
 			FragmentTransaction transaction = manager.beginTransaction();
 			transaction.replace(R.id.content_frame, fragment, "main");
+			//transaction.addToBackStack("myscreen");
 			transaction.commit();
 			// }
 			break;
@@ -174,31 +175,37 @@ public class MainActivity extends FragmentActivity implements Communicator {
 			System.out.println("i miei eventi");
 			fragment = new Fragment_i_miei_eventi();
 			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment).commit();
-
+			FragmentTransaction transaction2=fragmentManager.beginTransaction();
+			transaction2.replace(R.id.content_frame, fragment, "main");
+			transaction2.addToBackStack("myscreen2");
+			transaction2.commit();
 			break;
 		case 2:
 			System.out.println("crea evento");
 			fragment = new Fragment_crea_event();
 			FragmentManager fragmentManager2 = getFragmentManager();
-			fragmentManager2.beginTransaction()
-					.replace(R.id.content_frame, fragment).commit();
+			FragmentTransaction transaction3=fragmentManager2.beginTransaction();
+			transaction3.replace(R.id.content_frame, fragment);
+			transaction3.addToBackStack("myscreen23");
+			transaction3.commit();
 
 			break;
 		case 3:
 			System.out.println("cerca evento");
 			fragment = new Fragment_cerca();
 			FragmentManager fragmentManager33 = getFragmentManager();
-			fragmentManager33.beginTransaction()
-					.replace(R.id.content_frame, fragment).commit();
+			FragmentTransaction transaction33=fragmentManager33.beginTransaction();
+			transaction33.replace(R.id.content_frame, fragment);
+			transaction33.addToBackStack("myscreen234");
+			transaction33.commit();
+
 
 			break;
 		case 4:
 			System.out.println("impostazioni");
 			fragment = new Fragment_impostazioni();
-			FragmentManager fragmentManager3 = getFragmentManager();
-			fragmentManager3.beginTransaction()
+			FragmentManager fragmentManager6 = getFragmentManager();
+			fragmentManager6.beginTransaction()
 					.replace(R.id.content_frame, fragment).commit();
 			break;
 		default:
@@ -257,8 +264,10 @@ public class MainActivity extends FragmentActivity implements Communicator {
 			System.out.println(data);
 			Fragment fragment3 = new Fragment_cerca_event();
 			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment3).commit();
+			FragmentTransaction transaction = fragmentManager.beginTransaction();
+			transaction.replace(R.id.content_frame, fragment3);
+			transaction.addToBackStack("event_bo");
+			transaction.commit();
 		}
 		if (data.equals("fragment_i_miei_event")) {
 			Log.w("call fragment event", data);
@@ -267,7 +276,7 @@ public class MainActivity extends FragmentActivity implements Communicator {
 			FragmentManager manager = getFragmentManager();
 			FragmentTransaction transaction = manager.beginTransaction();
 			transaction.replace(R.id.content_frame, fragment);
-			transaction.addToBackStack("event_description");
+			transaction.addToBackStack("event_bo");
 			transaction.commit();
 		}
 

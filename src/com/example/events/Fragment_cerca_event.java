@@ -50,19 +50,10 @@ public class Fragment_cerca_event extends Fragment{
         transaction.commit();
 		
 		ImageView imageEvent = (ImageView) view.findViewById(R.id.image_event);
-		//cosa vecchia			TextView descizione = (TextView) view.findViewById(R.id.descrizione_event);
 		
 		BitmapDrawable bdrawable = new BitmapDrawable(events.get(MainActivity.getidEvents()).getPhoto());
 		imageEvent.setBackgroundDrawable(bdrawable);
-//cosa vecchia			descizione.setText(events.get(MainActivity.getidEvents()).getDescription());
-//cosa vecchia			descizione.setMovementMethod(new ScrollingMovementMethod());
-//		final Fragment_descritpion fragment = new Fragment_descritpion();
-//		final Fragment_partecipant fragment2 = new Fragment_partecipant();
-//
-//		FragmentManager manager = getFragmentManager();
-//		FragmentTransaction transaction = manager.beginTransaction();
-//		transaction.add(R.id.fragment_event, fragment, "descriptionfragment");
-//		transaction.commit();
+
 
 		Button b0 = (Button) view.findViewById(R.id.button_map_event);
 		b0.setOnClickListener(new OnClickListener() {

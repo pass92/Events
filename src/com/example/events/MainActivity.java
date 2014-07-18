@@ -72,6 +72,7 @@ public class MainActivity extends Activity implements Communicator {
 
 	//info logged user
 	public static UserHelper infoUserLogged = new UserHelper();
+
 	
 	// sessione passata dopo il Login
 	static Session session;

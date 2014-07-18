@@ -4,6 +4,7 @@ package com.example.events;
 
 
 import com.example.events.Dialogfragment.NoticeDialogLIstener;
+import com.facebook.Session;
 
 import android.app.AlertDialog;
 import android.app.DialogFragment;
@@ -128,8 +129,12 @@ public class Fragment_impostazioni extends Fragment implements NoticeDialogLIste
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				
-				
+			System.out.println("Session.getActiveSession(): "+Session.getActiveSession());
+				if (Session.getActiveSession() != null) {
+				    Session.getActiveSession().closeAndClearTokenInformation();
+				}
+                
+				Session.setActiveSession(null);
 			}
 		});
 		

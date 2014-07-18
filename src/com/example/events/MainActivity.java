@@ -174,7 +174,7 @@ public class MainActivity extends Activity implements Communicator {
 			FragmentManager manager = getFragmentManager();
 			FragmentTransaction transaction = manager.beginTransaction();
 			transaction.replace(R.id.content_frame, fragment, "main");
-			//transaction.addToBackStack("myscreen");
+			transaction.addToBackStack("myscreen");
 			transaction.commit();
 			// }
 			break;
@@ -266,6 +266,7 @@ public class MainActivity extends Activity implements Communicator {
 			FragmentManager manager = getFragmentManager();
 			FragmentTransaction transaction = manager.beginTransaction();
 			transaction.replace(R.id.content_frame, fragment);
+			transaction.addToBackStack("event_bo3");
 			transaction.commit();
 		}
 		if (data.equals("fragment_eventcerca_descrizione")) {

@@ -66,7 +66,7 @@ public class MainActivity extends Activity implements Communicator {
 			"Crea Evento", "Cerca Evento", "Impostazioni" };
 
 	//info logged user
-	private static UserHelper infoUserLogged=null;
+	public static UserHelper infoUserLogged=null;
 	
 	// sessione passata dopo il Login
 	static Session session;

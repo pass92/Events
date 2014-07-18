@@ -11,6 +11,7 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.*;
 import android.os.Bundle;
@@ -26,11 +27,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Fragment_impostazioni extends Fragment implements NoticeDialogLIstener{
+public class Fragment_impostazioni extends Fragment {
 
     @Override 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle saveInstanceState){
 		final View view= inflater.inflate(R.layout.fragment_impostazioni,container,false);
+TextView tx=(TextView)view.findViewById(R.id.text_NomeUtente);
 
 		SeekBar S = (SeekBar)view.findViewById(R.id.seekBar1);
 		final TextView T = (TextView) view.findViewById(R.id.textkm);
@@ -135,7 +137,13 @@ public class Fragment_impostazioni extends Fragment implements NoticeDialogLIste
 				}
                 
 				Session.setActiveSession(null);
+				
+				  // definisco l'intenzione  
+	            Intent intent = new Intent(getActivity().getApplicationContext(),LogActivity.class);  
+	            // passo all'attivazione dell'activity Pagina.java   
+	            startActivity(intent);
 			}
+          
 		});
 		
 			
@@ -161,43 +169,6 @@ public class Fragment_impostazioni extends Fragment implements NoticeDialogLIste
 	
 
 
-	@Override
-	public void onDialogPositiveClick() {
-		
-			
-			
-			/*final ViewGroup newView = (ViewGroup) LayoutInflater.from(view.getContext()).inflate(R.layout.list_item_example,mContainerView,false);
-
-	        // Set the text in the new row to a random country.
-	        ((TextView) newView.findViewById(android.R.id.text1)).setText("ciao");
-
-	        // Set a click listener for the "X" button in the row that will remove the row.
-	        newView.findViewById(R.id.delete_button).setOnClickListener(new View.OnClickListener() {
-	            @Override
-	            public void onClick(View view) {
-	                // Remove the row from its parent (the container view).
-	                // Because mContainerView has android:animateLayoutChanges set to true,
-	                // this removal is automatically animated.
-	               mContainerView.removeView(newView);
-
-	                
-	            }
-	        });
-
-	        // Because mContainerView has android:animateLayoutChanges set to true,
-	        // adding this view is automatically animated.
-	        mContainerView.addView(newView, 0);
-			*/
-		
-		
-	}
-
-
-	@Override
-	public void onDialogNegativeClick() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 
 }

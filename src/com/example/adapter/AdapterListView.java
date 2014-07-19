@@ -10,6 +10,7 @@ import com.example.events.R;
 import com.example.events.R.id;
 import com.example.events.R.layout;
 import com.example.helper.EventsHelper;
+import com.example.helper.StorageHelper;
 
 import android.content.ClipData.Item;
 import android.content.Context;
@@ -60,11 +61,17 @@ public class AdapterListView extends ArrayAdapter<EventsHelper> {
 		// List<EventsHelper> events = MainActivity.getListEvents();
 		// 4. Set the text for textView
 
-		Bitmap bitmapImage = loadImageFromStorage("/storage/sdcard0",events.get(position).getId());
+		Bitmap bitmapImage = StorageHelper.loadImageFromStorage("/storage/sdcard0",events.get(position).getId());
 
-		BitmapDrawable bdrawable = new BitmapDrawable(bitmapImage);
-		imageView.setBackgroundDrawable(bdrawable);
-
+		if(bitmapImage!=null){
+		     BitmapDrawable bdrawable = new BitmapDrawable(bitmapImage);
+		     imageView.setBackgroundDrawable(bdrawable);
+		}
+		else{
+			 BitmapDrawable bdrawable = new BitmapDrawable(events.get(position).getPhoto());
+		     imageView.setBackgroundDrawable(bdrawable);
+			//imageView.setImageResource(R.drawable.default_event);
+		}
 
 		time = new String(events.get(position).getStart_time());
 		year = new String(time.substring(0, 4));
@@ -87,22 +94,7 @@ public class AdapterListView extends ArrayAdapter<EventsHelper> {
 	public List getListDisplayed() {
 		return this.events;
 	}
-	private Bitmap loadImageFromStorage(String path, String id) {
-
-		try {
-			
-			File f = new File(path, id + ".jpg");
-			
-			Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
-			return b;
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		return null;
-
-	}
-
+	
 	public void setListEvent(EventsHelper event) {
 		this.events.add(event);
 	}

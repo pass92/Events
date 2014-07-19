@@ -8,8 +8,7 @@
         android:id="@+id/image_event"
         android:layout_width="match_parent"
         android:layout_height="168dp"
-        android:paddingBottom="20dp"
-        android:background="@drawable/festa"/>
+        android:paddingBottom="20dp" />
 
      <Button
          android:id="@+id/button_map_event"

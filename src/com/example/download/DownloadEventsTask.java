@@ -9,6 +9,7 @@ import com.example.fragment.Fragment_partecipant;
 import com.example.helper.Communicator;
 import com.example.helper.DistanceBeetwenPoint;
 import com.example.helper.EventsHelper;
+import com.example.helper.StorageHelper;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Response;
@@ -217,7 +218,7 @@ public class DownloadEventsTask extends
 				String URLPhoto = events.get(i).getPhotoURL();
 				if (URLPhoto != null) {// salvo nell internal
 
-					saveToInternalSorage(getBitmapFromURL(URLPhoto), events.get(i).getId());
+					StorageHelper.saveToInternalSorage(getBitmapFromURL(URLPhoto), events.get(i).getId());
 					count++;
 					//System.out.println("result: "+ loadImageFromStorage("/storage/sdcard0"));
 					
@@ -331,7 +332,7 @@ public class DownloadEventsTask extends
 	}
 
 	// AGGIUNTA////////////////////////////////////////////////////
-	private String saveToInternalSorage(Bitmap bitmapImage, String id) {
+	/*private String saveToInternalSorage(Bitmap bitmapImage, String id) {
 
 		String filename = id+".jpg";
 		File sd = Environment.getExternalStorageDirectory();
@@ -348,7 +349,7 @@ public class DownloadEventsTask extends
 		return filename;
 
 	}
-
+*/
 	
 	// ////////////////////////////////////////////
 

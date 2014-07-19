@@ -8,6 +8,7 @@ import com.example.events.R;
 import com.example.events.R.id;
 import com.example.events.R.layout;
 import com.example.helper.EventsHelper;
+import com.example.helper.StorageHelper;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -15,6 +16,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -55,11 +57,18 @@ public class Fragment_event extends Fragment {
 		ImageView imageEvent = (ImageView) view.findViewById(R.id.image_event);
 		// cosa vecchia TextView descizione = (TextView)
 		// view.findViewById(R.id.descrizione_event);
-
-		BitmapDrawable bdrawable = new BitmapDrawable(events.get(
-				MainActivity.getidEvents()).getPhoto());
-		imageEvent.setBackgroundDrawable(bdrawable);
+		Bitmap bitmap = StorageHelper.loadImageFromStorage(
+				StorageHelper.pathStorage,
+				events.get(MainActivity.getidEvents()).getId());
+		if(bitmap!=null){
+			
 		
+		BitmapDrawable bdrawable = new BitmapDrawable(bitmap);
+		imageEvent.setBackgroundDrawable(bdrawable);
+		}
+		else{
+			imageEvent.setBackgroundResource(R.drawable.default_event);
+		}
 
 		Button b0 = (Button) view.findViewById(R.id.button_map_event);
 		b0.setOnClickListener(new OnClickListener() {
@@ -102,7 +111,7 @@ public class Fragment_event extends Fragment {
 
 				Toast toast = Toast.makeText(context, text, duration);
 				toast.show();
-				
+
 			}
 		});
 
@@ -114,14 +123,14 @@ public class Fragment_event extends Fragment {
 				// TODO Auto-generated method stub
 				Fragment fragment2 = new Fragment_partecipant();
 				Bundle args = new Bundle();
-				args.putString("id", events.get(
-						MainActivity.getidEvents()).getId());
+				args.putString("id", events.get(MainActivity.getidEvents())
+						.getId());
 				fragment2.setArguments(args);
 				FragmentManager manager = getFragmentManager();
 				FragmentTransaction transaction = manager.beginTransaction();
 				transaction.replace(R.id.content_frame2, fragment2,
 						"partecipa_event");
-				
+
 				transaction.commit();
 
 			}
@@ -144,18 +153,22 @@ public class Fragment_event extends Fragment {
 	}
 
 	public void invokeGoogleMaps() {
-		
-	
-		if(events.get(MainActivity.getidEvents()).getLatitude()==null){
-			
+
+		if (events.get(MainActivity.getidEvents()).getLatitude() == null) {
+
+		} else {
+			// String uri = "geo:"+
+			// events.get(MainActivity.getidEvents()).getLatitude() + "," +
+			// events.get(MainActivity.getidEvents()).getLongitude();
+			String uri = "geo:0,0?q="
+					+ events.get(MainActivity.getidEvents()).getLatitude()
+					+ ","
+					+ events.get(MainActivity.getidEvents()).getLongitude();
+
+			startActivity(new Intent(android.content.Intent.ACTION_VIEW,
+					Uri.parse(uri)));
 		}
-		else{
-		//String uri = "geo:"+ events.get(MainActivity.getidEvents()).getLatitude() + "," + events.get(MainActivity.getidEvents()).getLongitude();
-			String uri="geo:0,0?q="+events.get(MainActivity.getidEvents()).getLatitude() +","+events.get(MainActivity.getidEvents()).getLongitude();
-			
-			startActivity(new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri)));
-		}
-		
+
 	}
 
 }

@@ -1,5 +1,8 @@
 package com.example.adapter;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +14,7 @@ import com.example.helper.EventsHelper;
 import android.content.ClipData.Item;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,7 +60,7 @@ public class AdapterListView extends ArrayAdapter<EventsHelper> {
 		// List<EventsHelper> events = MainActivity.getListEvents();
 		// 4. Set the text for textView
 
-		Bitmap bitmapImage = events.get(position).getPhoto();
+		Bitmap bitmapImage = loadImageFromStorage("/storage/sdcard0",events.get(position).getId());
 
 		BitmapDrawable bdrawable = new BitmapDrawable(bitmapImage);
 		imageView.setBackgroundDrawable(bdrawable);
@@ -82,6 +86,21 @@ public class AdapterListView extends ArrayAdapter<EventsHelper> {
 
 	public List getListDisplayed() {
 		return this.events;
+	}
+	private Bitmap loadImageFromStorage(String path, String id) {
+
+		try {
+			
+			File f = new File(path, id + ".jpg");
+			
+			Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+			return b;
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
+
 	}
 
 	public void setListEvent(EventsHelper event) {

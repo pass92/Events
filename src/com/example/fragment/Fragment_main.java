@@ -49,7 +49,7 @@ import android.widget.Toast;
 public class Fragment_main extends Fragment {
 	Button b1;
 	private static List<EventsHelper> events = new ArrayList<EventsHelper>();
-	private static ProgressDialog dialog;
+	private ProgressDialog dialog;
 
 	
 	public static Boolean flag_loading = true;
@@ -62,7 +62,7 @@ public class Fragment_main extends Fragment {
 	String city="";
 	
 	//offset on query facebook and Limit
-	static Integer offsetQuery=0;
+	private static int offsetQuery=0;
 	Integer limitQuery=10;
 
 	
@@ -126,17 +126,19 @@ public class Fragment_main extends Fragment {
 		//print on screen events
 		if (events.size()==0) {
 			start=true;
+
 			dialog = ProgressDialog.show(view.getContext(), "", "Attendi...",
 					false, true);
 			DownloadEventsTask taskEvents = new DownloadEventsTask(view, comm,
 					lv, dialog, view.getContext(),city,offsetQuery,limitQuery,adapter,(ArrayList<EventsHelper>) events);
 			taskEvents.execute();
-		} else {
+		} 
+		//else {
 			//events = MainActivity.getListEvents();
-			AdapterListView adapter = new AdapterListView(view.getContext(),
-					(ArrayList<EventsHelper>) events);
-			lv.setAdapter(adapter);
-		}
+//			adapter = new AdapterListView(view.getContext(),
+//					(ArrayList<EventsHelper>) events);
+//			lv.setAdapter(adapter);
+//		}
 
 		// Aggiungo l'ascoltatore per aprire maggiori dettagli dall'elenco della
 		// listView
@@ -170,7 +172,7 @@ public class Fragment_main extends Fragment {
 
 						dialog = ProgressDialog.show(view.getContext(), "", "Attendi...",
 								false, true);
-						offsetQuery += 10;
+						offsetQuery = offsetQuery+10;
 						DownloadEventsTask taskEvents = new DownloadEventsTask(view, comm,
 								lv, dialog, view.getContext(),city,offsetQuery,limitQuery,adapter,(ArrayList<EventsHelper>) events);
 						taskEvents.execute();

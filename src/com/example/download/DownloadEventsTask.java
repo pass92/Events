@@ -14,6 +14,9 @@ import com.facebook.android.Facebook;
 import com.facebook.model.GraphObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -41,8 +44,10 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.net.ParseException;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
@@ -61,15 +66,21 @@ public class DownloadEventsTask extends
 	private Cursor cursor;
 	private Context context;
 	private String city;
-	private Integer offsetQuery;
+	private int offsetQuery;
 	private Integer limitQuery;
 	private AdapterListView adapter;
-	private static Integer start = 0;
 	private List<EventsHelper> events;
+
+	// data
+	private String year;
+	private String day;
+	private String month;
+	private String hour;
+	private String time;
 
 	public DownloadEventsTask(View view, Communicator comm, ListView l,
 			ProgressDialog dialog, Context context, String city,
-			Integer offsetQuery, Integer limitQuery, AdapterListView adapter,
+			int offsetQuery, Integer limitQuery, AdapterListView adapter,
 			List<EventsHelper> events) {
 		this.view = view;
 		this.comm = comm;
@@ -88,20 +99,6 @@ public class DownloadEventsTask extends
 	protected void onPreExecute() {
 		// TODO Auto-generated method stub
 		super.onPreExecute();
-		// fqlQuery =
-		// "select eid,name,description,start_time, pic_big,venue from event where eid in (SELECT eid FROM event WHERE contains(\""
-		// + city
-		// + "\") or contains(\""
-		// + "Italy"
-		// + "\") ) and start_time > now() order by start_time ASC limit "
-		// + Integer.toString(limitQuery)
-		// + " offset "
-		// + Integer.toString(offsetQuery); // order by start_time ASC
-		// // fqlQuery =
-		// //
-		// "q=Trento&type=event&fields=id,name ,start_time,location,venue,cover";
-		// Log.w("OnPreExecute", fqlQuery);
-		// params.putString("q", fqlQuery);
 		session = MainActivity.session;
 
 	}
@@ -170,9 +167,22 @@ public class DownloadEventsTask extends
 				f.setPhotoURL(pathPhoto);
 				f.setLatitude(latitude);
 				f.setLongitude(longitude);
-				if ((f.getLatitude() > 46.0) && (f.getLatitude() < 46.1))
-					events.add(f);
 
+				time = new String(f.getStart_time());
+				year = new String(time.substring(0, 4));
+				month = new String(time.substring(5, 7));
+				day = new String(time.substring(8, 10));
+				if (time.length() >= 16) {
+					hour = new String(time.substring(11, 16));
+				} else {
+					hour = new String("null");
+				}
+
+				if ((f.getLatitude() > 46.0) && (f.getLatitude() < 46.1))
+					//if (month.equals("07"))
+						events.add(f);
+
+				Log.w("MONTH", "["+month+"]");
 				// dbHelper.open();
 				// dbHelper.createEvents(id, photoURL, title, description,
 				// start_time, "0", "0");
@@ -192,18 +202,20 @@ public class DownloadEventsTask extends
 
 		// // cliclo la lista di elementi scaricare l'immagine relativa
 		// all'evento
-		for (int i = 0; i < 20; i++) {
-			String URLPhoto = events.get(i).getPhotoURL();
-			if (URLPhoto != null)
-				events.get(i).setPhoto(getBitmapFromURL(URLPhoto));
-			else {
-				Bitmap bitmap = BitmapFactory.decodeResource(
-						context.getResources(), R.drawable.default_event);
-				events.get(i).setPhoto(bitmap);
+		if ((10 + offsetQuery) < (events.size())) {
+			for (int i = offsetQuery; i < 10 + offsetQuery; i++) {
+				String URLPhoto = events.get(i).getPhotoURL();
+				if (URLPhoto != null)
+					events.get(i).setPhoto(getBitmapFromURL(URLPhoto));
+				else {
+					Bitmap bitmap = BitmapFactory.decodeResource(
+							context.getResources(), R.drawable.default_event);
+					events.get(i).setPhoto(bitmap);
+				}
 			}
 		}
 
-		return (ArrayList) events;
+		return (ArrayList<EventsHelper>) events;
 	}
 
 	@Override
@@ -212,14 +224,22 @@ public class DownloadEventsTask extends
 		super.onPostExecute(result);
 		Log.w("Async Task", "on post excute");
 
-		for (int i = 0; i < result.size(); i++) {
-			events.add(result.get(i));
-			adapter.notifyDataSetChanged();
+		if ((10 + offsetQuery) < (result.size())) {
+			
+			List<EventsHelper> list = new ArrayList<EventsHelper>();
+			for (int i = offsetQuery; i < 10 + offsetQuery; i++) {
+				events.add(result.get(i));
+				adapter.notifyDataSetChanged();
+				list.add(result.get(i));
+			}
+
+			MainActivity.setListEvents(list);
+
+			Fragment_main.flag_loading = false;
 		}
-		MainActivity.setListEvents(result);
-		Fragment_main.flag_loading = false;
 		if (dialog.isShowing())
 			dialog.dismiss();
+
 	}
 
 	public Bitmap getBitmapFromURL(String imageUrl) {
@@ -232,11 +252,23 @@ public class DownloadEventsTask extends
 			connection.connect();
 			InputStream input = connection.getInputStream();
 			Bitmap myBitmap = BitmapFactory.decodeStream(input);
-			return myBitmap;
+
+			// resize
+			Bitmap bJPGcompress = codec(myBitmap, Bitmap.CompressFormat.JPEG,5);
+
+			return bJPGcompress;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	private Bitmap codec(Bitmap src, Bitmap.CompressFormat format, int quality) {
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		src.compress(format, quality, os);
+
+		byte[] array = os.toByteArray();
+		return BitmapFactory.decodeByteArray(array, 0, array.length);
 	}
 
 	public JSONObject getRequestFromUrl(String url) {

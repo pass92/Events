@@ -182,11 +182,13 @@ public class DownloadEventsTask extends
 					//if (month.equals("07"))
 						events.add(f);
 
+
 				Log.w("MONTH", "["+month+"]");
 				// dbHelper.open();
 				// dbHelper.createEvents(id, photoURL, title, description,
 				// start_time, "0", "0");
 				// dbHelper.close();
+
 			}
 
 			//

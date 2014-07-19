@@ -59,18 +59,7 @@ public class Fragment_event extends Fragment {
 		BitmapDrawable bdrawable = new BitmapDrawable(events.get(
 				MainActivity.getidEvents()).getPhoto());
 		imageEvent.setBackgroundDrawable(bdrawable);
-		// cosa vecchia
-		// descizione.setText(events.get(MainActivity.getidEvents()).getDescription());
-		// cosa vecchia descizione.setMovementMethod(new
-		// ScrollingMovementMethod());
-		// final Fragment_descritpion fragment = new Fragment_descritpion();
-		// final Fragment_partecipant fragment2 = new Fragment_partecipant();
-		//
-		// FragmentManager manager = getFragmentManager();
-		// FragmentTransaction transaction = manager.beginTransaction();
-		// transaction.add(R.id.fragment_event, fragment,
-		// "descriptionfragment");
-		// transaction.commit();
+		
 
 		Button b0 = (Button) view.findViewById(R.id.button_map_event);
 		b0.setOnClickListener(new OnClickListener() {
@@ -156,15 +145,7 @@ public class Fragment_event extends Fragment {
 
 	public void invokeGoogleMaps() {
 		
-		/*String uri = String.format(Locale.ITALY, "geo:0,0?q=address",
-				events.get(MainActivity.getidEvents()).getLatitude(), events
-						.get(MainActivity.getidEvents()).getLongitude());
-		
-		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-		System.out.println("lat: "+events.get(MainActivity.getidEvents()).getLatitude());
-		System.out.println("long: "+events.get(MainActivity.getidEvents()).getLongitude());
-		this.startActivity(intent);
-		*/
+	
 		if(events.get(MainActivity.getidEvents()).getLatitude()==null){
 			
 		}

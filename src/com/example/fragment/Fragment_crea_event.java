@@ -78,6 +78,7 @@ public class Fragment_crea_event extends Fragment {
 			 System.out.println("IMG");
 			 Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 			 i.setType("image/*");
+			 image.setImageBitmap(null);
 			 startActivityForResult(i, RESULT_ACTIVITY);
 			
 	 	 }
@@ -157,8 +158,7 @@ public class Fragment_crea_event extends Fragment {
 	     
 	     if((requestCode==RESULT_ACTIVITY)&&(resultCode==RESULT_CODE)&&(data!=null)){
 	    	 
-
-			     System.out.println(data);
+                 System.out.println(data);
 			     Uri selectedImageUri = data.getData();           
 	             Object selectedImagePath = getPath(selectedImageUri);
 	             
@@ -173,19 +173,7 @@ public class Fragment_crea_event extends Fragment {
 					e.printStackTrace();
 				} 
 
-	            
-	             /*
-	            image.setAdjustViewBounds(true);
-	             image.setImageURI(selectedImageUri);
-	             selectedImagePath=null;
-	             image.setAdjustViewBounds(true);
-	            
-	             //image.setScaleType(ImageView.ScaleType.FIT_CENTER);
-	             image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-	            
-	             //image.setScaleType(ImageView.ScaleType.MATRIX);+
-	           
-            */
+	          
 		}
 	     else {System.out.println("ERRORE");}
 	}
@@ -204,25 +192,4 @@ public class Fragment_crea_event extends Fragment {
 }
  
     	 
-	    	 
-	    	 /*
-	    	 
-	    	 pathName=pathName.substring(8);
-	    	 System.out.println(pathName);
-	    	 System.out.println(data);
-	    	 
-
-             File imgFile = new  File(pathName);
-             //if(imgFile.exists()){
-                       Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                       image.setImageBitmap(myBitmap);
-                       
-             //}
-
-	    	// Drawable d = Drawable.createFromPath(pathName);
-	    	 
-	    	// Resources res = getResources(); 
-	        /// Drawable drawable = res.getDrawable(R.drawable.schermo1);
-	    	 
-	        */
-	
+	    	

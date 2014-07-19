@@ -12,6 +12,7 @@ import android.os.Environment;
 public class StorageHelper {
 	
 	public static String pathStorage="/storage/sdcard0";
+	
 	public static String saveToInternalSorage(Bitmap bitmapImage, String id) {
 		
 

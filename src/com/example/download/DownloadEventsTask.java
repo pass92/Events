@@ -89,8 +89,6 @@ public class DownloadEventsTask extends
 
 	private static int count = 0;
 
-
-
 	public DownloadEventsTask(View view, Communicator comm, ListView l,
 			ProgressDialog dialog, Context context, String city,
 			int offsetQuery, Integer limitQuery, AdapterListView adapter,
@@ -116,8 +114,8 @@ public class DownloadEventsTask extends
 		raggio = Fragment_impostazioni.loadUserDatails(view.getContext());
 		longitude = Fragment_main.longitude;
 		latitude = Fragment_main.latitude;
-		difLAt = (1*raggio)/(111.22263);
-		difLong = (1*raggio)/(772.1345);
+		difLAt = (1 * raggio) / (111.22263);
+		difLong = (1 * raggio) / (772.1345);
 	}
 
 	@Override
@@ -184,19 +182,24 @@ public class DownloadEventsTask extends
 				f.setPhotoURL(pathPhoto);
 				f.setLatitude(latitude);
 				f.setLongitude(longitude);
-	
 
-				if ( latitude > (this.latitude-difLAt) && latitude < (this.latitude+difLAt)   && longitude > (this.longitude-difLong) && longitude < (this.longitude+difLong)) {
-					events.add(f); 
-					
+				if (latitude > (this.latitude - difLAt)
+						&& latitude < (this.latitude + difLAt)
+						&& longitude > (this.longitude - difLong)
+						&& longitude < (this.longitude + difLong)) {
+					events.add(f);
+
 				}
 				// Log.w("LOAD PREFERENCES	",
 				// Integer.toString(Fragment_impostazioni.loadUserDatails(context)));
 
-				// dbHelper.open();
-				// dbHelper.createEvents(id, photoURL, title, description,
-				// start_time, "0", "0");
-				// dbHelper.close();
+				dbHelper.open();
+			//	if (dbHelper.fetchAllEvents() == null) {
+					dbHelper.createEvents(id, pathPhoto, title, description,
+							start_time, "0", "0");
+					dbHelper.close();
+			//	}
+				//dbHelper.close();
 
 			}
 
@@ -218,15 +221,18 @@ public class DownloadEventsTask extends
 				String URLPhoto = events.get(i).getPhotoURL();
 				if (URLPhoto != null) {// salvo nell internal
 
-					StorageHelper.saveToInternalSorage(getBitmapFromURL(URLPhoto), events.get(i).getId());
+					StorageHelper.saveToInternalSorage(
+							getBitmapFromURL(URLPhoto), events.get(i).getId());
 					count++;
-					//System.out.println("result: "+ loadImageFromStorage("/storage/sdcard0"));
-					
-					//events.get(i).setPhoto(loadImageFromStorage("/storage/sdcard0",events.get(i).getId()));
+					// System.out.println("result: "+
+					// loadImageFromStorage("/storage/sdcard0"));
+
+					// events.get(i).setPhoto(loadImageFromStorage("/storage/sdcard0",events.get(i).getId()));
 
 				} else {
 
-					Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.default_event);
+					Bitmap bitmap = BitmapFactory.decodeResource(
+							context.getResources(), R.drawable.default_event);
 					events.get(i).setPhoto(bitmap);
 				}
 			}
@@ -332,25 +338,21 @@ public class DownloadEventsTask extends
 	}
 
 	// AGGIUNTA////////////////////////////////////////////////////
-	/*private String saveToInternalSorage(Bitmap bitmapImage, String id) {
+	/*
+	 * private String saveToInternalSorage(Bitmap bitmapImage, String id) {
+	 * 
+	 * String filename = id+".jpg"; File sd =
+	 * Environment.getExternalStorageDirectory(); File dest = new File(sd,
+	 * filename);
+	 * 
+	 * try { FileOutputStream out = new FileOutputStream(dest);
+	 * bitmapImage.compress(Bitmap.CompressFormat.PNG, 90, out); out.flush();
+	 * out.close(); } catch (Exception e) { e.printStackTrace(); } return
+	 * filename;
+	 * 
+	 * }
+	 */
 
-		String filename = id+".jpg";
-		File sd = Environment.getExternalStorageDirectory();
-		File dest = new File(sd, filename);
-
-		try {
-			FileOutputStream out = new FileOutputStream(dest);
-			bitmapImage.compress(Bitmap.CompressFormat.PNG, 90, out);
-			out.flush();
-			out.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return filename;
-
-	}
-*/
-	
 	// ////////////////////////////////////////////
 
 }

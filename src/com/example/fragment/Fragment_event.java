@@ -26,10 +26,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class Fragment_event extends Fragment {
 
@@ -136,6 +138,8 @@ public class Fragment_event extends Fragment {
 			}
 		});
 
+
+		
 		return view;
 	}
 
@@ -170,5 +174,6 @@ public class Fragment_event extends Fragment {
 		}
 
 	}
+
 
 }

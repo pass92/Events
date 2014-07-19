@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.example.adapter.AdapterUser;
 import com.example.download.DownloadFriendsWhoParticipate;
+import com.example.events.MainActivity;
 import com.example.events.R;
 import com.example.events.R.id;
 import com.example.events.R.layout;
@@ -22,11 +23,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class Fragment_partecipant extends Fragment {
 
@@ -53,7 +56,7 @@ public class Fragment_partecipant extends Fragment {
 				false);
 
 		// Lista partecipanti evento
-		List<UserHelper> user =new ArrayList();
+		final List<UserHelper> user =new ArrayList();
 		final ListView listView = (ListView) view
 				.findViewById(R.id.listview_partecipanti);
 		adapter = new AdapterUser(view.getContext(), user);
@@ -123,6 +126,16 @@ public class Fragment_partecipant extends Fragment {
 			}
 		});
 
+		listView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Intent facebookIntent = getOpenFacebookIntent(view.getContext(),user.get(position).getId());
+				startActivity(facebookIntent);
+				
+			}
+		});
+		
 		return view;
 	}
 
@@ -131,5 +144,18 @@ public class Fragment_partecipant extends Fragment {
 		// TODO Auto-generated method stub
 		super.onDestroyView();
 		getView().removeCallbacks(null);
+	}
+	
+	public static Intent getOpenFacebookIntent(Context context, String idProfile) {
+
+	    try {
+	        context.getPackageManager()
+	                .getPackageInfo("com.facebook.katana", 0); //Checks if FB is even installed.
+	        return new Intent(Intent.ACTION_VIEW,
+	                Uri.parse("fb://profile/"+idProfile)); //Trys to make intent with FB's URI
+	    } catch (Exception e) {
+	        return new Intent(Intent.ACTION_VIEW,
+	                Uri.parse("https://www.facebook.com/"+idProfile)); //catches and opens a url to the desired page
+	    }
 	}
 }

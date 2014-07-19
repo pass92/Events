@@ -6,6 +6,7 @@ import java.util.List;
 import com.example.events.R;
 import com.example.events.R.id;
 import com.example.events.R.layout;
+import com.example.fragment.Fragment_event;
 import com.example.helper.UserHelper;
 
 import android.content.ClipData.Item;
@@ -50,14 +51,7 @@ public class AdapterUser extends ArrayAdapter<UserHelper> {
             // 3. Get the two text view from the rowView
             ImageView imageView = (ImageView) rowView.findViewById(R.id.image_view_user);
             TextView titleView = (TextView) rowView.findViewById(R.id.name_user);
-            titleView.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-				
-				}
-			});
+
             
             //List<EventsHelper> events = MainActivity.getListEvents();
             // 4. Set the text for textView 

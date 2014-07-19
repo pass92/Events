@@ -10,9 +10,14 @@ import com.example.helper.UserHelper;
 
 import android.content.ClipData.Item;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -45,6 +50,14 @@ public class AdapterUser extends ArrayAdapter<UserHelper> {
             // 3. Get the two text view from the rowView
             ImageView imageView = (ImageView) rowView.findViewById(R.id.image_view_user);
             TextView titleView = (TextView) rowView.findViewById(R.id.name_user);
+            titleView.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+				
+				}
+			});
             
             //List<EventsHelper> events = MainActivity.getListEvents();
             // 4. Set the text for textView 

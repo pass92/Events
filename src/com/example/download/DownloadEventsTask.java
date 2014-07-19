@@ -173,10 +173,10 @@ public class DownloadEventsTask extends
 				if ((f.getLatitude() > 46.0) && (f.getLatitude() < 46.1))
 					events.add(f);
 
-				// dbHelper.open();
-				// dbHelper.createEvents(id, photoURL, title, description,
-				// start_time, "0", "0");
-				// dbHelper.close();
+				dbHelper.open();
+				dbHelper.createEvents(id, pathPhoto, title, description,
+				start_time, "0", "0");
+				dbHelper.close();
 			}
 
 			//

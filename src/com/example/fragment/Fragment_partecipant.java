@@ -60,6 +60,7 @@ public class Fragment_partecipant extends Fragment {
 		listView.setAdapter(adapter);
 		
 		
+		
 		//String id = event.get(MainActivity.getidEvents()).getId();
 		//Log.w("ID EVENT", id);
 		DownloadFriendsWhoParticipate taskEvents = new DownloadFriendsWhoParticipate(view, listView, view.getContext(), user,IdEvent,adapter);
@@ -75,7 +76,7 @@ public class Fragment_partecipant extends Fragment {
 				System.out.println(tx.getText());
 				String emailToSend = tx.getText().toString();
 
-				if ((emailToSend.startsWith("www."))) {// mettere controllo sull
+				if ((emailToSend.contains("@"))) {// mettere controllo sull
 														// email
 
 					Intent intent = new Intent(Intent.ACTION_SENDTO); // it's

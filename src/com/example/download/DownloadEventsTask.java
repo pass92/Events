@@ -108,141 +108,10 @@ public class DownloadEventsTask extends
 		final List<EventsHelper> events = new ArrayList<EventsHelper>();
 		Log.w("Async Task", "doInBackground start!");
 
-		// Request request = new Request(session, "/fql", this.params,
-		// HttpMethod.GET, new Request.Callback() {
-		// @Override
-		// public void onCompleted(Response response) {
-		// // Log.i(TAG, "Got results: " + response.toString());
-		// try {
-		// if (response != null) {
-		// final JSONObject json = response
-		// .getGraphObject().getInnerJSONObject();
-		// JSONArray d = json.getJSONArray("data");
-		// int l = (d != null ? d.length() : 0);
-		// for (int i = 0; i < l; i++) {
-		// JSONObject o = d.getJSONObject(i);
-		// String id = o.getString("eid");
-		// String title = o.getString("name");
-		// String description = o
-		// .getString("description");
-		// String start_time = o
-		// .getString("start_time");
-		// String photoURL = o.getString("pic_big");
-		//
-		// Double latitude = null;
-		// Double longitude = null;
-		// try {
-		// JSONObject venue = o
-		// .getJSONObject("venue");
-		// latitude = venue.getDouble("latitude");
-		// longitude = venue
-		// .getDouble("longitude");
-		// } catch (Exception e) {
-		// Log.w("Facebook-Example", e.getCause()
-		// + "JSON Error in response");
-		// }
-		//
-		// EventsHelper f = new EventsHelper();
-		// f.setId(id);
-		// f.setTitle(title);
-		// f.setDescription(description);
-		// f.setStart_time(start_time);
-		// f.setPhotoURL(photoURL);
-		// f.setLatitude(latitude);
-		// f.setLongitude(longitude);
-		// events.add(f);
-		//
-		// dbHelper.open();
-		// dbHelper.createEvents(id, photoURL, title,
-		// description, start_time, "0", "0");
-		// dbHelper.close();
-		// }
-		//
-		// //
-		// // //test impstazione call another events
-		// // //
-		// // JSONObject jo = json.getJSONObject("paging");
-		// // String nextPage = jo.getString("next");
-		// // d Log.w("NEXT_PAGE", nextPage);
-		//
-		// }
-		// } catch (JSONException e) {
-		// Log.w("Facebook-Example", "JSON Error in response");
-		// }
-		// }
-		//
-		// });
-		// Request.executeBatchAndWait(request);
 
-		// Request request = new Request(
-		// session,
-		// "/search?q=Trento&type=event&fields=id,name,start_time,location,venue,cover",
-		// null, HttpMethod.GET, new Request.Callback() {
-		// public void onCompleted(Response response) {
-		// Log.w("RESPONSE", response.toString());
-		// // try {
-		// // if (response != null) {
-		// // final JSONObject json = response
-		// // .getGraphObject().getInnerJSONObject();
-		// // JSONArray d = json.getJSONArray("data");
-		// // int l = (d != null ? d.length() : 0);
-		// // for (int i = 0; i < l; i++) {
-		// // JSONObject o = d.getJSONObject(i);
-		// // String id = o.getString("id");
-		// // String title = o.getString("name");
-		// // // String description = o
-		// // // .getString("description");
-		// // String start_time = o
-		// // .getString("start_time");
-		// // //String photoURL = o.getString("pic_big");
-		// //
-		// // // Double latitude = null;
-		// // // Double longitude = null;
-		// // // try {
-		// // // JSONObject venue = o
-		// // // .getJSONObject("venue");
-		// // // latitude = venue.getDouble("latitude");
-		// // // longitude = venue
-		// // // .getDouble("longitude");
-		// // // } catch (Exception e) {
-		// // // Log.w("Facebook-Example", e.getCause()
-		// // // + "JSON Error in response");
-		// // // }
-		// //
-		// // EventsHelper f = new EventsHelper();
-		// // f.setId(id);
-		// // f.setTitle(title);
-		// // //f.setDescription(description);
-		// // f.setStart_time(start_time);
-		// // // f.setPhotoURL(photoURL);
-		// // // f.setLatitude(latitude);
-		// // // f.setLongitude(longitude);
-		// // events.add(f);
-		// //
-		// // // dbHelper.open();
-		// // // dbHelper.createEvents(id, photoURL, title,
-		// // // description, start_time, "0", "0");
-		// // //dbHelper.close();
-		// // }
-		// //
-		// // //
-		// // // //test impstazione call another events
-		// // // //
-		// // // JSONObject jo = json.getJSONObject("paging");
-		// // // String nextPage = jo.getString("next");
-		// // // d Log.w("NEXT_PAGE", nextPage);
-		// //
-		// // }
-		// // } catch (JSONException e) {
-		// // Log.w("Facebook-Example", "JSON Error in response");
-		// // }
-		// }
-		// });
-		// Request.executeBatchAndWait(request);
-
-		String url = "https://graph.facebook.com/search?q=" + city + "&type=event&access_token="
+		String url = "https://graph.facebook.com/search?q=" + "Trento" + "&type=event&access_token="
 				+ session.getAccessToken()
-				+ "&after=today&fields=id,name,start_time,location,venue,cover,description";
+				+ "&fields=id,name,start_time,location,venue,cover,description";
 		JSONObject json = getRequestFromUrl(url);
 
 		try {
@@ -309,17 +178,17 @@ public class DownloadEventsTask extends
 
 		// // cliclo la lista di elementi scaricare l'immagine relativa
 		// all'evento
-		for (int i = 0; i < events.size(); i++) {
-			String URLPhoto = events.get(i).getPhotoURL();
-			if (URLPhoto != null)
-				events.get(i).setPhoto(getBitmapFromURL(URLPhoto));
-			else{
-				Bitmap icon = BitmapFactory.decodeResource(context.getResources(),
-                        R.drawable.default_event);
-				events.get(i).setPhoto(icon);
-			}
+//		for (int i = 0; i < events.size(); i++) {
+//			String URLPhoto = events.get(i).getPhotoURL();
+//			if (URLPhoto != null)
+//				events.get(i).setPhoto(getBitmapFromURL(URLPhoto));
+//			else{
+//				Bitmap icon = BitmapFactory.decodeResource(context.getResources(),
+//                        R.drawable.default_event);
+//				events.get(i).setPhoto(icon);
+//			}
 			//Log.w("URLImage", URLPhoto);
-		}
+//		}
 
 		return (ArrayList) events;
 	}

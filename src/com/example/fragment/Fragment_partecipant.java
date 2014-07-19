@@ -31,7 +31,7 @@ import android.widget.Toast;
 public class Fragment_partecipant extends Fragment {
 
 	// adapter listView
-	private static List<UserHelper> user = new ArrayList<UserHelper>();
+	private static List<UserHelper> user = null;
 	private AdapterUser adapter;
 	private ArrayList<EventsHelper> event;
 	private String IdEvent;
@@ -53,6 +53,7 @@ public class Fragment_partecipant extends Fragment {
 				false);
 
 		// Lista partecipanti evento
+		List<UserHelper> user =new ArrayList();
 		final ListView listView = (ListView) view
 				.findViewById(R.id.listview_partecipanti);
 		adapter = new AdapterUser(view.getContext(), user);

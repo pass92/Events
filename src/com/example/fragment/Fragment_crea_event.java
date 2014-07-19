@@ -65,62 +65,7 @@ public class Fragment_crea_event extends Fragment {
 	 
 	 
 	 
-	 
-	// ESPERIMENTI DB
-			dbHelper = new DbAdapter(this.getActivity().getApplicationContext());
-			dbHelper.open();
-			//System.out.println("eliminato? :"+dbHelper.deleteEvents("1484968545052144"));
-			//RECORD DA INSERIRE MANUALMENTE PER PROVE
-			
-	        /*
-			//ELIMINO ELEMENTI PER ID PER LE PROVE
-			dbHelper.deleteEvents(id);
-			dbHelper.deleteEvents(id2);
-			//CREO  2 EVENTI */
-			//dbHelper.createEvents(id, image, title, description, start_time,
-			//		end_time, location);
-		    //dbHelper.createEvents(id2, image2, title2, description2, start_time2,
-			//		end_time2, location2);/*
-			// OK Cursor c=dbHelper.fetchEventsById();
-			Cursor c=dbHelper.fetchAllEvents();
-			System.out.println("numero di righe:="+c.getCount());
-			this.getActivity().startManagingCursor(c);
-			//METODO DI RICERCA SU FILTRO 
-			//Cursor c = dbHelper.fetchEventsByFilter("sushi");
-	        //SETTO IL CURSORE SUL PRIMO RECORD 
-			System.out.println("Curosor c=" + c.moveToFirst());
-			
-			
-			
-				System.out.println("===================Risultato delle query:================ ");
-				//STAMPO TUTTI I CAMPI DEL RECORD
-				System.out.println("Curosor c=" + c.getString(0));
-				System.out.println("Curosor c=" + c.getString(1));
-				System.out.println("Curosor c=" + c.getString(2));
-				System.out.println("Curosor c=" + c.getString(3));
-				System.out.println("Curosor c=" + c.getString(4));
-				System.out.println("Curosor c=" + c.getString(5));
-				System.out.println("Curosor c=" + c.getString(6));
-				dbHelper.deleteEvents("1");
-				dbHelper.deleteEvents("2");
-				System.out.println("==================fine risultato query==================");
-				
-				
-			
-			
-			
-		
-			
-			
-			dbHelper.close();
-	        //CHIUDERE IL CURSORE
-			c.close();
-			
-			// Fine DB
-			
-	 
-	 
-	 
+	
 	 
 	 
 	 

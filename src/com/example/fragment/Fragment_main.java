@@ -21,6 +21,7 @@ import com.example.helper.GPSTracker;
 
 import database.DbAdapter;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
@@ -71,7 +72,6 @@ public class Fragment_main extends Fragment {
 		super.onCreate(savedInstanceState);
 	}
 
-	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle saveInstanceState) {
@@ -81,6 +81,7 @@ public class Fragment_main extends Fragment {
 		// ViewGroup l=(ViewGroup)view.findViewById(R.id.layoutTest);
 		final ListView lv = (ListView) view.findViewById(R.id.listview_events);
 
+		
 		//set adapter
 		adapter = new AdapterListView(view.getContext(),events);
 		lv.setAdapter(adapter);

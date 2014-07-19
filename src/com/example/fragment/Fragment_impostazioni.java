@@ -12,6 +12,7 @@ import com.facebook.widget.ProfilePictureView;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class Fragment_impostazioni extends Fragment {
+	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -176,9 +178,20 @@ public class Fragment_impostazioni extends Fragment {
 				// definisco l'intenzione
 				Intent intent = new Intent(getActivity()
 						.getApplicationContext(), LogActivity.class);
+				
+				
+				
+				    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK); 
+
+				   
+
+				
+				
 				// passo all'attivazione dell'activity Pagina.java
 				startActivity(intent);
 			}
+			
+			
 
 		});
 
@@ -198,5 +211,6 @@ public class Fragment_impostazioni extends Fragment {
 		Toast.makeText(context, "Login details are saved..", 3000).show();
 
 	}
+
 
 }

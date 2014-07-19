@@ -14,6 +14,7 @@ public class EventsHelper {
 	private String rsvp_status;
 	private Double latitude;
 	private Double longitude;
+	private String pathPhotoLocal;
 	
 	public String getRsvp_status() {
 		return rsvp_status;
@@ -75,6 +76,12 @@ public class EventsHelper {
 	}
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
+	}
+	public String getPathPhotoLocal() {
+		return pathPhotoLocal;
+	}
+	public void setPathPhotoLocal(String pathPhotoLocal) {
+		this.pathPhotoLocal = pathPhotoLocal;
 	}
 	
 	

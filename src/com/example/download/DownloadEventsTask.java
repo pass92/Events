@@ -16,6 +16,8 @@ import com.facebook.model.GraphObject;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,6 +42,7 @@ import org.json.JSONObject;
 import database.DbAdapter;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -50,6 +53,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 public class DownloadEventsTask extends
@@ -70,6 +74,7 @@ public class DownloadEventsTask extends
 	private Integer limitQuery;
 	private AdapterListView adapter;
 	private List<EventsHelper> events;
+	private static int count = 0;
 
 	// data
 	private String year;
@@ -179,11 +184,10 @@ public class DownloadEventsTask extends
 				}
 
 				if ((f.getLatitude() > 46.0) && (f.getLatitude() < 46.1))
-					//if (month.equals("07"))
-						events.add(f);
+					// if (month.equals("07"))
+					events.add(f);
 
-
-				Log.w("MONTH", "["+month+"]");
+				Log.w("MONTH", "[" + month + "]");
 				// dbHelper.open();
 				// dbHelper.createEvents(id, photoURL, title, description,
 				// start_time, "0", "0");
@@ -207,11 +211,17 @@ public class DownloadEventsTask extends
 		if ((10 + offsetQuery) < (events.size())) {
 			for (int i = offsetQuery; i < 10 + offsetQuery; i++) {
 				String URLPhoto = events.get(i).getPhotoURL();
-				if (URLPhoto != null)
-					events.get(i).setPhoto(getBitmapFromURL(URLPhoto));
-				else {
-					Bitmap bitmap = BitmapFactory.decodeResource(
-							context.getResources(), R.drawable.default_event);
+				if (URLPhoto != null) {// salvo nell internal
+
+					saveToInternalSorage(getBitmapFromURL(URLPhoto), events.get(i).getId());
+					count++;
+					//System.out.println("result: "+ loadImageFromStorage("/storage/sdcard0"));
+					
+					//events.get(i).setPhoto(loadImageFromStorage("/storage/sdcard0",events.get(i).getId()));
+
+				} else {
+
+					Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.default_event);
 					events.get(i).setPhoto(bitmap);
 				}
 			}
@@ -227,7 +237,7 @@ public class DownloadEventsTask extends
 		Log.w("Async Task", "on post excute");
 
 		if ((10 + offsetQuery) < (result.size())) {
-			
+
 			List<EventsHelper> list = new ArrayList<EventsHelper>();
 			for (int i = offsetQuery; i < 10 + offsetQuery; i++) {
 				events.add(result.get(i));
@@ -256,9 +266,9 @@ public class DownloadEventsTask extends
 			Bitmap myBitmap = BitmapFactory.decodeStream(input);
 
 			// resize
-			Bitmap bJPGcompress = codec(myBitmap, Bitmap.CompressFormat.JPEG,5);
+			//Bitmap bJPGcompress = codec(myBitmap, Bitmap.CompressFormat.JPEG, 5);
 
-			return bJPGcompress;
+			return myBitmap;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
@@ -318,5 +328,27 @@ public class DownloadEventsTask extends
 
 		return jObj;
 	}
+
+	// AGGIUNTA////////////////////////////////////////////////////
+	private String saveToInternalSorage(Bitmap bitmapImage, String id) {
+
+		String filename = id+".jpg";
+		File sd = Environment.getExternalStorageDirectory();
+		File dest = new File(sd, filename);
+
+		try {
+			FileOutputStream out = new FileOutputStream(dest);
+			bitmapImage.compress(Bitmap.CompressFormat.PNG, 90, out);
+			out.flush();
+			out.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return filename;
+
+	}
+
+	
+	// ////////////////////////////////////////////
 
 }

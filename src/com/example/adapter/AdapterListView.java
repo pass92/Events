@@ -55,11 +55,15 @@ public class AdapterListView extends ArrayAdapter<EventsHelper> {
 
 		// List<EventsHelper> events = MainActivity.getListEvents();
 		// 4. Set the text for textView
+
 		Bitmap bitmapImage = events.get(position).getPhoto();
-
-		BitmapDrawable bdrawable = new BitmapDrawable(bitmapImage);
-		imageView.setBackgroundDrawable(bdrawable);
-
+		//if (bitmapImage != null) {
+			BitmapDrawable bdrawable = new BitmapDrawable(bitmapImage);
+			imageView.setBackgroundDrawable(bdrawable);
+//		}
+//		else{
+//			imageView.setBackgroundResource(R.drawable.default_event);
+//		}
 		time = new String(events.get(position).getStart_time());
 		year = new String(time.substring(0, 4));
 		month = new String(time.substring(5, 7));

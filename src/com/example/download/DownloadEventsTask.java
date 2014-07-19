@@ -11,6 +11,7 @@ import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.android.Facebook;
+import com.facebook.model.GraphObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -39,6 +40,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -86,18 +88,20 @@ public class DownloadEventsTask extends
 	protected void onPreExecute() {
 		// TODO Auto-generated method stub
 		super.onPreExecute();
-		fqlQuery = "select eid,name,description,start_time, pic_big,venue from event where eid in (SELECT eid FROM event WHERE contains(\""
-				+ city
-				+ "\") or contains(\""
-				+ "Italy"
-				+ "\") ) and start_time > now() order by start_time ASC limit "
-				+ Integer.toString(limitQuery)
-				+ " offset "
-				+ Integer.toString(offsetQuery); // order by start_time ASC
 		// fqlQuery =
+		// "select eid,name,description,start_time, pic_big,venue from event where eid in (SELECT eid FROM event WHERE contains(\""
+		// + city
+		// + "\") or contains(\""
+		// + "Italy"
+		// + "\") ) and start_time > now() order by start_time ASC limit "
+		// + Integer.toString(limitQuery)
+		// + " offset "
+		// + Integer.toString(offsetQuery); // order by start_time ASC
+		// // fqlQuery =
+		// //
 		// "q=Trento&type=event&fields=id,name ,start_time,location,venue,cover";
-		Log.w("OnPreExecute", fqlQuery);
-		params.putString("q", fqlQuery);
+		// Log.w("OnPreExecute", fqlQuery);
+		// params.putString("q", fqlQuery);
 		session = MainActivity.session;
 
 	}
@@ -108,10 +112,10 @@ public class DownloadEventsTask extends
 		final List<EventsHelper> events = new ArrayList<EventsHelper>();
 		Log.w("Async Task", "doInBackground start!");
 
-
-		String url = "https://graph.facebook.com/search?q=" + "Trento" + "&type=event&access_token="
-				+ session.getAccessToken()
-				+ "&fields=id,name,start_time,location,venue,cover,description";
+		String url = "https://graph.facebook.com/search?q=" + city
+				+ "&type=event&access_token=" + session.getAccessToken()
+				+ "&fields=id,name,start_time,venue,cover,description";
+		Log.w("URL REQUEST", url);
 		JSONObject json = getRequestFromUrl(url);
 
 		try {
@@ -123,20 +127,27 @@ public class DownloadEventsTask extends
 				JSONObject o = d.getJSONObject(i);
 				String id = o.getString("id");
 				String title = o.getString("name");
-				String description = o.getString("description");
 				String start_time = o.getString("start_time");
 				// String photoURL = o.getString("source");
 
-				Double latitude = null;
-				Double longitude = null;
+				String description = "";
+				try {
+					description = o.getString("description");
+				} catch (Exception e) {
+					Log.w("Facebook-Example", e.getCause() + "Description!");
+				}
+
+				Double latitude = 0.0;
+				Double longitude = 0.0;
 				JSONObject venue = null;
 				try {
 					venue = o.getJSONObject("venue");
 					latitude = venue.getDouble("latitude");
 					longitude = venue.getDouble("longitude");
 				} catch (Exception e) {
-					Log.w("Facebook-Example", e.getCause()
-							+ "Get Latitude Longitude");
+					Log.w("Facebook-Example",
+							e.getCause() + Integer.toString(i)
+									+ "Get Latitude Longitude");
 				}
 
 				// cover
@@ -146,7 +157,9 @@ public class DownloadEventsTask extends
 					cover = o.getJSONObject("cover");
 					pathPhoto = cover.getString("source");
 				} catch (Exception e) {
-					Log.w("Facebook-Example", e.getCause() + "Get Path Photo");
+					Log.w("Facebook-Example",
+							e.getCause() + Integer.toString(i)
+									+ "Get Path Photo");
 				}
 
 				EventsHelper f = new EventsHelper();
@@ -157,7 +170,8 @@ public class DownloadEventsTask extends
 				f.setPhotoURL(pathPhoto);
 				f.setLatitude(latitude);
 				f.setLongitude(longitude);
-				events.add(f);
+				if ((f.getLatitude() > 46.0) && (f.getLatitude() < 46.1))
+					events.add(f);
 
 				// dbHelper.open();
 				// dbHelper.createEvents(id, photoURL, title, description,
@@ -178,17 +192,16 @@ public class DownloadEventsTask extends
 
 		// // cliclo la lista di elementi scaricare l'immagine relativa
 		// all'evento
-//		for (int i = 0; i < events.size(); i++) {
-//			String URLPhoto = events.get(i).getPhotoURL();
-//			if (URLPhoto != null)
-//				events.get(i).setPhoto(getBitmapFromURL(URLPhoto));
-//			else{
-//				Bitmap icon = BitmapFactory.decodeResource(context.getResources(),
-//                        R.drawable.default_event);
-//				events.get(i).setPhoto(icon);
-//			}
-			//Log.w("URLImage", URLPhoto);
-//		}
+		for (int i = 0; i < 20; i++) {
+			String URLPhoto = events.get(i).getPhotoURL();
+			if (URLPhoto != null)
+				events.get(i).setPhoto(getBitmapFromURL(URLPhoto));
+			else {
+				Bitmap bitmap = BitmapFactory.decodeResource(
+						context.getResources(), R.drawable.default_event);
+				events.get(i).setPhoto(bitmap);
+			}
+		}
 
 		return (ArrayList) events;
 	}
@@ -211,6 +224,7 @@ public class DownloadEventsTask extends
 
 	public Bitmap getBitmapFromURL(String imageUrl) {
 		try {
+			Log.w("DOWNLOAD IMAGE", imageUrl);
 			URL url = new URL(imageUrl);
 			HttpURLConnection connection = (HttpURLConnection) url
 					.openConnection();

@@ -19,6 +19,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.*;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -56,12 +58,12 @@ public class Fragment_impostazioni extends Fragment {
 		SharedPreferences userDetails = getActivity().getApplicationContext()
 				.getSharedPreferences("userdetails",
 						getActivity().getApplicationContext().MODE_PRIVATE);
-		String km = userDetails.getString("km", "");
+		int km = userDetails.getInt("km", 10);
 
-		if (km != null)
+		if (km != 0)
 			try {
-				S.setProgress(Integer.parseInt(km));
-				T.setText(Integer.parseInt(km) + " km");
+				S.setProgress(km);
+				T.setText(km + " km");
 			} catch (NumberFormatException ex) {
 
 			}
@@ -82,7 +84,7 @@ public class Fragment_impostazioni extends Fragment {
 
 			public void onStopTrackingTouch(SeekBar seekBar) {
 
-				saveUserDatails(progressChanged);
+				saveUserDatails(progressChanged,view.getContext());
 
 			}
 		});
@@ -159,6 +161,8 @@ public class Fragment_impostazioni extends Fragment {
 
 			}
 
+			
+			
 		});
 
 		Button b = (Button) view.findViewById(R.id.button_logout);
@@ -178,15 +182,9 @@ public class Fragment_impostazioni extends Fragment {
 				// definisco l'intenzione
 				Intent intent = new Intent(getActivity()
 						.getApplicationContext(), LogActivity.class);
-				
-				
-				
+	
 				    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK); 
 
-				   
-
-				
-				
 				// passo all'attivazione dell'activity Pagina.java
 				startActivity(intent);
 			}
@@ -195,22 +193,31 @@ public class Fragment_impostazioni extends Fragment {
 
 		});
 
+		
 		return view;
 	}
 
-	private void saveUserDatails(Integer kmUser) {
+	private void saveUserDatails(Integer kmUser,Context context) {
 
-		Context context;
-		context = getActivity().getApplicationContext();
+//		Context context;
+//		context = getActivity().getApplicationContext();
 		SharedPreferences userDetails = context.getSharedPreferences(
 				"userdetails", Context.MODE_PRIVATE);
 		Editor edit = userDetails.edit();
 		edit.clear();
-		edit.putString("km", kmUser.toString().trim());
+		edit.putInt("km",kmUser);
 		edit.commit();
 		Toast.makeText(context, "Login details are saved..", 3000).show();
 
 	}
-
+	
+	public static int loadUserDatails(Context context) {
+		SharedPreferences userDetails = context.getSharedPreferences(
+				"userdetails", Context.MODE_PRIVATE);
+		
+		int km =userDetails.getInt("km", 10);
+		return km;
+		}
+	
 
 }

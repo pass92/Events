@@ -64,6 +64,11 @@ public class Fragment_main extends Fragment {
 	//offset on query facebook and Limit
 	private static int offsetQuery=0;
 	Integer limitQuery=10;
+	
+	//latitudine Longitudine
+	public static double latitude = 0;
+	public static double longitude = 0;
+	
 
 	
 	@Override
@@ -86,9 +91,7 @@ public class Fragment_main extends Fragment {
 		adapter = new AdapterListView(view.getContext(),events);
 		lv.setAdapter(adapter);
 		
-		
-		double latitude = 0;
-		double longitude = 0;
+
 			GPSTracker gps = gps = new GPSTracker(view.getContext());
 			if(gps.canGetLocation()){
                 

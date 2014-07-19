@@ -3,8 +3,11 @@ package com.example.download;
 import com.example.adapter.AdapterListView;
 import com.example.events.MainActivity;
 import com.example.events.R;
+import com.example.fragment.Fragment_impostazioni;
 import com.example.fragment.Fragment_main;
+import com.example.fragment.Fragment_partecipant;
 import com.example.helper.Communicator;
+import com.example.helper.DistanceBeetwenPoint;
 import com.example.helper.EventsHelper;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
@@ -12,6 +15,7 @@ import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.android.Facebook;
 import com.facebook.model.GraphObject;
+import com.google.android.maps.GeoPoint;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -44,6 +48,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.net.ParseException;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -70,13 +75,12 @@ public class DownloadEventsTask extends
 	private Integer limitQuery;
 	private AdapterListView adapter;
 	private List<EventsHelper> events;
+	private int raggio;
+	private double latitude;
+	private double longitude;
+	private double difLAt;
+	private double difLong;
 
-	// data
-	private String year;
-	private String day;
-	private String month;
-	private String hour;
-	private String time;
 
 	public DownloadEventsTask(View view, Communicator comm, ListView l,
 			ProgressDialog dialog, Context context, String city,
@@ -100,7 +104,11 @@ public class DownloadEventsTask extends
 		// TODO Auto-generated method stub
 		super.onPreExecute();
 		session = MainActivity.session;
-
+		raggio = Fragment_impostazioni.loadUserDatails(view.getContext());
+		longitude = Fragment_main.longitude;
+		latitude = Fragment_main.latitude;
+		difLAt = (1*raggio)/(111.22263);
+		difLong = (1*raggio)/(772.1345);
 	}
 
 	@Override
@@ -168,22 +176,14 @@ public class DownloadEventsTask extends
 				f.setLatitude(latitude);
 				f.setLongitude(longitude);
 
-				time = new String(f.getStart_time());
-				year = new String(time.substring(0, 4));
-				month = new String(time.substring(5, 7));
-				day = new String(time.substring(8, 10));
-				if (time.length() >= 16) {
-					hour = new String(time.substring(11, 16));
-				} else {
-					hour = new String("null");
+				
+
+				if ( latitude > (this.latitude-difLAt) && latitude < (this.latitude+difLAt)   && longitude > (this.longitude-difLong) && longitude < (this.longitude+difLong)) {
+					events.add(f); 
+					
 				}
-
-				if ((f.getLatitude() > 46.0) && (f.getLatitude() < 46.1))
-					//if (month.equals("07"))
-						events.add(f);
-
-
-				Log.w("MONTH", "["+month+"]");
+				// Log.w("LOAD PREFERENCES	",
+				// Integer.toString(Fragment_impostazioni.loadUserDatails(context)));
 				// dbHelper.open();
 				// dbHelper.createEvents(id, photoURL, title, description,
 				// start_time, "0", "0");
@@ -227,7 +227,7 @@ public class DownloadEventsTask extends
 		Log.w("Async Task", "on post excute");
 
 		if ((10 + offsetQuery) < (result.size())) {
-			
+
 			List<EventsHelper> list = new ArrayList<EventsHelper>();
 			for (int i = offsetQuery; i < 10 + offsetQuery; i++) {
 				events.add(result.get(i));
@@ -256,7 +256,7 @@ public class DownloadEventsTask extends
 			Bitmap myBitmap = BitmapFactory.decodeStream(input);
 
 			// resize
-			Bitmap bJPGcompress = codec(myBitmap, Bitmap.CompressFormat.JPEG,5);
+			Bitmap bJPGcompress = codec(myBitmap, Bitmap.CompressFormat.JPEG, 5);
 
 			return bJPGcompress;
 		} catch (IOException e) {

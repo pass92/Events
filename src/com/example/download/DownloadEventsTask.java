@@ -194,12 +194,12 @@ public class DownloadEventsTask extends
 				// Integer.toString(Fragment_impostazioni.loadUserDatails(context)));
 
 				dbHelper.open();
-			//	if (dbHelper.fetchAllEvents() == null) {
-					dbHelper.createEvents(id, pathPhoto, title, description,
-							start_time, "0", "0");
-					dbHelper.close();
-			//	}
-				//dbHelper.close();
+				// if (dbHelper.fetchAllEvents() == null) {
+				dbHelper.createEvents(id, pathPhoto, title, description,
+						start_time, "0", "0");
+				dbHelper.close();
+				// }
+				// dbHelper.close();
 
 			}
 
@@ -236,6 +236,26 @@ public class DownloadEventsTask extends
 					events.get(i).setPhoto(bitmap);
 				}
 			}
+		} else {
+			if ((events.size()-offsetQuery)>0) {
+				for (int i = offsetQuery; i < offsetQuery + events.size(); i++) {
+					String URLPhoto = events.get(i).getPhotoURL();
+					if (URLPhoto != null) {// salvo nell internal
+
+						StorageHelper.saveToInternalSorage(
+								getBitmapFromURL(URLPhoto), events.get(i)
+										.getId());
+						count++;
+
+					} else {
+
+						Bitmap bitmap = BitmapFactory.decodeResource(
+								context.getResources(),
+								R.drawable.default_event);
+						events.get(i).setPhoto(bitmap);
+					}
+				}
+			}
 		}
 
 		return (ArrayList<EventsHelper>) events;
@@ -259,7 +279,21 @@ public class DownloadEventsTask extends
 			MainActivity.setListEvents(list);
 
 			Fragment_main.flag_loading = false;
+		} else {
+			if ((result.size()-offsetQuery)>0) {
+				List<EventsHelper> list = new ArrayList<EventsHelper>();
+				for (int i = offsetQuery; i < offsetQuery + result.size(); i++) {
+					events.add(result.get(i));
+					adapter.notifyDataSetChanged();
+					list.add(result.get(i));
+				}
+
+				MainActivity.setListEvents(list);
+
+				Fragment_main.flag_loading = false;
+			}
 		}
+		
 		if (dialog.isShowing())
 			dialog.dismiss();
 

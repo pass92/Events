@@ -149,8 +149,7 @@ public class Fragment_partecipant extends Fragment {
 	public static Intent getOpenFacebookIntent(Context context, String idProfile) {
 
 	    try {
-	        context.getPackageManager()
-	                .getPackageInfo("com.facebook.katana", 0); //Checks if FB is even installed.
+	        //context.getPackageManager().getPackageInfo("com.facebook.katana", 0); //Checks if FB is even installed.
 	        return new Intent(Intent.ACTION_VIEW,
 	                Uri.parse("fb://profile/"+idProfile)); //Trys to make intent with FB's URI
 	    } catch (Exception e) {

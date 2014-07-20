@@ -99,11 +99,11 @@ public class DownloadFriendsWhoParticipate extends
 									JSONObject o = d.getJSONObject(i);
 
 									String name = o.getString("name");
-									// String urlImage = o.getString("pic_big");
+									String id = o.getString("id");
 
 									UserHelper f = new UserHelper();
 									f.setName(name);
-									// f.setUrlImage(urlImage);
+									 f.setId(id);
 									user1.add(f);
 								}
 							}

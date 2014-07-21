@@ -10,6 +10,7 @@ import com.example.events.R;
 import com.example.events.R.id;
 import com.example.events.R.layout;
 import com.example.helper.EventsHelper;
+import com.example.helper.StorageHelper;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -17,6 +18,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -56,10 +58,18 @@ public class Fragment_cerca_event extends Fragment{
         transaction.commit();
 		
 		ImageView imageEvent = (ImageView) view.findViewById(R.id.image_event);
+		Bitmap bitmap = StorageHelper.loadImageFromStorage(
+				StorageHelper.pathStorage,
+				events.get(MainActivity.getidEvents()).getId());
+		if(bitmap!=null){
+			
 		
-		BitmapDrawable bdrawable = new BitmapDrawable(events.get(MainActivity.getidEvents()).getPhoto());
+		BitmapDrawable bdrawable = new BitmapDrawable(bitmap);
 		imageEvent.setBackgroundDrawable(bdrawable);
-
+		}
+		else{
+			imageEvent.setBackgroundResource(R.drawable.default_event);
+		}
 
 		Button b0 = (Button) view.findViewById(R.id.button_map_event);
 		b0.setOnClickListener(new OnClickListener() {

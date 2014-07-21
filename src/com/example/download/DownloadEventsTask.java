@@ -193,12 +193,13 @@ public class DownloadEventsTask extends
 				// Integer.toString(Fragment_impostazioni.loadUserDatails(context)));
 
 				dbHelper.open();
-				// if (dbHelper.fetchAllEvents() == null) {
+				//System.out.println("DB : "+dbHelper.fetchAllEvents().getCount());
+				//if (dbHelper.fetchAllEvents().getCount() == 0) {
 				dbHelper.createEvents(id, pathPhoto, title, description,
 						start_time, "0", "0");
 				dbHelper.close();
-				// }
-				// dbHelper.close();
+			//	}
+			//	dbHelper.close();
 
 			}
 

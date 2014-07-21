@@ -123,7 +123,7 @@ public class DownloadEventsTask extends
 		final List<EventsHelper> events = new ArrayList<EventsHelper>();
 		Log.w("Async Task", "doInBackground start!");
 
-		String url = "https://graph.facebook.com/search?q=" + city
+		String url = "https://graph.facebook.com/search?q=\"" + city +" festa\""
 				+ "&type=event&access_token=" + session.getAccessToken()
 				+ "&fields=id,name,start_time,venue,cover,description";
 		Log.w("URL REQUEST", url);

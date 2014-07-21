@@ -159,10 +159,16 @@ public class DownloadEventsTask extends
 		}
 
 		filter = Fragment_impostazioni.loadFilters(context);
-		if (filter != "")
-			filterCityQuery = city + "%20" + filter;
-		else
-			filterCityQuery = city;
+		if (filter != ""){
+			String str1 = filter.replace(" ", "%20");
+			String str = city.replace(" ", "%20");
+			filterCityQuery = str + "%20" + str1;
+		}
+		else{
+			String str = city.replace(" ", "%20");
+			filterCityQuery = str;
+		}
+
 
 	}
 

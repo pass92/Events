@@ -82,6 +82,7 @@ public class Fragment_impostazioni extends Fragment {
 			defaultCity.setTextColor(getResources().getColor(
 					android.R.color.black));
 			defaultCity.setFocusableInTouchMode(true);
+			checkBoxCity.setChecked(true);
 		}
 
 		checkBoxCity

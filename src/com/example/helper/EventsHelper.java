@@ -15,12 +15,20 @@ public class EventsHelper {
 	private Double latitude;
 	private Double longitude;
 	private String pathPhotoLocal;
+	private String my;
 	
 	public String getRsvp_status() {
 		return rsvp_status;
 	}
 	public void setRsvp_status(String rsvp_status) {
 		this.rsvp_status = rsvp_status;
+	}
+
+	public String my() {
+		return my;
+	}
+	public void setMy_status(String my) {
+		this.my = my;
 	}
 	public String getId() {
 		return id;

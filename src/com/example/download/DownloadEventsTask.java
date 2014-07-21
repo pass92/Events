@@ -195,6 +195,11 @@ public class DownloadEventsTask extends
 						&& longitude > (this.longitude - difLong)
 						&& longitude < (this.longitude + difLong)) {
 					events.add(f);
+				
+					dbHelper.open();
+					dbHelper.createEvents(id, pathPhoto, title, description,
+						start_time, "0", "0","0");
+					dbHelper.close();
 
 				}
 					
@@ -205,7 +210,7 @@ public class DownloadEventsTask extends
 				//System.out.println("DB : "+dbHelper.fetchAllEvents().getCount());
 				//if (dbHelper.fetchAllEvents().getCount() == 0) {
 				//dbHelper.createEvents(id, pathPhoto, title, description,
-				//		start_time, "0", "0");
+				//	start_time, "0", "0",0);
 				//dbHelper.close();
 			//	}
 			//	dbHelper.close();

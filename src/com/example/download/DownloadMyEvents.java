@@ -5,6 +5,7 @@ import com.example.events.MainActivity;
 import com.example.fragment.Fragment_main;
 import com.example.helper.Communicator;
 import com.example.helper.EventsHelper;
+import com.example.helper.StorageHelper;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Request.GraphUserListCallback;
@@ -42,6 +43,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract.CommonDataKinds.Event;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -62,6 +64,8 @@ public class DownloadMyEvents extends
 	private AdapterListView adapter;
 	private static List<EventsHelper> events;
 	private Context context;
+	private DbAdapter dbHelper;
+	
 	public static List<EventsHelper> getmieieeventi(){
 		return events;
 	}
@@ -135,6 +139,10 @@ public class DownloadMyEvents extends
 		// cliclo la lista di elementi scaricare l'immagine relativa all'evento
 		for (int i = 0; i < events.size(); i++) {
 			String URLPhoto = events.get(i).getPhotoURL();
+
+			StorageHelper.saveToInternalSorage(
+					getBitmapFromURL(URLPhoto), events.get(i)
+							.getId());
 			events.get(i).setPhoto(getBitmapFromURL(URLPhoto));
 			Log.w("URLImage", URLPhoto);
 		}
@@ -147,7 +155,59 @@ public class DownloadMyEvents extends
 		// TODO Auto-generated method stub
 		super.onPostExecute(result);
 		Log.w("Async Task", "on post excute");
+//query
 
+		dbHelper = new DbAdapter(context);
+		dbHelper.open();
+		Cursor c = dbHelper.fetchEventByMy("1");
+		System.out.println("numero di righe: " + c.getCount());
+
+		System.out.println("Curosor c=" + c.moveToFirst());
+
+		if (c.moveToFirst() == true) {
+			while (!c.isAfterLast()) {
+				EventsHelper myevent=new EventsHelper();
+
+				
+				System.out
+						.println("===================Risultato delle query:================ ");
+				// STAMPO TUTTI I CAMPI DEL RECORD
+				System.out.println("Curosor c=" + c.getString(0));
+				System.out.println("Curosor c=" + (c.getString(1)));
+				System.out.println("Curosor c=" + c.getString(2));
+				System.out.println("Curosor c=" + c.getString(3));
+				System.out.println("Curosor start_time="
+						+ c.getString(4));
+				System.out.println("Curosor end_time=" + c.getString(5));
+				System.out.println("Curosor location=" + c.getString(6));
+				System.out
+						.println("==================fine risultato query==================");
+				
+				myevent.setId(c.getString(0));
+				myevent.setPhotoURL(c.getString(1));
+				myevent.setTitle(c.getString(2));
+				myevent.setDescription(c.getString(3));
+				myevent.setStart_time(c.getString(4));
+				myevent.setEnd_time(c.getString(5));
+				
+				myevent.setMy_status(c.getString(7));
+				
+				
+				result.add(myevent);
+				c.moveToNext();
+
+			}
+		}
+			c.close();
+		
+		
+		
+		
+		
+		
+		
+		
+//		
 		events = result;
 		adapter = new AdapterListView(view.getContext(),
 				(ArrayList<EventsHelper>) result);

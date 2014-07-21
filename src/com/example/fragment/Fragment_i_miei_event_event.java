@@ -9,12 +9,16 @@ import com.example.events.R;
 import com.example.events.R.id;
 import com.example.events.R.layout;
 import com.example.helper.EventsHelper;
+import com.example.helper.StorageHelper;
 
+import database.DbAdapter;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,6 +34,7 @@ import android.widget.Toast;
 public class Fragment_i_miei_event_event extends Fragment {
 
 	List<EventsHelper> events;
+	private DbAdapter dbHelper;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -55,8 +60,16 @@ public class Fragment_i_miei_event_event extends Fragment {
 		ImageView imageEvent = (ImageView) view.findViewById(R.id.image_event);
 		//cosa vecchia			TextView descizione = (TextView) view.findViewById(R.id.descrizione_event);
 		
-		BitmapDrawable bdrawable = new BitmapDrawable(events.get(MainActivity.getidEvents()).getPhoto());
-		imageEvent.setBackgroundDrawable(bdrawable);
+		Bitmap bitmap = StorageHelper.loadImageFromStorage(
+				StorageHelper.pathStorage,
+				events.get(MainActivity.getidEvents()).getId());
+		if (bitmap != null) {
+
+			BitmapDrawable bdrawable = new BitmapDrawable(bitmap);
+			imageEvent.setBackgroundDrawable(bdrawable);
+		} else {
+			imageEvent.setBackgroundResource(R.drawable.default_event);
+		}
 		/*
 //cosa vecchia			descizione.setText(events.get(MainActivity.getidEvents()).getDescription());
 //cosa vecchia			descizione.setMovementMethod(new ScrollingMovementMethod());
@@ -97,6 +110,7 @@ public class Fragment_i_miei_event_event extends Fragment {
 		});
 
 		Button b2 = (Button) view.findViewById(R.id.button_partecipa_event);
+		b2.setText("delete");
 		b2.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -104,13 +118,48 @@ public class Fragment_i_miei_event_event extends Fragment {
 				// TODO Auto-generated method stub
 
 				Context context = getActivity().getApplicationContext();
-				CharSequence text = "Salvato in i miei eventi!";
+				CharSequence text = "eliminato l evento!";
 				int duration = Toast.LENGTH_SHORT;
 
 				Toast toast = Toast.makeText(context, text, duration);
 				toast.show();
+				
+				dbHelper = new DbAdapter(getActivity().getApplicationContext());
+				dbHelper.open();
+
+				String id = "" + events.get(MainActivity.getidEvents()).getId();
+				Cursor c = dbHelper.fetchEventById(id);
+				System.out.println("id: " + id);
+				System.out.println("numero di righe: " + c.getCount());
+				getActivity().startManagingCursor(c);
+				System.out.println("Curosor c=" + c.moveToFirst());
+
+				String ID = "" + c.getString(0);
+				String IMAGE = "" + c.getString(1);
+				String TITLE = "" + c.getString(2);
+				String DESCRIPTION = "" + c.getString(3);
+				String STARTTIME = "" + c.getString(4);
+				String ENDTIME = "" + c.getString(5);
+				String LOCATION = "" + c.getString(6);
+				String MY = "" + 0;
+
+				c.close();
+				System.out.println(dbHelper.deleteEvents(ID));
+				dbHelper.createEvents(ID, IMAGE, TITLE, DESCRIPTION, STARTTIME,
+						ENDTIME, LOCATION, MY);
+
+
+				Cursor c2 = dbHelper.fetchEventById(id);
+				System.out.println("id: " + id);
+				System.out.println("numero di righe: " + c2.getCount());
+				getActivity().startManagingCursor(c);
+				
+
+				c2.close();
 
 			}
+
+		
 	});
 
 		Button b3 = (Button) view.findViewById(R.id.button_partecipant_event);

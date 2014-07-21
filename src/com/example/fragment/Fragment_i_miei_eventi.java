@@ -38,14 +38,14 @@ public class Fragment_i_miei_eventi extends Fragment {
       
 		comm = (Communicator) getActivity();
 		listView = (ListView) view.findViewById(R.id.listview_my_events);
-		if (saveInstanceState != null) {
-			events = (List<EventsHelper>) saveInstanceState
-					.getSerializable("events");
-			adapter = new AdapterListView(view.getContext(),
-					(ArrayList<EventsHelper>) events);
-			
-			listView.setAdapter(adapter);
-		} else {
+//		if (saveInstanceState != null) {
+//			events = (List<EventsHelper>) saveInstanceState
+//					.getSerializable("events");
+//			adapter = new AdapterListView(view.getContext(),
+//					(ArrayList<EventsHelper>) events);
+//			
+//			listView.setAdapter(adapter);
+//		} else {
 			dialog = ProgressDialog.show(view.getContext(), "", "Attendi...",
 					false, true);
 			
@@ -53,7 +53,7 @@ public class Fragment_i_miei_eventi extends Fragment {
 					dialog, view.getContext(), events);
 			taskEvents.execute();
 			
-		}
+		//}
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override

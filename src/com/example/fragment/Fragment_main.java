@@ -22,6 +22,7 @@ import com.example.helper.GPSTracker;
 import database.DbAdapter;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
@@ -159,8 +160,24 @@ public class Fragment_main extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 
-				MainActivity.setidEvents(position);
-				comm.respond("fragment_event", position);
+				//MainActivity.setidEvents(position);
+				//comm.respond("fragment_event", position);
+				
+				
+				//TRy to use Bundle gooo PAsss
+				Bundle bundle = new Bundle();
+				bundle.putString("id", events.get(position).getId());
+				bundle.putString("descrizione", events.get(position).getDescription());
+				bundle.putDouble("lat", events.get(position).getLatitude());
+				bundle.putDouble("lon", events.get(position).getLongitude());
+				
+				Fragment fragment = new Fragment_event();
+				fragment.setArguments(bundle);
+				FragmentManager manager = getFragmentManager();
+				FragmentTransaction transaction = manager.beginTransaction();
+				transaction.replace(R.id.content_frame, fragment);
+				transaction.addToBackStack("event_bo3");
+				transaction.commit();
 			}
 		});
 

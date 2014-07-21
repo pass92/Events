@@ -39,6 +39,10 @@ public class Fragment_event extends Fragment {
 
 	List<EventsHelper> events;
 	private DbAdapter dbHelper;
+	private String idEvent;
+	private String descrizione;
+	private Double lon;
+	private Double lat;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +56,16 @@ public class Fragment_event extends Fragment {
 		Log.w("Fragment_event", "On Create View");
 		View view = inflater.inflate(R.layout.fragment_event, container, false);
 
+		//get IdEvent from bundle
+		idEvent = getArguments().getString("id");
+		descrizione = getArguments().getString("descrizione");
+		lat = getArguments().getDouble("lat");
+		lon = getArguments().getDouble("lon");
+		
+		Bundle bundle = new Bundle();
+		bundle.putString("descrizione", descrizione);
 		Fragment fragment = new Fragment_descritpion();
+		fragment.setArguments(bundle);
 		FragmentManager manager = getFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.replace(R.id.content_frame2, fragment,
@@ -64,7 +77,7 @@ public class Fragment_event extends Fragment {
 		// view.findViewById(R.id.descrizione_event);
 		Bitmap bitmap = StorageHelper.loadImageFromStorage(
 				StorageHelper.pathStorage,
-				events.get(MainActivity.getidEvents()).getId());
+				idEvent);//events.get(MainActivity.getidEvents()).getId());
 		if (bitmap != null) {
 
 			BitmapDrawable bdrawable = new BitmapDrawable(bitmap);
@@ -91,9 +104,13 @@ public class Fragment_event extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				Bundle bundle = new Bundle();
+				bundle.putString("descrizione", descrizione);
+				
 				FragmentManager manager = getFragmentManager();
 				FragmentTransaction transaction = manager.beginTransaction();
 				Fragment_descritpion fragment = new Fragment_descritpion();
+				fragment.setArguments(bundle);
 				transaction.replace(R.id.content_frame2, fragment,
 						"description_event");
 				transaction.commit();
@@ -114,11 +131,11 @@ public class Fragment_event extends Fragment {
 
 				Toast toast = Toast.makeText(context, text, duration);
 				toast.show();
-//mieie eventi
+				//mieie eventi
 				dbHelper = new DbAdapter(getActivity().getApplicationContext());
 				dbHelper.open();
 
-				String id = "" + events.get(MainActivity.getidEvents()).getId();
+				String id = "" + idEvent; //events.get(MainActivity.getidEvents()).getId();
 				Cursor c = dbHelper.fetchEventById(id);
 				System.out.println("id: " + id);
 				System.out.println("numero di righe: " + c.getCount());
@@ -160,8 +177,7 @@ public class Fragment_event extends Fragment {
 				// TODO Auto-generated method stub
 				Fragment fragment2 = new Fragment_partecipant();
 				Bundle args = new Bundle();
-				args.putString("id", events.get(MainActivity.getidEvents())
-						.getId());
+				args.putString("id", idEvent);//events.get(MainActivity.getidEvents()).getId());
 				fragment2.setArguments(args);
 				FragmentManager manager = getFragmentManager();
 				FragmentTransaction transaction = manager.beginTransaction();
@@ -198,9 +214,9 @@ public class Fragment_event extends Fragment {
 			// events.get(MainActivity.getidEvents()).getLatitude() + "," +
 			// events.get(MainActivity.getidEvents()).getLongitude();
 			String uri = "geo:0,0?q="
-					+ events.get(MainActivity.getidEvents()).getLatitude()
+					+ lat
 					+ ","
-					+ events.get(MainActivity.getidEvents()).getLongitude();
+					+ lon;
 
 			startActivity(new Intent(android.content.Intent.ACTION_VIEW,
 					Uri.parse(uri)));

@@ -76,7 +76,7 @@ public class Fragment_impostazioni extends Fragment {
 			defaultCity.setTextColor(getResources().getColor(
 					android.R.color.darker_gray));
 			defaultCity.setFocusable(false);
-			//saveCheckboxCity(false, view.getContext());
+			saveCheckboxCity(false, view.getContext());
 		}
 		else{
 			defaultCity.setTextColor(getResources().getColor(
@@ -105,6 +105,7 @@ public class Fragment_impostazioni extends Fragment {
 									android.R.color.darker_gray));
 							saveCheckboxCity(false, view.getContext());
 							closeKeyboard(getActivity(), defaultCity.getWindowToken());
+							Fragment_main.clearAllVariable();
 						}
 					}
 

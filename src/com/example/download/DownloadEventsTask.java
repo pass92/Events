@@ -9,6 +9,7 @@ import com.example.fragment.Fragment_partecipant;
 import com.example.helper.Communicator;
 import com.example.helper.DistanceBeetwenPoint;
 import com.example.helper.EventsHelper;
+import com.example.helper.LatLng;
 import com.example.helper.StorageHelper;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
@@ -52,6 +53,8 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.net.ParseException;
 import android.os.AsyncTask;
@@ -89,6 +92,7 @@ public class DownloadEventsTask extends
 	private String filter;
 	private String filterCityQuery;
 
+	Geocoder geocoder;
 	public static boolean start = true;
 
 	public DownloadEventsTask(View view, Communicator comm, ListView l,
@@ -116,8 +120,33 @@ public class DownloadEventsTask extends
 		session = MainActivity.session;
 		if (city == "") {
 			city = Fragment_impostazioni.loadDafaultCity(context);
-			latitude = 46.07;
-			longitude = 11.13;
+
+			if(Geocoder.isPresent()){
+			    try {
+			        String location = city;
+			        Geocoder gc = new Geocoder(context);
+			        List<Address> addresses= gc.getFromLocationName(location, 5); // get the found Address Objects
+
+			        List<LatLng> ll = new ArrayList<LatLng>(addresses.size()); // A list to save the coordinates if they are available
+			        for(Address a : addresses){
+			            if(a.hasLatitude() && a.hasLongitude()){
+			                ll.add(new LatLng(a.getLatitude(), a.getLongitude()));
+			            }  
+			        }  
+			        
+					latitude = ll.get(0).getLat();
+					longitude = ll.get(0).getLon();
+			    } catch (IOException e) {
+			         // handle the exception
+			    }
+			}
+			else{
+				latitude = 46;
+				longitude = 11;
+			}
+			
+			
+
 			raggio = Fragment_impostazioni.loadUserDatails(view.getContext());
 			difLAt = (1 * raggio) / (111.22263);
 			difLong = (1 * raggio) / (772.1345);
@@ -389,6 +418,8 @@ public class DownloadEventsTask extends
 		return jObj;
 	}
 
+	
+	
 	// AGGIUNTA////////////////////////////////////////////////////
 	/*
 	 * private String saveToInternalSorage(Bitmap bitmapImage, String id) {

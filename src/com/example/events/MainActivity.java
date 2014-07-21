@@ -280,16 +280,16 @@ public class MainActivity extends Activity implements Communicator {
 	@Override
 	public void respond(String data, int id) {
 		// TODO Auto-generated method stub
-		if (data.equals("fragment_event")) {
-			Log.w("call fragment event", data);
-
-			Fragment fragment = new Fragment_event();
-			FragmentManager manager = getFragmentManager();
-			FragmentTransaction transaction = manager.beginTransaction();
-			transaction.replace(R.id.content_frame, fragment);
-			transaction.addToBackStack("event_bo3");
-			transaction.commit();
-		}
+//		if (data.equals("fragment_event")) {
+//			Log.w("call fragment event", data);
+//
+//			Fragment fragment = new Fragment_event();
+//			FragmentManager manager = getFragmentManager();
+//			FragmentTransaction transaction = manager.beginTransaction();
+//			transaction.replace(R.id.content_frame, fragment);
+//			transaction.addToBackStack("event_bo3");
+//			transaction.commit();
+//		}
 		if (data.equals("fragment_eventcerca_descrizione")) {
 			System.out.println(data);
 			Fragment fragment3 = new Fragment_cerca_event();

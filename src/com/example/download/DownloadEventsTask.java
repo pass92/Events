@@ -192,12 +192,12 @@ public class DownloadEventsTask extends
 				// Log.w("LOAD PREFERENCES	",
 				// Integer.toString(Fragment_impostazioni.loadUserDatails(context)));
 
-				dbHelper.open();
+				//dbHelper.open();
 				//System.out.println("DB : "+dbHelper.fetchAllEvents().getCount());
 				//if (dbHelper.fetchAllEvents().getCount() == 0) {
-				dbHelper.createEvents(id, pathPhoto, title, description,
-						start_time, "0", "0");
-				dbHelper.close();
+				//dbHelper.createEvents(id, pathPhoto, title, description,
+				//		start_time, "0", "0");
+				//dbHelper.close();
 			//	}
 			//	dbHelper.close();
 
@@ -265,7 +265,7 @@ public class DownloadEventsTask extends
 		super.onPostExecute(result);
 		Log.w("Async Task", "on post excute");
 
-		if ((10 + offsetQuery) < (result.size())) {
+		if ((10 + offsetQuery) <= (result.size())) {
 
 			List<EventsHelper> list = new ArrayList<EventsHelper>();
 			for (int i = offsetQuery; i < 10 + offsetQuery; i++) {

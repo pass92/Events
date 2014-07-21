@@ -132,11 +132,13 @@ public class Fragment_cerca_event extends Fragment{
 				String ENDTIME = "" + c.getString(5);
 				String LOCATION = "" + c.getString(6);
 				String MY = "" + 1;
+				String latitude="" + c.getString(8);
+				String longitude="" + c.getString(9);
 
 				c.close();
 				System.out.println(dbHelper.deleteEvents(ID));
 				dbHelper.createEvents(ID, IMAGE, TITLE, DESCRIPTION, STARTTIME,
-						ENDTIME, LOCATION, MY);
+						ENDTIME, LOCATION, MY,latitude,longitude);
 
 
 				Cursor c2 = dbHelper.fetchEventById(id);

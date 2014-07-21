@@ -87,7 +87,9 @@ public class DownloadEventsTask extends
 	private double difLAt;
 	private double difLong;
 
+	private static boolean start= true;
 
+	
 	public DownloadEventsTask(View view, Communicator comm, ListView l,
 			ProgressDialog dialog, Context context, String city,
 			int offsetQuery, Integer limitQuery, AdapterListView adapter,
@@ -115,6 +117,12 @@ public class DownloadEventsTask extends
 		latitude = Fragment_main.latitude;
 		difLAt = (1 * raggio) / (111.22263);
 		difLong = (1 * raggio) / (772.1345);
+		
+		
+		if(city==""){
+			city="Tento";
+		}
+		
 	}
 
 	@Override
@@ -123,7 +131,7 @@ public class DownloadEventsTask extends
 		final List<EventsHelper> events = new ArrayList<EventsHelper>();
 		Log.w("Async Task", "doInBackground start!");
 
-		String url = "https://graph.facebook.com/search?q=\"" + city +" festa\""
+		String url = "https://graph.facebook.com/search?q=" + city 
 				+ "&type=event&access_token=" + session.getAccessToken()
 				+ "&fields=id,name,start_time,venue,cover,description";
 		Log.w("URL REQUEST", url);
@@ -189,6 +197,7 @@ public class DownloadEventsTask extends
 					events.add(f);
 
 				}
+					
 				// Log.w("LOAD PREFERENCES	",
 				// Integer.toString(Fragment_impostazioni.loadUserDatails(context)));
 
@@ -216,8 +225,8 @@ public class DownloadEventsTask extends
 
 		// // cliclo la lista di elementi scaricare l'immagine relativa
 		// all'evento
-		if ((10 + offsetQuery) <= (events.size())) {
-			for (int i = offsetQuery; i < 10 + offsetQuery; i++) {
+		if (offsetQuery < events.size() && events.size()-offsetQuery >=10) {
+			for (int i = offsetQuery; i < 10+offsetQuery; i++) {
 				String URLPhoto = events.get(i).getPhotoURL();
 				if (URLPhoto != null) {// salvo nell internal
 
@@ -235,9 +244,10 @@ public class DownloadEventsTask extends
 					events.get(i).setPhoto(bitmap);
 				}
 			}
-		} else {
-			if ((events.size()-offsetQuery)>0) {
-				for (int i = offsetQuery; i < offsetQuery + events.size(); i++) {
+	} 
+		else {
+			if ((events.size()-offsetQuery)>0 || start) {
+				for (int i = offsetQuery; i < offsetQuery+(events.size()-offsetQuery); i++) {
 					String URLPhoto = events.get(i).getPhotoURL();
 					if (URLPhoto != null) {// salvo nell internal
 
@@ -265,10 +275,10 @@ public class DownloadEventsTask extends
 		super.onPostExecute(result);
 		Log.w("Async Task", "on post excute");
 
-		if ((10 + offsetQuery) <= (result.size())) {
+		if (offsetQuery < result.size() && result.size()-offsetQuery >=10) {
 
 			List<EventsHelper> list = new ArrayList<EventsHelper>();
-			for (int i = offsetQuery; i < 10 + offsetQuery; i++) {
+			for (int i = offsetQuery; i < 10+offsetQuery; i++) {
 				events.add(result.get(i));
 				adapter.notifyDataSetChanged();
 				list.add(result.get(i));
@@ -278,9 +288,9 @@ public class DownloadEventsTask extends
 
 			Fragment_main.flag_loading = false;
 		} else {
-			if ((events.size()-offsetQuery)>0) {
+			if ((events.size()-offsetQuery)>0 || start) {
 				List<EventsHelper> list = new ArrayList<EventsHelper>();
-				for (int i = offsetQuery; i < offsetQuery + result.size(); i++) {
+				for (int i = offsetQuery; i < offsetQuery+(result.size()-offsetQuery); i++) {
 					events.add(result.get(i));
 					adapter.notifyDataSetChanged();
 					list.add(result.get(i));
@@ -294,7 +304,7 @@ public class DownloadEventsTask extends
 		
 		if (dialog.isShowing())
 			dialog.dismiss();
-
+		start=false;
 	}
 
 	public Bitmap getBitmapFromURL(String imageUrl) {

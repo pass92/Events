@@ -39,6 +39,7 @@ public class DbAdapter {
 		values.put(DbHelper.COLUMN_LOCATION, location);
 		values.put(DbHelper.COLUMN_MY, my);
 		
+		
 		return values;
 	}
 

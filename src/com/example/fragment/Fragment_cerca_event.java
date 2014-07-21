@@ -12,12 +12,14 @@ import com.example.events.R.layout;
 import com.example.helper.EventsHelper;
 import com.example.helper.StorageHelper;
 
+import database.DbAdapter;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -35,7 +37,7 @@ import android.widget.Toast;
 
 public class Fragment_cerca_event extends Fragment{
 
-	
+	private DbAdapter dbHelper;
 	List<EventsHelper> events;
 
 	@Override
@@ -112,8 +114,44 @@ public class Fragment_cerca_event extends Fragment{
 
 				Toast toast = Toast.makeText(context, text, duration);
 				toast.show();
+				dbHelper = new DbAdapter(getActivity().getApplicationContext());
+				dbHelper.open();
+
+				String id = "" + events.get(MainActivity.getidEvents()).getId();
+				Cursor c = dbHelper.fetchEventById(id);
+				System.out.println("id: " + id);
+				System.out.println("numero di righe: " + c.getCount());
+				getActivity().startManagingCursor(c);
+				System.out.println("Curosor c=" + c.moveToFirst());
+
+				String ID = "" + c.getString(0);
+				String IMAGE = "" + c.getString(1);
+				String TITLE = "" + c.getString(2);
+				String DESCRIPTION = "" + c.getString(3);
+				String STARTTIME = "" + c.getString(4);
+				String ENDTIME = "" + c.getString(5);
+				String LOCATION = "" + c.getString(6);
+				String MY = "" + 1;
+				String latitude="" + c.getString(8);
+				String longitude="" + c.getString(9);
+
+				c.close();
+				System.out.println(dbHelper.deleteEvents(ID));
+				dbHelper.createEvents(ID, IMAGE, TITLE, DESCRIPTION, STARTTIME,
+						ENDTIME, LOCATION, MY,latitude,longitude);
+
+
+				Cursor c2 = dbHelper.fetchEventById(id);
+				System.out.println("id: " + id);
+				System.out.println("numero di righe: " + c2.getCount());
+				getActivity().startManagingCursor(c);
+				
+
+				c2.close();
 
 			}
+
+		
 	});
 
 		Button b3 = (Button) view.findViewById(R.id.button_partecipant_event);

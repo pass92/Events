@@ -64,7 +64,7 @@ public class DownloadMyEvents extends
 	private AdapterListView adapter;
 	private static List<EventsHelper> events;
 	private Context context;
-	private DbAdapter dbHelper;
+	private DbAdapter dbHelper=new DbAdapter(context);
 	
 	public static List<EventsHelper> getmieieeventi(){
 		return events;
@@ -123,6 +123,9 @@ public class DownloadMyEvents extends
 									f.setStart_time(start_time);
 									f.setPhotoURL(photoURL);
 									events.add(f);
+								   /* dbHelper.open();
+									dbHelper.createEvents(id,photoURL, title, description,start_time, "0", "0","0","0","0");
+									dbHelper.close();*/
 								}
 							}
 						} catch (JSONException e) {
@@ -180,6 +183,10 @@ public class DownloadMyEvents extends
 						+ c.getString(4));
 				System.out.println("Curosor end_time=" + c.getString(5));
 				System.out.println("Curosor location=" + c.getString(6));
+
+				System.out.println("Curosor latitude=" + c.getString(8));
+				System.out.println("Curosor longitude=" + c.getString(9));
+				
 				System.out
 						.println("==================fine risultato query==================");
 				

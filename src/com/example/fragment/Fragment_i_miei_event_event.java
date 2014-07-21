@@ -117,12 +117,9 @@ public class Fragment_i_miei_event_event extends Fragment {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 
-				Context context = getActivity().getApplicationContext();
-				CharSequence text = "eliminato l evento!";
-				int duration = Toast.LENGTH_SHORT;
+				
 
-				Toast toast = Toast.makeText(context, text, duration);
-				toast.show();
+			
 				
 				dbHelper = new DbAdapter(getActivity().getApplicationContext());
 				dbHelper.open();
@@ -134,6 +131,12 @@ public class Fragment_i_miei_event_event extends Fragment {
 				getActivity().startManagingCursor(c);
 				System.out.println("Curosor c=" + c.moveToFirst());
 
+				if(c.moveToFirst()==true){
+					Context context = getActivity().getApplicationContext();
+					CharSequence text = "eliminato l evento!";
+					int duration = Toast.LENGTH_SHORT;
+					Toast toast = Toast.makeText(context, text, duration);
+					toast.show();
 				String ID = "" + c.getString(0);
 				String IMAGE = "" + c.getString(1);
 				String TITLE = "" + c.getString(2);
@@ -142,11 +145,14 @@ public class Fragment_i_miei_event_event extends Fragment {
 				String ENDTIME = "" + c.getString(5);
 				String LOCATION = "" + c.getString(6);
 				String MY = "" + 0;
+				String latitude="" + c.getString(8);
+				String longitude="" + c.getString(9);
+
 
 				c.close();
 				System.out.println(dbHelper.deleteEvents(ID));
 				dbHelper.createEvents(ID, IMAGE, TITLE, DESCRIPTION, STARTTIME,
-						ENDTIME, LOCATION, MY);
+						ENDTIME, LOCATION, MY,latitude,longitude);
 
 
 				Cursor c2 = dbHelper.fetchEventById(id);
@@ -158,7 +164,16 @@ public class Fragment_i_miei_event_event extends Fragment {
 				c2.close();
 
 			}
+			else{
+				Context context1 = getActivity().getApplicationContext();
+				CharSequence text1 = "impossibile eliminare se partecipi!";
+				int duration1 = Toast.LENGTH_SHORT;
 
+				Toast toast1 = Toast.makeText(context1, text1, duration1);
+				toast1.show();
+				
+			}
+			}
 		
 	});
 

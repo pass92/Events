@@ -18,6 +18,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.*;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -28,6 +29,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -48,8 +51,8 @@ public class Fragment_impostazioni extends Fragment {
 		ImageView img = (ImageView) view.findViewById(R.id.profilePictureView1);
 		final EditText defaultCity = (EditText) view
 				.findViewById(R.id.default_city);
-		final Button btnUpdateCity = (Button) view
-				.findViewById(R.id.update_dafault_city);
+		Button btnUpdateCity = (Button) view
+				.findViewById(R.id.btnSetCity);
 
 		tx.setText("" + MainActivity.infoUserLogged.getName());
 		img.setImageBitmap(MainActivity.infoUserLogged.getImage());
@@ -62,6 +65,92 @@ public class Fragment_impostazioni extends Fragment {
 		SharedPreferences userDetails = getActivity().getApplicationContext()
 				.getSharedPreferences("userdetails",
 						getActivity().getApplicationContext().MODE_PRIVATE);
+
+		
+		
+		// carico citta' default
+		defaultCity.setText("" + loadDafaultCity(view.getContext()));
+		// // checkbox abilita' locazione
+		CheckBox checkBoxCity = (CheckBox) view
+				.findViewById(R.id.checkBoxAbilitaLocation);
+
+		if (checkBoxCity.isChecked() == false) {
+			defaultCity.setTextColor(getResources().getColor(
+					android.R.color.darker_gray));
+			defaultCity.setFocusable(false);
+			saveCheckboxCity(false, view.getContext());
+		}
+
+		checkBoxCity
+				.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+					@Override
+					public void onCheckedChanged(CompoundButton buttonView,
+							boolean isChecked) {
+
+						if (isChecked == true) {
+							defaultCity.setFocusableInTouchMode(true);
+							defaultCity.setTextColor(getResources().getColor(
+									android.R.color.black));
+							saveCheckboxCity(true, view.getContext());
+
+						} else {
+							defaultCity.setFocusable(false);
+							defaultCity.setTextColor(getResources().getColor(
+									android.R.color.darker_gray));
+							saveCheckboxCity(false, view.getContext());
+						}
+					}
+
+				});
+
+		btnUpdateCity.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				String city = defaultCity.getText().toString();
+				saveDafaultCity(city, view.getContext());
+				defaultCity.clearFocus();
+
+				// clear all events
+				Fragment_main.clearAllVariable();
+				// Hide Keyboard
+				closeKeyboard(getActivity(), defaultCity.getWindowToken());
+				Toast.makeText(view.getContext(), "Default City is saved..",
+						3000).show();
+				
+			}
+		});
+
+
+		// ///////////////REdraw filter!!
+		if (loadFilters(view.getContext()) != "") {
+			String filter = loadFilters(view.getContext());
+			final ViewGroup newView = (ViewGroup) LayoutInflater.from(
+					view.getContext()).inflate(R.layout.list_item_example,
+					mContainerView, false);
+
+			mContainerView.addView(newView, 0);
+			// mContainerView.addView(newView, 1);
+			((TextView) newView.findViewById(android.R.id.text1))
+					.setText(loadFilters(view.getContext()));
+			newView.findViewById(R.id.delete_button).setOnClickListener(
+					new View.OnClickListener() {
+						@Override
+						public void onClick(View view) {
+							// Remove the row from its parent (the container
+							// view).
+							// Because mContainerView has
+							// android:animateLayoutChanges set to true,
+							// this removal is automatically animated.
+							mContainerView.removeView(newView);
+							saveFilters("", view.getContext());
+							Fragment_main.clearAllVariable();
+						}
+					});
+		}
+		// /////////////////
+
 		int km = userDetails.getInt("km", 10);
 
 		if (km != 0)
@@ -104,6 +193,7 @@ public class Fragment_impostazioni extends Fragment {
 				final ViewGroup newView = (ViewGroup) LayoutInflater.from(
 						view.getContext()).inflate(R.layout.list_item_example,
 						mContainerView, false);
+
 				newView.setOnClickListener(new OnClickListener() {
 
 					@Override
@@ -112,7 +202,7 @@ public class Fragment_impostazioni extends Fragment {
 
 					}
 				});
-				
+
 				newView.findViewById(R.id.delete_button).setOnClickListener(
 						new View.OnClickListener() {
 							@Override
@@ -124,6 +214,7 @@ public class Fragment_impostazioni extends Fragment {
 								// this removal is automatically animated.
 								mContainerView.removeView(newView);
 								saveFilters("", context);
+								Fragment_main.clearAllVariable();
 							}
 						});
 
@@ -134,31 +225,33 @@ public class Fragment_impostazioni extends Fragment {
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,
 									int whichButton) {
-								if (mContainerView.getChildCount() <= 4) {
+								if (mContainerView.getChildCount() <= 3) {
 									mContainerView.addView(newView, 0);
 									String srt = input.getEditableText()
 											.toString();
 									if (srt.equals("")) {
-//										((TextView) newView
-//												.findViewById(android.R.id.text1))
-//												.setText("default");
-										Toast.makeText(context,"Add a Filter..",Toast.LENGTH_LONG).show();
+										// ((TextView) newView
+										// .findViewById(android.R.id.text1))
+										// .setText("default");
+										Toast.makeText(context,
+												"Add a Filter..",
+												Toast.LENGTH_LONG).show();
 									} else {
 										((TextView) newView
 												.findViewById(android.R.id.text1))
 												.setText(srt);
-										//save filter
+										// save filter
 										saveFilters(srt, context);
-										//reset all variable in Fragment_main
+										// reset all variable in Fragment_main
 										Fragment_main.clearAllVariable();
 										// Toast.makeText(context,srt,Toast.LENGTH_LONG).show();
-										
+
 									}
 								} // End of onClick(DialogInterface dialog, int
 									// whichButton)
 							}
 						}); // End of alert.setPositiveButton
-				
+
 				alert.setNegativeButton("CANCEL",
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,
@@ -202,27 +295,15 @@ public class Fragment_impostazioni extends Fragment {
 
 		});
 
-		btnUpdateCity.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				String city = defaultCity.getText().toString();
-				saveDafaultCity(city, view.getContext());
-				defaultCity.clearFocus();
-
-				// Hide Keyboard
-				closeKeyboard(getActivity(), defaultCity.getWindowToken());
-			}
-		});
-
 		return view;
 	}
 
 	public static void closeKeyboard(Context c, IBinder windowToken) {
-	    InputMethodManager mgr = (InputMethodManager) c.getSystemService(Context.INPUT_METHOD_SERVICE);
-	    mgr.hideSoftInputFromWindow(windowToken, 0);
+		InputMethodManager mgr = (InputMethodManager) c
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
+		mgr.hideSoftInputFromWindow(windowToken, 0);
 	}
-	
+
 	private void saveUserDatails(Integer kmUser, Context context) {
 
 		// Context context;
@@ -265,7 +346,6 @@ public class Fragment_impostazioni extends Fragment {
 		return city;
 	}
 
-	
 	private void saveFilters(String filter, Context context) {
 
 		SharedPreferences userDetails = context.getSharedPreferences(
@@ -285,4 +365,24 @@ public class Fragment_impostazioni extends Fragment {
 		String filter = userDetails.getString("filter", "");
 		return filter;
 	}
+
+	private void saveCheckboxCity(boolean checkCity, Context context) {
+
+		SharedPreferences userCheckCity = context.getSharedPreferences(
+				"CheckboxCity", Context.MODE_PRIVATE);
+		Editor edit = userCheckCity.edit();
+		edit.clear();
+		edit.putBoolean("checkCity", checkCity);
+		edit.commit();
+
+	}
+
+	public static boolean loadCheckboxCity(Context context) {
+		SharedPreferences userCheckCity = context.getSharedPreferences(
+				"CheckboxCity", Context.MODE_PRIVATE);
+
+		boolean checkCity = userCheckCity.getBoolean("checkCity", false);
+		return checkCity;
+	}
+
 }

@@ -58,7 +58,7 @@ public class Fragment_main extends Fragment {
 	private AdapterListView adapter;
 
 	// Name city where the USER request a Events
-	String city = "";
+	private String city = "";
 
 	// offset on query facebook and Limit
 	private static int offsetQuery = 0;
@@ -68,14 +68,14 @@ public class Fragment_main extends Fragment {
 	public static double latitude = 0;
 	public static double longitude = 0;
 
-	public static void clearAllVariable(){
-		events.clear();
+	public static void clearAllVariable() {
+		events = new ArrayList<EventsHelper>();
 		flag_loading = true;
 		offsetQuery = 0;
-		Fragment_main.events.clear();
-		DownloadEventsTask.start =true;
+		Fragment_main.events = new ArrayList<EventsHelper>();
+		DownloadEventsTask.start = true;
 	}
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -95,42 +95,46 @@ public class Fragment_main extends Fragment {
 		adapter = new AdapterListView(view.getContext(), events);
 		lv.setAdapter(adapter);
 
-		GPSTracker gps = gps = new GPSTracker(view.getContext());
-		if (gps.canGetLocation()) {
+		if (!Fragment_impostazioni.loadCheckboxCity(view.getContext())) {
+			GPSTracker gps = gps = new GPSTracker(view.getContext());
+			if (gps.canGetLocation()) {
 
-			latitude = gps.getLatitude();
-			longitude = gps.getLongitude();
+				latitude = gps.getLatitude();
+				longitude = gps.getLongitude();
 
-			// \n is for new line
-			// Toast.makeText(view.getContext(), "Your Location is - \nLat: " +
-			// latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
-		} else {
-			// can't get location
-			// GPS or Network is not enabled
-			// Ask user to enable GPS/network in settings
-			gps.showSettingsAlert();
-		}
+				// \n is for new line
+				// Toast.makeText(view.getContext(),
+				// "Your Location is - \nLat: " +
+				// latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+			} else {
+				// can't get location
+				// GPS or Network is not enabled
+				// Ask user to enable GPS/network in settings
+				gps.showSettingsAlert();
+			}
 
-		Geocoder geocoder;
-		List<Address> addresses = null;
-		geocoder = new Geocoder(view.getContext(), Locale.getDefault());
-		try {
-			addresses = geocoder.getFromLocation(latitude, longitude, 1);
-			// Toast.makeText(view.getContext(),"Your Location is - \nLat: " +
-			// latitude + "\nLong: " + longitude +"\n"+
-			// addresses.get(0).getAddressLine(1) , Toast.LENGTH_LONG).show();
-			String Str = addresses.get(0).getAddressLine(1);
+			Geocoder geocoder;
+			List<Address> addresses = null;
+			geocoder = new Geocoder(view.getContext(), Locale.getDefault());
+			try {
+				addresses = geocoder.getFromLocation(latitude, longitude, 1);
+				// Toast.makeText(view.getContext(),"Your Location is - \nLat: "
+				// +
+				// latitude + "\nLong: " + longitude +"\n"+
+				// addresses.get(0).getAddressLine(1) ,
+				// Toast.LENGTH_LONG).show();
+				String Str = addresses.get(0).getAddressLine(1);
 
-			String[] Res = Str.split("[\\p{Punct}\\s]+");
-			Toast.makeText(view.getContext(), "[" + Res[1] + "]",
-					Toast.LENGTH_LONG).show();
+				String[] Res = Str.split("[\\p{Punct}\\s]+");
+				Toast.makeText(view.getContext(), "[" + Res[1] + "]",
+						Toast.LENGTH_LONG).show();
 				city = Res[1];
 
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-
 		// print on screen events
 		if (events.size() == 0) {
 			dialog = ProgressDialog.show(view.getContext(), "", "Attendi...",

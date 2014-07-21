@@ -23,12 +23,4 @@
         android:background="@drawable/accedifacebook"
         android:text="" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="25dp"
-        android:layout_weight="0.01"
-        android:text="@string/login_without_facebook" />
-
 </LinearLayout>

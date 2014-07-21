@@ -23,6 +23,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -46,10 +47,11 @@ public class Fragment_crea_event extends Fragment {
 	
 	private static int RESULT_ACTIVITY = 1;
 	private static int RESULT_CODE = -1;
-	//TEST DB istanze
+
 			private DbAdapter dbHelper;
 			private Cursor cursor;
-	   //
+			
+	
 	Button b1=null;
 	ImageView image = null;
 	@Override 
@@ -169,30 +171,17 @@ public class Fragment_crea_event extends Fragment {
              cursor.moveToFirst();
              String filePath = cursor.getString(column_index);    
              System.out.println("file: "+filePath);
-             image.setImageBitmap((StorageHelper.loadImageFromStorage(filePath)));
+             
+            
+             Bitmap bm=StorageHelper.loadImageFromStorage(filePath);
+             BitmapDrawable bdrawable = new BitmapDrawable(bm);
+		     image.setBackgroundDrawable(bdrawable);
+             
+System.gc();System.runFinalization();
              
      }
  super.onActivityResult(requestCode, resultCode, data);
-	    /* if((requestCode==RESULT_ACTIVITY)&&(resultCode==RESULT_CODE)&&(data!=null)){
-	    	 
-                 System.out.println(data);
-			     Uri selectedImageUri = data.getData();           
-	             Object selectedImagePath = getPath(selectedImageUri);
-	             
-	             ContentResolver cr =this.getActivity().getContentResolver();
-                 try {
-					image.setImageBitmap(MediaStore.Images.Media.getBitmap(cr, selectedImageUri));
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} 
-
-		}
-	     else {System.out.println("ERRORE");
-	     image.setImageBitmap(null);}*/
+	   
 	}
 	
 	

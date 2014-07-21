@@ -87,7 +87,6 @@ public class DownloadEventsTask extends
 	private double difLAt;
 	private double difLong;
 
-	private static int count = 0;
 
 	public DownloadEventsTask(View view, Communicator comm, ListView l,
 			ProgressDialog dialog, Context context, String city,
@@ -216,14 +215,13 @@ public class DownloadEventsTask extends
 
 		// // cliclo la lista di elementi scaricare l'immagine relativa
 		// all'evento
-		if ((10 + offsetQuery) < (events.size())) {
+		if ((10 + offsetQuery) <= (events.size())) {
 			for (int i = offsetQuery; i < 10 + offsetQuery; i++) {
 				String URLPhoto = events.get(i).getPhotoURL();
 				if (URLPhoto != null) {// salvo nell internal
 
 					StorageHelper.saveToInternalSorage(
 							getBitmapFromURL(URLPhoto), events.get(i).getId());
-					count++;
 					// System.out.println("result: "+
 					// loadImageFromStorage("/storage/sdcard0"));
 
@@ -245,7 +243,6 @@ public class DownloadEventsTask extends
 						StorageHelper.saveToInternalSorage(
 								getBitmapFromURL(URLPhoto), events.get(i)
 										.getId());
-						count++;
 
 					} else {
 
@@ -280,7 +277,7 @@ public class DownloadEventsTask extends
 
 			Fragment_main.flag_loading = false;
 		} else {
-			if ((result.size()-offsetQuery)>0) {
+			if ((events.size()-offsetQuery)>0) {
 				List<EventsHelper> list = new ArrayList<EventsHelper>();
 				for (int i = offsetQuery; i < offsetQuery + result.size(); i++) {
 					events.add(result.get(i));

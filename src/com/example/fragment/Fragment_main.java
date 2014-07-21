@@ -44,6 +44,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class Fragment_main extends Fragment {
@@ -145,6 +146,7 @@ public class Fragment_main extends Fragment {
 
 		// Aggiungo l'ascoltatore per aprire maggiori dettagli dall'elenco della
 		// listView
+		
 		lv.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -186,6 +188,7 @@ public class Fragment_main extends Fragment {
 
 		return view;
 	}
+	
 
 }
 

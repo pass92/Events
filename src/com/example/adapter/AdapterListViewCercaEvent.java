@@ -45,17 +45,31 @@ public class AdapterListViewCercaEvent extends ArrayAdapter<EventsHelper> {
 	        @Override
 	        public View getView(int position, View convertView, ViewGroup parent) {
 	 
-	            // 1. Create inflater 
-	            LayoutInflater inflater = (LayoutInflater) context
-	                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	 
-	            // 2. Get rowView from inflater
-	            View rowView = inflater.inflate(R.layout.row, parent, false);
-	 
-	            // 3. Get the two text view from the rowView
-	            ImageView imageView = (ImageView) rowView.findViewById(R.id.image_view_event);
-	            TextView titleView = (TextView) rowView.findViewById(R.id.title_event);
-	            TextView dataView = (TextView) rowView.findViewById(R.id.data_event);
+	        	ViewHolderItem viewHolder;
+
+	    		if (convertView == null) {
+	    			 // inflate the layout
+	    			LayoutInflater inflater = (LayoutInflater) context
+	    					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	    	        convertView = inflater.inflate(R.layout.row, parent, false);
+
+
+	    			// well set up the ViewHolder
+	    			viewHolder = new ViewHolderItem();
+	    			viewHolder.imageView = (ImageView) convertView
+	    					.findViewById(R.id.image_view_event);
+	    			viewHolder.title = (TextView) (TextView) convertView
+	    					.findViewById(R.id.title_event);
+	    			viewHolder.date = (TextView) convertView
+	    					.findViewById(R.id.data_event);
+	    			
+	    			convertView.setTag(viewHolder);
+	    			
+	    		}
+	    		else{
+	    			
+	    			viewHolder = (ViewHolderItem) convertView.getTag();
+	    		}
 	            
 	            //List<EventsHelper> events = MainActivity.getListEvents();
 	            // 4. Set the text for textView 
@@ -72,23 +86,27 @@ public class AdapterListViewCercaEvent extends ArrayAdapter<EventsHelper> {
 	            time=new String(day+"/"+month+"/"+year+" alle "+hour);
 	            
 	            
-	            titleView.setText(events.get(position).getTitle());
-	            dataView.setText(time);
+	            viewHolder.title.setText(events.get(position).getTitle());
+	            viewHolder.date.setText(time);
 	            Bitmap bitmapImage = StorageHelper.loadImageFromStorage(StorageHelper.pathStorage,events.get(position).getId());
 
 	    		if(bitmapImage!=null){
 	    		     BitmapDrawable bdrawable = new BitmapDrawable(bitmapImage);
-	    		     imageView.setBackgroundDrawable(bdrawable);
+	    		     viewHolder.imageView.setBackgroundDrawable(bdrawable);
 	    		}
 	    		else{
 	    			 BitmapDrawable bdrawable = new BitmapDrawable(events.get(position).getPhoto());
-	    		     imageView.setBackgroundDrawable(bdrawable);
+	    			 viewHolder.imageView.setBackgroundDrawable(bdrawable);
 	    			//imageView.setImageResource(R.drawable.default_event);
 	    		}
 
 	            // 5. retrn rowView
-	            return rowView;
+	            return convertView;
 	        }
-	        
+	    	private static class ViewHolderItem {
+	    		ImageView imageView;
+	    		TextView title;
+	    		TextView date;
+	    	}
 	}
 

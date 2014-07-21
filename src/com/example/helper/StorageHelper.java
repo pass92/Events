@@ -46,5 +46,21 @@ public class StorageHelper {
 		return null;
 
 	}
+	public static Bitmap loadImageFromStorage(String path) {
+
+		try {
+			
+			File f = new File(path);
+			
+			Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+			return b;
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
 
 }

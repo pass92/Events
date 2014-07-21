@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import com.example.events.R;
 import com.example.events.R.id;
 import com.example.events.R.layout;
+import com.example.helper.StorageHelper;
 
 import database.DbAdapter;
 import android.app.AlertDialog;
@@ -155,8 +156,24 @@ public class Fragment_crea_event extends Fragment {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 	     super.onActivityResult(requestCode, resultCode, data);
-	     
-	     if((requestCode==RESULT_ACTIVITY)&&(resultCode==RESULT_CODE)&&(data!=null)){
+	     if(requestCode==RESULT_ACTIVITY && resultCode==RESULT_CODE){
+             Uri contentUri = data.getData();
+
+             String [] proj={MediaStore.Images.Media.DATA};
+             Cursor cursor = this.getActivity().managedQuery( contentUri,
+                             proj,  // Which columns to return
+                             null,  // WHERE clause; which rows to return (all rows)
+                             null,  // WHERE clause selection arguments (none)
+                             null); // Order-by clause (ascending by name)
+             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+             cursor.moveToFirst();
+             String filePath = cursor.getString(column_index);    
+             System.out.println("file: "+filePath);
+             image.setImageBitmap((StorageHelper.loadImageFromStorage(filePath)));
+             
+     }
+ super.onActivityResult(requestCode, resultCode, data);
+	    /* if((requestCode==RESULT_ACTIVITY)&&(resultCode==RESULT_CODE)&&(data!=null)){
 	    	 
                  System.out.println(data);
 			     Uri selectedImageUri = data.getData();           
@@ -173,10 +190,13 @@ public class Fragment_crea_event extends Fragment {
 					e.printStackTrace();
 				} 
 
-	          
 		}
-	     else {System.out.println("ERRORE");}
+	     else {System.out.println("ERRORE");
+	     image.setImageBitmap(null);}*/
 	}
+	
+	
+	
 	private Object getPath(Uri uri) {
 		// TODO Auto-generated method stub
 		

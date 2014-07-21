@@ -9,8 +9,7 @@
         android:id="@+id/imageView_addImg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1.93"
-        android:background="@drawable/images" />
+        android:layout_weight="1.93" />
 
     <Button
         android:id="@+id/button_addPosition"

@@ -127,7 +127,7 @@ public class Fragment_main extends Fragment {
 		// print on screen events
 		if (events.size() == 0) {
 			dialog = ProgressDialog.show(view.getContext(), "", "Attendi...",
-					false, true);
+					false, false);
 			DownloadEventsTask taskEvents = new DownloadEventsTask(view, comm,
 					lv, dialog, view.getContext(), city, offsetQuery,
 					limitQuery, adapter, (ArrayList<EventsHelper>) events);
@@ -172,7 +172,7 @@ public class Fragment_main extends Fragment {
 						flag_loading = true;
 
 						dialog = ProgressDialog.show(view.getContext(), "",
-								"Attendi...", false, true);
+								"Attendi...", false, false);
 						offsetQuery = offsetQuery + 10;
 						DownloadEventsTask taskEvents = new DownloadEventsTask(
 								view, comm, lv, dialog, view.getContext(),

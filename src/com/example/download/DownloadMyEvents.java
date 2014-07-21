@@ -64,26 +64,28 @@ public class DownloadMyEvents extends
 	private AdapterListView adapter;
 	private static List<EventsHelper> events;
 	private Context context;
-	private DbAdapter dbHelper=new DbAdapter(context);
-	
-	public static List<EventsHelper> getmieieeventi(){
+	private DbAdapter dbHelper = new DbAdapter(context);
+
+	public static List<EventsHelper> getmieieeventi() {
 		return events;
 	}
 
-	public DownloadMyEvents(View view, ListView l,
-			ProgressDialog dialog, Context context,List<EventsHelper> events) {
+	public DownloadMyEvents(View view, ListView l, ProgressDialog dialog,
+			Context context, List<EventsHelper> events, AdapterListView adapter) {
 		this.view = view;
 		this.l = l;
 		this.dialog = dialog;
 		this.context = context;
-		this.events=events;
+		this.events = events;
+		this.adapter = adapter;
 	}
 
 	@Override
 	protected void onPreExecute() {
 		// TODO Auto-generated method stub
 		super.onPreExecute();
-		fqlQuery = "select eid,name,description,start_time, pic_big,venue from event where eid in (SELECT eid,rsvp_status FROM event_member WHERE uid=me() and rsvp_status=\""+"attending"+"\")";
+		fqlQuery = "select eid,name,description,start_time, pic_big,venue from event where eid in (SELECT eid,rsvp_status FROM event_member WHERE uid=me() and rsvp_status=\""
+				+ "attending" + "\")";
 		Log.w("OnPreExecute", fqlQuery);
 		params.putString("q", fqlQuery);
 		session = MainActivity.session;
@@ -115,17 +117,34 @@ public class DownloadMyEvents extends
 									String start_time = o
 											.getString("start_time");
 									String photoURL = o.getString("pic_big");
-									
+
+									Double latitude = 0.0;
+									Double longitude = 0.0;
+									JSONObject venue = null;
+									try {
+										venue = o.getJSONObject("venue");
+										latitude = venue.getDouble("latitude");
+										longitude = venue.getDouble("longitude");
+									} catch (Exception e) {
+										Log.w("Facebook-Example",
+												e.getCause() + Integer.toString(i)
+														+ "Get Latitude Longitude");
+									}
 									EventsHelper f = new EventsHelper();
 									f.setId(id);
 									f.setTitle(title);
 									f.setDescription(description);
 									f.setStart_time(start_time);
 									f.setPhotoURL(photoURL);
+									f.setLatitude(latitude);
+									f.setLongitude(longitude);
 									events.add(f);
-								   /* dbHelper.open();
-									dbHelper.createEvents(id,photoURL, title, description,start_time, "0", "0","0","0","0");
-									dbHelper.close();*/
+									/*
+									 * dbHelper.open();
+									 * dbHelper.createEvents(id,photoURL, title,
+									 * description,start_time, "0",
+									 * "0","0","0","0"); dbHelper.close();
+									 */
 								}
 							}
 						} catch (JSONException e) {
@@ -136,20 +155,16 @@ public class DownloadMyEvents extends
 				});
 		Request.executeBatchAndWait(request);
 
-		
-		
-		
 		// cliclo la lista di elementi scaricare l'immagine relativa all'evento
 		for (int i = 0; i < events.size(); i++) {
 			String URLPhoto = events.get(i).getPhotoURL();
 
-			StorageHelper.saveToInternalSorage(
-					getBitmapFromURL(URLPhoto), events.get(i)
-							.getId());
+			StorageHelper.saveToInternalSorage(getBitmapFromURL(URLPhoto),
+					events.get(i).getId());
 			events.get(i).setPhoto(getBitmapFromURL(URLPhoto));
 			Log.w("URLImage", URLPhoto);
 		}
-	
+
 		return (ArrayList) events;
 	}
 
@@ -158,7 +173,7 @@ public class DownloadMyEvents extends
 		// TODO Auto-generated method stub
 		super.onPostExecute(result);
 		Log.w("Async Task", "on post excute");
-//query
+		// query
 
 		dbHelper = new DbAdapter(context);
 		dbHelper.open();
@@ -169,9 +184,8 @@ public class DownloadMyEvents extends
 
 		if (c.moveToFirst() == true) {
 			while (!c.isAfterLast()) {
-				EventsHelper myevent=new EventsHelper();
+				EventsHelper myevent = new EventsHelper();
 
-				
 				System.out
 						.println("===================Risultato delle query:================ ");
 				// STAMPO TUTTI I CAMPI DEL RECORD
@@ -179,47 +193,37 @@ public class DownloadMyEvents extends
 				System.out.println("Curosor c=" + (c.getString(1)));
 				System.out.println("Curosor c=" + c.getString(2));
 				System.out.println("Curosor c=" + c.getString(3));
-				System.out.println("Curosor start_time="
-						+ c.getString(4));
+				System.out.println("Curosor start_time=" + c.getString(4));
 				System.out.println("Curosor end_time=" + c.getString(5));
 				System.out.println("Curosor location=" + c.getString(6));
 
 				System.out.println("Curosor latitude=" + c.getString(8));
 				System.out.println("Curosor longitude=" + c.getString(9));
-				
+
 				System.out
 						.println("==================fine risultato query==================");
-				
+
 				myevent.setId(c.getString(0));
 				myevent.setPhotoURL(c.getString(1));
 				myevent.setTitle(c.getString(2));
 				myevent.setDescription(c.getString(3));
 				myevent.setStart_time(c.getString(4));
 				myevent.setEnd_time(c.getString(5));
-				
+
 				myevent.setMy_status(c.getString(7));
-				
-				
+
 				result.add(myevent);
 				c.moveToNext();
 
 			}
 		}
-			c.close();
-		
-		
-		
-		
-		
-		
-		
-		
-//		
-		events = result;
-		adapter = new AdapterListView(view.getContext(),
-				(ArrayList<EventsHelper>) result);
-		l.setAdapter(adapter);
-		adapter.notifyDataSetChanged();
+		c.close();
+
+		for (int i = 0; i < result.size(); i++) {
+			events.add(result.get(i));
+			adapter.notifyDataSetChanged();
+
+		}
 
 		Fragment_main.flag_loading = false;
 		if (dialog.isShowing())

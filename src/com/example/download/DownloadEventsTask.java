@@ -86,10 +86,11 @@ public class DownloadEventsTask extends
 	private double longitude;
 	private double difLAt;
 	private double difLong;
+	private String filter;
+	private String filterCityQuery;
 
-	private static boolean start= true;
+	public static boolean start = true;
 
-	
 	public DownloadEventsTask(View view, Communicator comm, ListView l,
 			ProgressDialog dialog, Context context, String city,
 			int offsetQuery, Integer limitQuery, AdapterListView adapter,
@@ -111,18 +112,27 @@ public class DownloadEventsTask extends
 	protected void onPreExecute() {
 		// TODO Auto-generated method stub
 		super.onPreExecute();
+
 		session = MainActivity.session;
-		raggio = Fragment_impostazioni.loadUserDatails(view.getContext());
-		longitude = Fragment_main.longitude;
-		latitude = Fragment_main.latitude;
-		difLAt = (1 * raggio) / (111.22263);
-		difLong = (1 * raggio) / (772.1345);
-		
-		
-		if(city==""){
-			city="Tento";
+		if (city == "") {
+			city = Fragment_impostazioni.loadDafaultCity(context);
+			latitude = 46.07;
+			longitude = 11.13;
+			raggio = Fragment_impostazioni.loadUserDatails(view.getContext());
+			difLAt = (1 * raggio) / (111.22263);
+			difLong = (1 * raggio) / (772.1345);
+		} else {
+			raggio = Fragment_impostazioni.loadUserDatails(view.getContext());
+			longitude = Fragment_main.longitude;
+			latitude = Fragment_main.latitude;
+			difLAt = (1 * raggio) / (111.22263);
+			difLong = (1 * raggio) / (772.1345);
 		}
-		
+
+		filter = Fragment_impostazioni.loadFilters(context);
+		if (filter != "")
+			filterCityQuery = city + "%20" + filter;
+
 	}
 
 	@Override
@@ -131,7 +141,7 @@ public class DownloadEventsTask extends
 		final List<EventsHelper> events = new ArrayList<EventsHelper>();
 		Log.w("Async Task", "doInBackground start!");
 
-		String url = "https://graph.facebook.com/search?q=" + city 
+		String url = "https://graph.facebook.com/search?q=" + filterCityQuery
 				+ "&type=event&access_token=" + session.getAccessToken()
 				+ "&fields=id,name,start_time,venue,cover,description";
 		Log.w("URL REQUEST", url);
@@ -197,18 +207,18 @@ public class DownloadEventsTask extends
 					events.add(f);
 
 				}
-					
+
 				// Log.w("LOAD PREFERENCES	",
 				// Integer.toString(Fragment_impostazioni.loadUserDatails(context)));
 
-				//dbHelper.open();
-				//System.out.println("DB : "+dbHelper.fetchAllEvents().getCount());
-				//if (dbHelper.fetchAllEvents().getCount() == 0) {
-				//dbHelper.createEvents(id, pathPhoto, title, description,
-				//		start_time, "0", "0");
-				//dbHelper.close();
-			//	}
-			//	dbHelper.close();
+				// dbHelper.open();
+				// System.out.println("DB : "+dbHelper.fetchAllEvents().getCount());
+				// if (dbHelper.fetchAllEvents().getCount() == 0) {
+				// dbHelper.createEvents(id, pathPhoto, title, description,
+				// start_time, "0", "0");
+				// dbHelper.close();
+				// }
+				// dbHelper.close();
 
 			}
 
@@ -225,8 +235,8 @@ public class DownloadEventsTask extends
 
 		// // cliclo la lista di elementi scaricare l'immagine relativa
 		// all'evento
-		if (offsetQuery < events.size() && events.size()-offsetQuery >=10) {
-			for (int i = offsetQuery; i < 10+offsetQuery; i++) {
+		if (offsetQuery < events.size() && events.size() - offsetQuery >= 10) {
+			for (int i = offsetQuery; i < 10 + offsetQuery; i++) {
 				String URLPhoto = events.get(i).getPhotoURL();
 				if (URLPhoto != null) {// salvo nell internal
 
@@ -244,10 +254,10 @@ public class DownloadEventsTask extends
 					events.get(i).setPhoto(bitmap);
 				}
 			}
-	} 
-		else {
-			if ((events.size()-offsetQuery)>0 || start) {
-				for (int i = offsetQuery; i < offsetQuery+(events.size()-offsetQuery); i++) {
+		} else {
+			if ((events.size() - offsetQuery) > 0 || start) {
+				for (int i = offsetQuery; i < offsetQuery
+						+ (events.size() - offsetQuery); i++) {
 					String URLPhoto = events.get(i).getPhotoURL();
 					if (URLPhoto != null) {// salvo nell internal
 
@@ -275,10 +285,10 @@ public class DownloadEventsTask extends
 		super.onPostExecute(result);
 		Log.w("Async Task", "on post excute");
 
-		if (offsetQuery < result.size() && result.size()-offsetQuery >=10) {
+		if (offsetQuery < result.size() && result.size() - offsetQuery >= 10) {
 
 			List<EventsHelper> list = new ArrayList<EventsHelper>();
-			for (int i = offsetQuery; i < 10+offsetQuery; i++) {
+			for (int i = offsetQuery; i < 10 + offsetQuery; i++) {
 				events.add(result.get(i));
 				adapter.notifyDataSetChanged();
 				list.add(result.get(i));
@@ -288,9 +298,10 @@ public class DownloadEventsTask extends
 
 			Fragment_main.flag_loading = false;
 		} else {
-			if ((events.size()-offsetQuery)>0 || start) {
+			if ((events.size() - offsetQuery) > 0 || start) {
 				List<EventsHelper> list = new ArrayList<EventsHelper>();
-				for (int i = offsetQuery; i < offsetQuery+(result.size()-offsetQuery); i++) {
+				for (int i = offsetQuery; i < offsetQuery
+						+ (result.size() - offsetQuery); i++) {
 					events.add(result.get(i));
 					adapter.notifyDataSetChanged();
 					list.add(result.get(i));
@@ -301,10 +312,10 @@ public class DownloadEventsTask extends
 				Fragment_main.flag_loading = false;
 			}
 		}
-		
+
 		if (dialog.isShowing())
 			dialog.dismiss();
-		start=false;
+		start = false;
 	}
 
 	public Bitmap getBitmapFromURL(String imageUrl) {

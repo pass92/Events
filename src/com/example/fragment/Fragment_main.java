@@ -49,7 +49,7 @@ import android.widget.Toast;
 
 public class Fragment_main extends Fragment {
 	Button b1;
-	private static List<EventsHelper> events = new ArrayList<EventsHelper>();
+	static List<EventsHelper> events = new ArrayList<EventsHelper>();
 	private ProgressDialog dialog;
 
 	public static Boolean flag_loading = true;
@@ -68,6 +68,14 @@ public class Fragment_main extends Fragment {
 	public static double latitude = 0;
 	public static double longitude = 0;
 
+	public static void clearAllVariable(){
+		events.clear();
+		flag_loading = true;
+		offsetQuery = 0;
+		Fragment_main.events.clear();
+		DownloadEventsTask.start =true;
+	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub

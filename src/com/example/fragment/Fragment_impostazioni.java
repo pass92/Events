@@ -22,12 +22,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -74,11 +72,16 @@ public class Fragment_impostazioni extends Fragment {
 		CheckBox checkBoxCity = (CheckBox) view
 				.findViewById(R.id.checkBoxAbilitaLocation);
 
-		if (checkBoxCity.isChecked() == false) {
+		if (loadCheckboxCity(view.getContext()) == false) {
 			defaultCity.setTextColor(getResources().getColor(
 					android.R.color.darker_gray));
 			defaultCity.setFocusable(false);
-			saveCheckboxCity(false, view.getContext());
+			//saveCheckboxCity(false, view.getContext());
+		}
+		else{
+			defaultCity.setTextColor(getResources().getColor(
+					android.R.color.black));
+			defaultCity.setFocusableInTouchMode(true);
 		}
 
 		checkBoxCity
@@ -93,12 +96,15 @@ public class Fragment_impostazioni extends Fragment {
 							defaultCity.setTextColor(getResources().getColor(
 									android.R.color.black));
 							saveCheckboxCity(true, view.getContext());
+							Fragment_main.clearAllVariable();
+							closeKeyboard(getActivity(), defaultCity.getWindowToken());
 
 						} else {
 							defaultCity.setFocusable(false);
 							defaultCity.setTextColor(getResources().getColor(
 									android.R.color.darker_gray));
 							saveCheckboxCity(false, view.getContext());
+							closeKeyboard(getActivity(), defaultCity.getWindowToken());
 						}
 					}
 

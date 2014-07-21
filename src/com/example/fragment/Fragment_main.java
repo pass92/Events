@@ -124,7 +124,6 @@ public class Fragment_main extends Fragment {
 			String[] Res = Str.split("[\\p{Punct}\\s]+");
 			Toast.makeText(view.getContext(), "[" + Res[1] + "]",
 					Toast.LENGTH_LONG).show();
-			if (addresses != null)
 				city = Res[1];
 
 		} catch (IOException e) {

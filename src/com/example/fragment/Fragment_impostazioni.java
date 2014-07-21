@@ -123,6 +123,7 @@ public class Fragment_impostazioni extends Fragment {
 								// android:animateLayoutChanges set to true,
 								// this removal is automatically animated.
 								mContainerView.removeView(newView);
+								saveFilters("", context);
 							}
 						});
 

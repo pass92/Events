@@ -132,6 +132,8 @@ public class DownloadEventsTask extends
 		filter = Fragment_impostazioni.loadFilters(context);
 		if (filter != "")
 			filterCityQuery = city + "%20" + filter;
+		else
+			filterCityQuery = city;
 
 	}
 
@@ -141,8 +143,8 @@ public class DownloadEventsTask extends
 		final List<EventsHelper> events = new ArrayList<EventsHelper>();
 		Log.w("Async Task", "doInBackground start!");
 
-		String url = "https://graph.facebook.com/search?q=" + filterCityQuery
-				+ "&type=event&access_token=" + session.getAccessToken()
+		String url = "https://graph.facebook.com/search?q=(" + filterCityQuery
+				+ ")&type=event&access_token=" + session.getAccessToken()
 				+ "&fields=id,name,start_time,venue,cover,description";
 		Log.w("URL REQUEST", url);
 		JSONObject json = getRequestFromUrl(url);

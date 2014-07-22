@@ -330,7 +330,7 @@ public class Fragment_impostazioni extends Fragment {
 		SharedPreferences userDetails = context.getSharedPreferences(
 				"userdetails", Context.MODE_PRIVATE);
 
-		int km = userDetails.getInt("km", 10);
+		int km = userDetails.getInt("km", 50);
 		return km;
 	}
 

@@ -40,6 +40,7 @@ public class Fragment_i_miei_eventi extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_i_miei_eventi,
 				container, false);
  
+		events = new ArrayList<EventsHelper>();
 		comm = (Communicator) getActivity();
 		listView = (ListView) view.findViewById(R.id.listview_my_events);
 

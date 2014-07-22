@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="36dp"
         android:textColor="@android:color/white"
-        android:text="Inserire parola chiave per la ricerca" />
+        android:text="Inserire una parola chiave per la ricerca" />
 
     <EditText
         android:id="@+id/editText_crea_event"
@@ -28,7 +28,7 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:text="CERCA" />
 
     <ListView
         android:id="@+id/listView_cerca"

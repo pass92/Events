@@ -122,7 +122,7 @@ public class Fragment_i_miei_event_event extends Fragment {
 		});
 
 		Button b2 = (Button) view.findViewById(R.id.button_partecipa_event);
-		b2.setText("delete");
+		b2.setText("DELETE");
 		b2.setOnClickListener(new OnClickListener() {
 
 			@Override

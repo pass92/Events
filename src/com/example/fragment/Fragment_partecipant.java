@@ -38,17 +38,16 @@ public class Fragment_partecipant extends Fragment {
 	private AdapterUser adapter;
 	private ArrayList<EventsHelper> event;
 	private String IdEvent;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		Bundle args = getArguments();
 		IdEvent = args.getString("id");
-		
+
 	}
-	
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle saveInstanceState) {
@@ -56,19 +55,18 @@ public class Fragment_partecipant extends Fragment {
 				false);
 
 		// Lista partecipanti evento
-		final List<UserHelper> user =new ArrayList();
+		final List<UserHelper> user = new ArrayList();
 		final ListView listView = (ListView) view
 				.findViewById(R.id.listview_partecipanti);
-		
+
 		adapter = new AdapterUser(view.getContext(), user);
 		listView.setAdapter(adapter);
-		
 
-		//String id = event.get(MainActivity.getidEvents()).getId();
-		//Log.w("ID EVENT", id);
-		DownloadFriendsWhoParticipate taskEvents = new DownloadFriendsWhoParticipate(view, listView, view.getContext(), user,IdEvent,adapter);
+		// String id = event.get(MainActivity.getidEvents()).getId();
+		// Log.w("ID EVENT", id);
+		DownloadFriendsWhoParticipate taskEvents = new DownloadFriendsWhoParticipate(
+				view, listView, view.getContext(), user, IdEvent, adapter);
 		taskEvents.execute();
-		
 
 		final EditText tx = (EditText) view.findViewById(R.id.edit_text_email);
 		Button b1 = (Button) view.findViewById(R.id.button_send_email);
@@ -80,7 +78,7 @@ public class Fragment_partecipant extends Fragment {
 				String emailToSend = tx.getText().toString();
 
 				if ((emailToSend.contains("@"))) {// mettere controllo sull
-														// email
+													// email
 
 					Intent intent = new Intent(Intent.ACTION_SENDTO); // it's
 																		// not
@@ -130,12 +128,13 @@ public class Fragment_partecipant extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Intent facebookIntent = getOpenFacebookIntent(view.getContext(),user.get(position).getId());
+				Intent facebookIntent = getOpenFacebookIntent(
+						view.getContext(), user.get(position).getId());
 				startActivity(facebookIntent);
-				
+
 			}
 		});
-		
+
 		return view;
 	}
 
@@ -145,25 +144,18 @@ public class Fragment_partecipant extends Fragment {
 		super.onDestroyView();
 		getView().removeCallbacks(null);
 	}
-	
-	public static Intent getOpenFacebookIntent(Context context, String idProfile) {
 
-//	    try {
-//	        //context.getPackageManager().getPackageInfo("com.facebook.katana", 0); //Checks if FB is even installed.
-//	        return new Intent(Intent.ACTION_VIEW,
-//	                Uri.parse("fb://profile/"+idProfile)); //Trys to make intent with FB's URI
-//	    } catch (Exception e) {
-//	        return new Intent(Intent.ACTION_VIEW,
-//	                Uri.parse("https://www.facebook.com/"+idProfile)); //catches and opens a url to the desired page
-//	    }
+	public static Intent getOpenFacebookIntent(Context context, String idProfile) {
 		try {
-			context.getPackageManager().getPackageInfo("com.facebook.katana", 0);
-			String uri = "facebook://profile/"+ idProfile +"/info";
-			return  new Intent(Intent.ACTION_VIEW, Uri.parse(uri)); //Trys to make intent with FB's URI
-	    } catch (Exception e) {
-	        return new Intent(Intent.ACTION_VIEW,
-	                Uri.parse("https://www.facebook.com/")); //catches and opens a url to the desired page
-	    }
+		context.getPackageManager().getPackageInfo("com.facebook.katana", 0);
+			Intent facebookPage = new Intent(Intent.ACTION_VIEW,
+					Uri.parse("fb://profile/" + idProfile));
+			return facebookPage;
+		} catch (Exception e) {
+			Intent launchBrowser = new Intent(Intent.ACTION_VIEW,
+					Uri.parse("http://facebook.com/" + idProfile));
+			return launchBrowser;
+		}
 	}
-	
+
 }

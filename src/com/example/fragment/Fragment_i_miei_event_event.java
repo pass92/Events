@@ -260,7 +260,7 @@ public class Fragment_i_miei_event_event extends Fragment {
 			String uri="geo:0,0?q="+lat +","+lon;
 			startActivity(new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri)));
 	}
-	
+	}
 }
 
 

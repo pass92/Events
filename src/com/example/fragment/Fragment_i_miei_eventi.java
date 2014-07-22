@@ -54,8 +54,8 @@ public class Fragment_i_miei_eventi extends Fragment {
 //			
 //			listView.setAdapter(adapter);
 //		} else {
-		if(start){
-			start=false;
+		//if(start){
+			//start=false;
 		
 			dialog = ProgressDialog.show(view.getContext(), "", "Attendi...",
 					false, true);
@@ -64,7 +64,7 @@ public class Fragment_i_miei_eventi extends Fragment {
 					dialog, view.getContext(), events,adapter);
 			taskEvents.execute();
 			
-		}
+		//}
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override

@@ -217,7 +217,14 @@ public class Fragment_crea_event extends Fragment {
 					Random rand = new Random();
 					int  n = rand.nextInt(1000) + 1;
 					System.out.println("id: "+n+", img: "+pathimg+", title: "+title+", descrizione: "+description+", locazione: "+location+", data: "+date);
-					
+					 dbHelper = new DbAdapter(getActivity().getApplicationContext());
+					 Bitmap b=StorageHelper.loadImageFromStorage(pathimg);
+					 StorageHelper.saveToInternalSorage(b, ""+n);
+					 
+					 
+					 dbHelper.open();
+					 dbHelper.createEvents(""+n, pathimg, title, description, date, "0", location, "1", "x", "y");
+				dbHelper.close();
 				}
 			}
 		});
@@ -248,7 +255,7 @@ public class Fragment_crea_event extends Fragment {
 			Bitmap bm = StorageHelper.loadImageFromStorage(filePath);
 			BitmapDrawable bdrawable = new BitmapDrawable(bm);
 			image.setBackgroundDrawable(bdrawable);
-
+            cursor.close();
 			System.gc();
 			System.runFinalization();
 

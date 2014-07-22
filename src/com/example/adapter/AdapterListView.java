@@ -95,6 +95,7 @@ public class AdapterListView extends ArrayAdapter<EventsHelper> {
 		}
 		time = new String(day + "/" + month + "/" + year + " alle " + hour);
 
+
 		viewHolder.title.setText(events.get(position).getTitle());
 		viewHolder.date.setText(time);
 

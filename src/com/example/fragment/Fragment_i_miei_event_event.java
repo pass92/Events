@@ -218,8 +218,35 @@ public class Fragment_i_miei_event_event extends Fragment {
 		// + "," + events.get(MainActivity.getidEvents()).getLatitude()));
 		// this.startActivity(intent);
        if(events.get(MainActivity.getidEvents()).getLatitude()==null){
+			//caso db 
+    	   System.out.println("KKKKK: " + events.get(MainActivity.getidEvents()).getId());
+    	   dbHelper = new DbAdapter(getActivity().getApplicationContext());
+		   dbHelper.open();
+		   String id = "" + events.get(MainActivity.getidEvents()).getId();
+		   Cursor c = dbHelper.fetchEventById(id);
+		   
+		   if(c.moveToFirst()==true){
+				
 			
-		}
+			String latitudemy="" + c.getString(8);
+			String longitudmye="" + c.getString(9);
+
+		  
+			c.close();
+			dbHelper.close();
+		   
+           String uri="geo:0,0?q="+latitudemy +","+longitudmye;
+		   startActivity(new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri)));
+		   
+		   }
+       
+       
+       
+       
+       
+       
+       
+       }
 		else{
 		//String uri = "geo:"+ events.get(MainActivity.getidEvents()).getLatitude() + "," + events.get(MainActivity.getidEvents()).getLongitude();
 			String uri="geo:0,0?q="+events.get(MainActivity.getidEvents()).getLatitude() +","+events.get(MainActivity.getidEvents()).getLongitude();

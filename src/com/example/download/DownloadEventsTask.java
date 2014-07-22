@@ -110,6 +110,7 @@ public class DownloadEventsTask extends
 		this.limitQuery = limitQuery;
 		this.adapter = adapter;
 		this.events = events;
+		dbHelper = new DbAdapter(context);
 	}
 
 	@Override
@@ -252,12 +253,12 @@ public class DownloadEventsTask extends
 						&& longitude < (this.longitude + difLong)) {
 					events.add(f);
 
-					dbHelper = new DbAdapter(context);
+					
 					dbHelper.open();
 					dbHelper.createEvents(id, pathPhoto, title, description,
 							start_time, "0", "0", "0", "" + this.latitude, ""
 									+ this.longitude);
-					dbHelper.close();
+					
 
 				}
 

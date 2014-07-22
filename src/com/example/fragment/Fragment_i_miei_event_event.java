@@ -152,7 +152,7 @@ public class Fragment_i_miei_event_event extends Fragment {
 				String STARTTIME = "" + c.getString(4);
 				String ENDTIME = "" + c.getString(5);
 				String LOCATION = "" + c.getString(6);
-				String MY = "" + "0";
+				String MY = "" + 0;
 				String latitude="" + c.getString(8);
 				String longitude="" + c.getString(9);
 
@@ -167,10 +167,7 @@ public class Fragment_i_miei_event_event extends Fragment {
 				System.out.println("id: " + id);
 				System.out.println("numero di righe: " + c2.getCount());
 				getActivity().startManagingCursor(c);
-				
-				//c.close();
-				//c2.close();
-				dbHelper.close();
+
 
 
 			}
@@ -242,8 +239,7 @@ public class Fragment_i_miei_event_event extends Fragment {
 			String longitudmye="" + c.getString(9);
 
 		  
-			c.close();
-			dbHelper.close();
+
 		   
            String uri="geo:0,0?q="+latitudemy +","+longitudmye;
 		   startActivity(new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri)));

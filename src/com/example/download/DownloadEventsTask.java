@@ -64,6 +64,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class DownloadEventsTask extends
 		AsyncTask<Void, Void, ArrayList<EventsHelper>> {
@@ -119,33 +120,44 @@ public class DownloadEventsTask extends
 
 		session = MainActivity.session;
 		if (city == "") {
-			city = Fragment_impostazioni.loadDafaultCity(context);
+			if (Fragment_impostazioni.loadDafaultCity(context) != "")
+				city = Fragment_impostazioni.loadDafaultCity(context);
+			else{
+				Toast.makeText(context, "Insert a Valid Location..", Toast.LENGTH_LONG)
+				.show();
+				if (dialog.isShowing())
+					dialog.dismiss();
+				return;
+			}
+			if (Geocoder.isPresent()) {
+				try {
+					String location = city;
+					Geocoder gc = new Geocoder(context);
+					List<Address> addresses = gc.getFromLocationName(location,
+							5); // get the found Address Objects
 
-			if(Geocoder.isPresent()){
-			    try {
-			        String location = city;
-			        Geocoder gc = new Geocoder(context);
-			        List<Address> addresses= gc.getFromLocationName(location, 5); // get the found Address Objects
+					List<LatLng> ll = new ArrayList<LatLng>(addresses.size()); 
+					for (Address a : addresses) {
+						if (a.hasLatitude() && a.hasLongitude()) {
+							ll.add(new LatLng(a.getLatitude(), a.getLongitude()));
+						}
+					}
 
-			        List<LatLng> ll = new ArrayList<LatLng>(addresses.size()); // A list to save the coordinates if they are available
-			        for(Address a : addresses){
-			            if(a.hasLatitude() && a.hasLongitude()){
-			                ll.add(new LatLng(a.getLatitude(), a.getLongitude()));
-			            }  
-			        }  
-			        
+					if(ll ==null){
 					latitude = ll.get(0).getLat();
 					longitude = ll.get(0).getLon();
-			    } catch (IOException e) {
-			         // handle the exception
-			    }
-			}
-			else{
+					}
+					else{
+						latitude=46;
+						longitude=11;
+					}
+				} catch (IOException e) {
+					// handle the exception
+				}
+			} else {
 				latitude = 46;
 				longitude = 11;
 			}
-			
-			
 
 			raggio = Fragment_impostazioni.loadUserDatails(view.getContext());
 			difLAt = (1 * raggio) / (111.22263);
@@ -159,10 +171,14 @@ public class DownloadEventsTask extends
 		}
 
 		filter = Fragment_impostazioni.loadFilters(context);
-		if (filter != "")
-			filterCityQuery = city + "%20" + filter;
-		else
-			filterCityQuery = city;
+		if (filter != "") {
+			String str1 = filter.replace(" ", "%20");
+			String str = city.replace(" ", "%20");
+			filterCityQuery = str + "%20" + str1;
+		} else {
+			String str = city.replace(" ", "%20");
+			filterCityQuery = str;
+		}
 
 	}
 
@@ -236,17 +252,17 @@ public class DownloadEventsTask extends
 						&& longitude > (this.longitude - difLong)
 						&& longitude < (this.longitude + difLong)) {
 					events.add(f);
-				
+
 					dbHelper.open();
 					dbHelper.createEvents(id, pathPhoto, title, description,
-						start_time, "0", "0","0",""+this.latitude,""+this.longitude);
+							start_time, "0", "0", "0", "" + this.latitude, ""
+									+ this.longitude);
 					dbHelper.close();
 
 				}
 
 				// Log.w("LOAD PREFERENCES	",
 				// Integer.toString(Fragment_impostazioni.loadUserDatails(context)));
-
 
 			}
 
@@ -418,8 +434,6 @@ public class DownloadEventsTask extends
 		return jObj;
 	}
 
-	
-	
 	// AGGIUNTA////////////////////////////////////////////////////
 	/*
 	 * private String saveToInternalSorage(Bitmap bitmapImage, String id) {

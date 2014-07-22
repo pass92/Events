@@ -148,13 +148,23 @@ public class Fragment_partecipant extends Fragment {
 	
 	public static Intent getOpenFacebookIntent(Context context, String idProfile) {
 
-	    try {
-	        //context.getPackageManager().getPackageInfo("com.facebook.katana", 0); //Checks if FB is even installed.
+//	    try {
+//	        //context.getPackageManager().getPackageInfo("com.facebook.katana", 0); //Checks if FB is even installed.
+//	        return new Intent(Intent.ACTION_VIEW,
+//	                Uri.parse("fb://profile/"+idProfile)); //Trys to make intent with FB's URI
+//	    } catch (Exception e) {
+//	        return new Intent(Intent.ACTION_VIEW,
+//	                Uri.parse("https://www.facebook.com/"+idProfile)); //catches and opens a url to the desired page
+//	    }
+		try {
+	        context.getPackageManager()
+	                .getPackageInfo("com.facebook.katana", 0); //Checks if FB is even installed.
 	        return new Intent(Intent.ACTION_VIEW,
 	                Uri.parse("fb://profile/"+idProfile)); //Trys to make intent with FB's URI
 	    } catch (Exception e) {
 	        return new Intent(Intent.ACTION_VIEW,
-	                Uri.parse("https://www.facebook.com/"+idProfile)); //catches and opens a url to the desired page
+	                Uri.parse("https://www.facebook.com/luca.passerini")); //catches and opens a url to the desired page
 	    }
 	}
+	
 }

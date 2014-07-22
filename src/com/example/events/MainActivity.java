@@ -80,7 +80,7 @@ public class MainActivity extends Activity implements Communicator {
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
 	private String[] mPlanetTitles = { "Events", "I miei Eventi",
-			"Crea Evento", "Cerca Evento", "Impostazioni" };
+			"Crea Evento", "Cerca", "Impostazioni" };
 
 	//info logged user
 	public static UserHelper infoUserLogged = new UserHelper();
@@ -299,16 +299,16 @@ public class MainActivity extends Activity implements Communicator {
 			transaction.addToBackStack("event_bo");
 			transaction.commit();
 		}
-		if (data.equals("fragment_i_miei_event")) {
-			Log.w("call fragment event", data);
-
-			Fragment fragment = new Fragment_i_miei_event_event();
-			FragmentManager manager = getFragmentManager();
-			FragmentTransaction transaction = manager.beginTransaction();
-			transaction.replace(R.id.content_frame, fragment);
-			transaction.addToBackStack("event_bo");
-			transaction.commit();
-		}
+//		if (data.equals("fragment_i_miei_event")) {
+//			Log.w("call fragment event", data);
+//
+//			Fragment fragment = new Fragment_i_miei_event_event();
+//			FragmentManager manager = getFragmentManager();
+//			FragmentTransaction transaction = manager.beginTransaction();
+//			transaction.replace(R.id.content_frame, fragment);
+//			transaction.addToBackStack("event_bo");
+//			transaction.commit();
+//		}
 
 	}
 

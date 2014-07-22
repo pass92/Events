@@ -35,7 +35,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Fragment_cerca_event extends Fragment{
+public class Fragment_cerca_event extends Fragment {
 
 	private DbAdapter dbHelper;
 	List<EventsHelper> events;
@@ -44,32 +44,30 @@ public class Fragment_cerca_event extends Fragment{
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		events=Fragment_cerca.getEventcerca();
-		
-		
+		events = Fragment_cerca.getEventcerca();
+
 	}
+
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle saveInstanceState) {
 		Log.w("Fragment_event", "On Create View");
 		View view = inflater.inflate(R.layout.fragment_event, container, false);
-		
-		Fragment fragment=new Fragment_cerca_event_descrizione();
+
+		Fragment fragment = new Fragment_cerca_event_descrizione();
 		FragmentManager manager = getFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.add(R.id.content_frame2, fragment, "descriptionfragment");
-        transaction.commit();
-		
+		FragmentTransaction transaction = manager.beginTransaction();
+		transaction.add(R.id.content_frame2, fragment, "descriptionfragment");
+		transaction.commit();
+
 		ImageView imageEvent = (ImageView) view.findViewById(R.id.image_event);
 		Bitmap bitmap = StorageHelper.loadImageFromStorage(
 				StorageHelper.pathStorage,
 				events.get(MainActivity.getidEvents()).getId());
-		if(bitmap!=null){
-			
-		
-		BitmapDrawable bdrawable = new BitmapDrawable(bitmap);
-		imageEvent.setBackgroundDrawable(bdrawable);
-		}
-		else{
+		if (bitmap != null) {
+
+			BitmapDrawable bdrawable = new BitmapDrawable(bitmap);
+			imageEvent.setBackgroundDrawable(bdrawable);
+		} else {
 			imageEvent.setBackgroundResource(R.drawable.default_event);
 		}
 
@@ -132,27 +130,24 @@ public class Fragment_cerca_event extends Fragment{
 				String ENDTIME = "" + c.getString(5);
 				String LOCATION = "" + c.getString(6);
 				String MY = "" + 1;
-				String latitude="" + c.getString(8);
-				String longitude="" + c.getString(9);
+				String latitude = "" + c.getString(8);
+				String longitude = "" + c.getString(9);
 
 				c.close();
 				System.out.println(dbHelper.deleteEvents(ID));
 				dbHelper.createEvents(ID, IMAGE, TITLE, DESCRIPTION, STARTTIME,
-						ENDTIME, LOCATION, MY,latitude,longitude);
-
+						ENDTIME, LOCATION, MY, latitude, longitude);
 
 				Cursor c2 = dbHelper.fetchEventById(id);
 				System.out.println("id: " + id);
 				System.out.println("numero di righe: " + c2.getCount());
 				getActivity().startManagingCursor(c);
-				
 
 				c2.close();
 
 			}
 
-		
-	});
+		});
 
 		Button b3 = (Button) view.findViewById(R.id.button_partecipant_event);
 		b3.setOnClickListener(new OnClickListener() {
@@ -160,10 +155,10 @@ public class Fragment_cerca_event extends Fragment{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Fragment fragment2= new Fragment_partecipant();
+				Fragment fragment2 = new Fragment_partecipant();
 				Bundle args = new Bundle();
-				args.putString("id", events.get(
-						MainActivity.getidEvents()).getId());
+				args.putString("id", events.get(MainActivity.getidEvents())
+						.getId());
 				fragment2.setArguments(args);
 				FragmentManager manager = getFragmentManager();
 				FragmentTransaction transaction = manager.beginTransaction();
@@ -181,33 +176,22 @@ public class Fragment_cerca_event extends Fragment{
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		
+
 	}
+
 	@Override
 	public void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
 	}
+
 	public void invokeGoogleMaps() {
-		
-			// Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-			// Uri.parse("http://maps.google.com/maps?daddr="
-			// + events.get(MainActivity.getidEvents()).getLongitude()
-			// + "," + events.get(MainActivity.getidEvents()).getLatitude()));
-			// this.startActivity(intent);
-if(events.get(MainActivity.getidEvents()).getLatitude()==null){
-			
-		}
-		else{
-		//String uri = "geo:"+ events.get(MainActivity.getidEvents()).getLatitude() + "," + events.get(MainActivity.getidEvents()).getLongitude();
-			String uri="geo:0,0?q="+events.get(MainActivity.getidEvents()).getLatitude() +","+events.get(MainActivity.getidEvents()).getLongitude();
-			
-			startActivity(new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri)));
-		}
+		String uri = "geo:0,0?q="
+				+ events.get(MainActivity.getidEvents()).getLatitude() + ","
+				+ events.get(MainActivity.getidEvents()).getLongitude();
+		startActivity(new Intent(android.content.Intent.ACTION_VIEW,
+				Uri.parse(uri)));
 
 	}
-	
+
 }
-
-
-

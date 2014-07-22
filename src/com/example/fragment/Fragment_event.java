@@ -208,21 +208,9 @@ public class Fragment_event extends Fragment {
 	}
 
 	public void invokeGoogleMaps() {
-
-		if (events.get(MainActivity.getidEvents()).getLatitude() == null) {
-
-		} else {
-			// String uri = "geo:"+
-			// events.get(MainActivity.getidEvents()).getLatitude() + "," +
-			// events.get(MainActivity.getidEvents()).getLongitude();
-			String uri = "geo:0,0?q="
-					+ lat
-					+ ","
-					+ lon;
-
-			startActivity(new Intent(android.content.Intent.ACTION_VIEW,
-					Uri.parse(uri)));
-		}
+			String uri = "geo:0,0?q="+ lat+ ","+ lon;
+			startActivity(new Intent(android.content.Intent.ACTION_VIEW,Uri.parse(uri)));
+		
 
 	}
 

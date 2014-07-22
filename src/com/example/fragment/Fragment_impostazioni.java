@@ -3,7 +3,6 @@ package com.example.fragment;
 import com.example.events.LogActivity;
 import com.example.events.MainActivity;
 import com.example.events.R;
-import com.example.events.Dialogfragment.NoticeDialogLIstener;
 import com.example.events.R.id;
 import com.example.events.R.layout;
 import com.facebook.Session;
@@ -233,7 +232,7 @@ public class Fragment_impostazioni extends Fragment {
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,
 									int whichButton) {
-								if (mContainerView.getChildCount() <= 3) {
+								if (mContainerView.getChildCount() <= 1) {
 									mContainerView.addView(newView, 0);
 									String srt = input.getEditableText()
 											.toString();

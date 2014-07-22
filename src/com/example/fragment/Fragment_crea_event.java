@@ -223,7 +223,7 @@ public class Fragment_crea_event extends Fragment {
 					 
 					 
 					 dbHelper.open();
-					 dbHelper.createEvents(""+n, pathimg, title, description, date, "0", location, "1", "x", "y");
+					 dbHelper.createEvents(""+n, pathimg, title, description, date, "0", location, "1", "46.8", "11.1");
 				dbHelper.close();
 				}
 			}

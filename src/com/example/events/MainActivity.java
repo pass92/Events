@@ -80,7 +80,7 @@ public class MainActivity extends Activity implements Communicator {
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
 	private String[] mPlanetTitles = { "Events", "I miei Eventi",
-			"Crea Evento", "Cerca Evento", "Impostazioni" };
+			"Crea Evento", "Cerca", "Impostazioni" };
 
 	//info logged user
 	public static UserHelper infoUserLogged = new UserHelper();

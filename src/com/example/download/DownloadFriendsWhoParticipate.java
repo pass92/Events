@@ -61,8 +61,9 @@ public class DownloadFriendsWhoParticipate extends
 	private Context context;
 	private String idEvent;
 
-	public DownloadFriendsWhoParticipate(View view, ListView l, Context context,
-			List<UserHelper> user, String idEvent, AdapterUser adapter) {
+	public DownloadFriendsWhoParticipate(View view, ListView l,
+			Context context, List<UserHelper> user, String idEvent,
+			AdapterUser adapter) {
 		this.view = view;
 		this.l = l;
 		this.context = context;
@@ -103,7 +104,7 @@ public class DownloadFriendsWhoParticipate extends
 
 									UserHelper f = new UserHelper();
 									f.setName(name);
-									 f.setId(id);
+									f.setId(id);
 									user1.add(f);
 								}
 							}
@@ -114,8 +115,8 @@ public class DownloadFriendsWhoParticipate extends
 
 				});
 		Request.executeBatchAndWait(request);
-		
-		///picture?redirect=false
+
+		// /picture?redirect=false
 		// // cliclo la lista di elementi scaricare l'immagine relativa
 		// all'evento
 		// for (int i = 0; i < events.size(); i++) {
@@ -133,12 +134,10 @@ public class DownloadFriendsWhoParticipate extends
 		super.onPostExecute(result);
 		Log.w("Async Task", "on post excute");
 
-		
 		for (int i = 0; i < result.size(); i++) {
 			user.add(result.get(i));
 			adapter.notifyDataSetChanged();
 		}
-
 
 		// Fragment_main.flag_loading = false;
 		// if (dialog.isShowing())

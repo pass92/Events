@@ -219,20 +219,8 @@ public class Fragment_i_miei_event_event extends Fragment {
 		super.onDestroy();
 	}
 	public void invokeGoogleMaps() {
-		// Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-		// Uri.parse("http://maps.google.com/maps?daddr="
-		// + events.get(MainActivity.getidEvents()).getLongitude()
-		// + "," + events.get(MainActivity.getidEvents()).getLatitude()));
-		// this.startActivity(intent);
-       if(events.get(MainActivity.getidEvents()).getLatitude()==null){
-			
-		}
-		else{
-		//String uri = "geo:"+ events.get(MainActivity.getidEvents()).getLatitude() + "," + events.get(MainActivity.getidEvents()).getLongitude();
 			String uri="geo:0,0?q="+lat +","+lon;
-			
 			startActivity(new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri)));
-		}
 	}
 	
 }

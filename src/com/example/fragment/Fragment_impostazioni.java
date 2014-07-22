@@ -362,7 +362,7 @@ public class Fragment_impostazioni extends Fragment {
 		edit.clear();
 		edit.putString("filter", filter);
 		edit.commit();
-		Toast.makeText(context, "Default city is saved..", 3000).show();
+		Toast.makeText(context, "Filter is saved..", 3000).show();
 
 	}
 

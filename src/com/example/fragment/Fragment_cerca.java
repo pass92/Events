@@ -105,8 +105,7 @@ public class Fragment_cerca extends Fragment {
 						eventHelper.setDescription(c.getString(3));
 						eventHelper.setTitle(c.getString(2));
 						eventHelper.setStart_time(c.getString(4));
-						// eventHelper.setPhoto();
-						// /test
+	
 
 						for (int i = 0; i < eventsmain.size(); i++) {
 							System.out.println("id eventsmain: "
@@ -120,7 +119,6 @@ public class Fragment_cerca extends Fragment {
 
 						}
 
-						// //testfine
 
 						System.out
 								.println("===================Risultato delle query:================ ");

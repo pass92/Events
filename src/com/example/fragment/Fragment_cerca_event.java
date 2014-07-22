@@ -107,7 +107,7 @@ public class Fragment_cerca_event extends Fragment {
 				// TODO Auto-generated method stub
 
 				Context context = getActivity().getApplicationContext();
-				CharSequence text = "Salvato in i miei eventi!";
+				CharSequence text = "Salvato nei miei eventi!";
 				int duration = Toast.LENGTH_SHORT;
 
 				Toast toast = Toast.makeText(context, text, duration);

@@ -103,7 +103,7 @@ public class Fragment_crea_event extends Fragment {
 
 				final Context context = getActivity();
 				AlertDialog.Builder alert = new AlertDialog.Builder(context);
-				alert.setTitle("Alert Dialog"); // Set Alert dialog title here
+				alert.setTitle("POSIZIONE PER MAPPA"); // Set Alert dialog title here
 				alert.setMessage("Enter Location"); // Message here
 
 				// Set an EditText view to get user input
@@ -146,7 +146,7 @@ public class Fragment_crea_event extends Fragment {
 				
 				final Context context = getActivity();
 				AlertDialog.Builder alert = new AlertDialog.Builder(context);
-				alert.setTitle("Alert Dialog"); // Set Alert dialog title here
+				alert.setTitle("DATA DELL EVENTO"); // Set Alert dialog title here
 				alert.setMessage("Enter Data"); // Message here
 
 				// Set an EditText view to get user input
@@ -225,6 +225,12 @@ public class Fragment_crea_event extends Fragment {
 					 dbHelper.open();
 					 dbHelper.createEvents(""+n, pathimg, title, description, date, "0", location, "1", "46.8", "11.1");
 				dbHelper.close();
+				Context context = getActivity().getApplicationContext();
+				CharSequence text = "salvato";
+				int duration = Toast.LENGTH_SHORT;
+
+				Toast toast = Toast.makeText(context, text, duration);
+				toast.show();
 				}
 			}
 		});

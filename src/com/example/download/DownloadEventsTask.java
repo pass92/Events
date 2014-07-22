@@ -106,7 +106,6 @@ public class DownloadEventsTask extends
 		this.dialog = dialog;
 		this.context = context;
 		this.city = city;
-		dbHelper = new DbAdapter(context);
 		this.offsetQuery = offsetQuery;
 		this.limitQuery = limitQuery;
 		this.adapter = adapter;
@@ -253,6 +252,7 @@ public class DownloadEventsTask extends
 						&& longitude < (this.longitude + difLong)) {
 					events.add(f);
 
+					dbHelper = new DbAdapter(context);
 					dbHelper.open();
 					dbHelper.createEvents(id, pathPhoto, title, description,
 							start_time, "0", "0", "0", "" + this.latitude, ""

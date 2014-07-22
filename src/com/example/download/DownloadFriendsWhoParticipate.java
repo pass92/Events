@@ -47,6 +47,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class DownloadFriendsWhoParticipate extends
 		AsyncTask<Void, Void, ArrayList<UserHelper>> {
@@ -89,7 +90,7 @@ public class DownloadFriendsWhoParticipate extends
 				null, HttpMethod.GET, new Request.Callback() {
 					@Override
 					public void onCompleted(Response response) {
-						// Log.i(TAG, "Got results: " + response.toString());
+						 Log.w("DownloadFriendsWhoParticipate", "Got results: " + response.toString());
 						try {
 							if (response != null) {
 								final JSONObject json = response
@@ -133,7 +134,12 @@ public class DownloadFriendsWhoParticipate extends
 		// TODO Auto-generated method stub
 		super.onPostExecute(result);
 		Log.w("Async Task", "on post excute");
-
+		if(result.size() == 0){
+			Toast.makeText(context, "no participant..",
+					Toast.LENGTH_LONG).show();
+			return;
+		}
+		
 		for (int i = 0; i < result.size(); i++) {
 			user.add(result.get(i));
 			adapter.notifyDataSetChanged();

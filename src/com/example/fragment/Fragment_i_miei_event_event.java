@@ -152,12 +152,12 @@ public class Fragment_i_miei_event_event extends Fragment {
 				String STARTTIME = "" + c.getString(4);
 				String ENDTIME = "" + c.getString(5);
 				String LOCATION = "" + c.getString(6);
-				String MY = "" + 0;
+				String MY = "" + "0";
 				String latitude="" + c.getString(8);
 				String longitude="" + c.getString(9);
 
 
-				c.close();
+				
 				System.out.println(dbHelper.deleteEvents(ID));
 				dbHelper.createEvents(ID, IMAGE, TITLE, DESCRIPTION, STARTTIME,
 						ENDTIME, LOCATION, MY,latitude,longitude);
@@ -168,7 +168,7 @@ public class Fragment_i_miei_event_event extends Fragment {
 				System.out.println("numero di righe: " + c2.getCount());
 				getActivity().startManagingCursor(c);
 				
-
+				c.close();
 				c2.close();
 				dbHelper.close();
 

@@ -169,7 +169,6 @@ public class Fragment_i_miei_event_event extends Fragment {
 				getActivity().startManagingCursor(c);
 				
 
-			
 			}
 			else{
 				Context context1 = getActivity().getApplicationContext();

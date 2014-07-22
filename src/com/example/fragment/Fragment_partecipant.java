@@ -59,11 +59,11 @@ public class Fragment_partecipant extends Fragment {
 		final List<UserHelper> user =new ArrayList();
 		final ListView listView = (ListView) view
 				.findViewById(R.id.listview_partecipanti);
+		
 		adapter = new AdapterUser(view.getContext(), user);
 		listView.setAdapter(adapter);
 		
-		
-		
+
 		//String id = event.get(MainActivity.getidEvents()).getId();
 		//Log.w("ID EVENT", id);
 		DownloadFriendsWhoParticipate taskEvents = new DownloadFriendsWhoParticipate(view, listView, view.getContext(), user,IdEvent,adapter);
@@ -157,13 +157,12 @@ public class Fragment_partecipant extends Fragment {
 //	                Uri.parse("https://www.facebook.com/"+idProfile)); //catches and opens a url to the desired page
 //	    }
 		try {
-	        context.getPackageManager()
-	                .getPackageInfo("com.facebook.katana", 0); //Checks if FB is even installed.
-	        return new Intent(Intent.ACTION_VIEW,
-	                Uri.parse("fb://profile/"+idProfile)); //Trys to make intent with FB's URI
+			context.getPackageManager().getPackageInfo("com.facebook.katana", 0);
+			String uri = "facebook://profile/"+ idProfile +"/info";
+			return  new Intent(Intent.ACTION_VIEW, Uri.parse(uri)); //Trys to make intent with FB's URI
 	    } catch (Exception e) {
 	        return new Intent(Intent.ACTION_VIEW,
-	                Uri.parse("https://www.facebook.com/luca.passerini")); //catches and opens a url to the desired page
+	                Uri.parse("https://www.facebook.com/")); //catches and opens a url to the desired page
 	    }
 	}
 	

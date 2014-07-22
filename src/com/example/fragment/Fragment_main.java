@@ -127,8 +127,8 @@ public class Fragment_main extends Fragment {
 				String Str = addresses.get(0).getAddressLine(1);
 
 				String[] Res = Str.split("[\\p{Punct}\\s]+");
-				Toast.makeText(view.getContext(), "[" + Res[1] + "]",
-						Toast.LENGTH_LONG).show();
+				//Toast.makeText(view.getContext(), "[" + Res[1] + "]",
+					//	Toast.LENGTH_LONG).show();
 				city = Res[1];
 
 			} catch (IOException e) {

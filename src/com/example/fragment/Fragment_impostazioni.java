@@ -186,7 +186,7 @@ public class Fragment_impostazioni extends Fragment {
 			public void onStopTrackingTouch(SeekBar seekBar) {
 
 				saveUserDatails(progressChanged, view.getContext());
-
+				Fragment_main.clearAllVariable();
 			}
 		});
 
@@ -322,7 +322,7 @@ public class Fragment_impostazioni extends Fragment {
 		edit.clear();
 		edit.putInt("km", kmUser);
 		edit.commit();
-		Toast.makeText(context, "Login details are saved..", 3000).show();
+		Toast.makeText(context, "Radius is saved..", 3000).show();
 
 	}
 

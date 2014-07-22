@@ -122,13 +122,14 @@ public class DownloadEventsTask extends
 		if (city == "") {
 			if (Fragment_impostazioni.loadDafaultCity(context) != "")
 				city = Fragment_impostazioni.loadDafaultCity(context);
-			else{
-				Toast.makeText(context, "Insert a Valid Location..", Toast.LENGTH_LONG)
-				.show();
+			else {
+				Toast.makeText(context, "Insert a Valid Location..",
+						Toast.LENGTH_LONG).show();
 				if (dialog.isShowing())
 					dialog.dismiss();
 				return;
 			}
+			
 			if (Geocoder.isPresent()) {
 				try {
 					String location = city;
@@ -136,20 +137,19 @@ public class DownloadEventsTask extends
 					List<Address> addresses = gc.getFromLocationName(location,
 							5); // get the found Address Objects
 
-					List<LatLng> ll = new ArrayList<LatLng>(addresses.size()); 
+					List<LatLng> ll = new ArrayList<LatLng>(addresses.size());
 					for (Address a : addresses) {
 						if (a.hasLatitude() && a.hasLongitude()) {
 							ll.add(new LatLng(a.getLatitude(), a.getLongitude()));
 						}
 					}
 
-					if(ll ==null){
-					latitude = ll.get(0).getLat();
-					longitude = ll.get(0).getLon();
-					}
-					else{
-						latitude=46;
-						longitude=11;
+					if (ll.size()!=0) {
+						latitude = ll.get(0).getLat();
+						longitude = ll.get(0).getLon();
+					} else {
+						latitude = 46;
+						longitude = 11;
 					}
 				} catch (IOException e) {
 					// handle the exception
@@ -357,6 +357,9 @@ public class DownloadEventsTask extends
 			}
 		}
 
+		if (result.size() == 0)
+			Toast.makeText(context, "Nothing Found..", Toast.LENGTH_LONG)
+					.show();
 		if (dialog.isShowing())
 			dialog.dismiss();
 		start = false;

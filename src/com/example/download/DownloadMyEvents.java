@@ -209,6 +209,8 @@ public class DownloadMyEvents extends
 				myevent.setDescription(c.getString(3));
 				myevent.setStart_time(c.getString(4)+"//////////");
 				myevent.setEnd_time(c.getString(5));
+				myevent.setLatitude(Double.parseDouble(c.getString(8)));
+				myevent.setLongitude(Double.parseDouble(c.getString(9)));
 
 				myevent.setMy_status(c.getString(7));
 

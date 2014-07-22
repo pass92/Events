@@ -261,6 +261,7 @@ public class Fragment_i_miei_event_event extends Fragment {
 			startActivity(new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri)));
 	}
 	}
+
 }
 
 

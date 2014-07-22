@@ -157,7 +157,7 @@ public class Fragment_i_miei_event_event extends Fragment {
 				String longitude="" + c.getString(9);
 
 
-				c.close();
+				
 				System.out.println(dbHelper.deleteEvents(ID));
 				dbHelper.createEvents(ID, IMAGE, TITLE, DESCRIPTION, STARTTIME,
 						ENDTIME, LOCATION, MY,latitude,longitude);
@@ -169,8 +169,7 @@ public class Fragment_i_miei_event_event extends Fragment {
 				getActivity().startManagingCursor(c);
 				
 
-				c2.close();
-
+			
 			}
 			else{
 				Context context1 = getActivity().getApplicationContext();

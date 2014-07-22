@@ -133,7 +133,7 @@ public class Fragment_cerca_event extends Fragment {
 				String latitude = "" + c.getString(8);
 				String longitude = "" + c.getString(9);
 
-				c.close();
+				
 				System.out.println(dbHelper.deleteEvents(ID));
 				dbHelper.createEvents(ID, IMAGE, TITLE, DESCRIPTION, STARTTIME,
 						ENDTIME, LOCATION, MY, latitude, longitude);
@@ -143,7 +143,7 @@ public class Fragment_cerca_event extends Fragment {
 				System.out.println("numero di righe: " + c2.getCount());
 				getActivity().startManagingCursor(c);
 
-				c2.close();
+				
 
 			}
 

@@ -219,8 +219,7 @@ public class DownloadMyEvents extends
 
 			}
 		}
-		c.close();
-
+		
 		for (int i = 0; i < result.size(); i++) {
 			events.add(result.get(i));
 			adapter.notifyDataSetChanged();

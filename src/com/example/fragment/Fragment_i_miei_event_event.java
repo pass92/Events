@@ -172,6 +172,7 @@ public class Fragment_i_miei_event_event extends Fragment {
 				c2.close();
 				dbHelper.close();
 
+
 			}
 			else{
 				Context context1 = getActivity().getApplicationContext();

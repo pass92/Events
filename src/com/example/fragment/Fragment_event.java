@@ -163,10 +163,11 @@ public class Fragment_event extends Fragment {
 				System.out.println("id: " + id);
 				System.out.println("numero di righe: " + c2.getCount());
 				getActivity().startManagingCursor(c);
-				
+                
 				c.close();
 				c2.close();
 				dbHelper.close();
+
 			}
 //fine mieie eventi 
 		});

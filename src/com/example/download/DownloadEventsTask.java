@@ -255,8 +255,8 @@ public class DownloadEventsTask extends
 
 					dbHelper.open();
 					dbHelper.createEvents(id, pathPhoto, title, description,
-							start_time, "0", "0", "0", "" + this.latitude, ""
-									+ this.longitude);
+							start_time, "0", "0", "0", "" + latitude, ""
+									+ longitude);
 					dbHelper.close();
 
 				}

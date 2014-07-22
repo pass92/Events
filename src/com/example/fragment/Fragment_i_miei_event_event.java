@@ -167,7 +167,7 @@ public class Fragment_i_miei_event_event extends Fragment {
 				System.out.println("id: " + id);
 				System.out.println("numero di righe: " + c2.getCount());
 				getActivity().startManagingCursor(c);
-				
+				getActivity().getFragmentManager().popBackStack();
 
 			}
 			else{

@@ -11,6 +11,7 @@ import com.example.helper.EventsHelper;
 import com.example.helper.StorageHelper;
 
 import database.DbAdapter;
+import database.DbHelper;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -168,6 +169,7 @@ public class Fragment_event extends Fragment {
 				
 
 			}
+			
 //fine mieie eventi 
 		});
 

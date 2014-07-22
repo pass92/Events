@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Events</string>
+    <string name="app_name">Best Events</string>
     <string name="app_id">245438092330149</string>
-    <string name="title_activity_login">Events</string>
-    <string name="title_page_login">EVENTS</string>
+    <string name="title_activity_login">Best Events</string>
+    <string name="title_page_login">Best Events</string>
     <string name="Button_text_login">Login</string>
     <string name="login_effettuato">Benvenuto</string>
     <string name="drawer_open">Open navigation drawer</string>

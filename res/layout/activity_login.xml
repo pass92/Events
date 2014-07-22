@@ -10,9 +10,10 @@
         android:layout_marginTop="120dp"
         android:gravity="center"
         android:textStyle="italic"
+        android:fontFamily="helvetica"
         android:textColor="@android:color/white"
         android:text="@string/title_page_login"
-        android:textSize="50sp" />
+        android:textSize="60sp" />
 
     <Button
         android:id="@+id/login_button"

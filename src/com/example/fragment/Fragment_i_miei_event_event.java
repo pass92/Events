@@ -168,8 +168,8 @@ public class Fragment_i_miei_event_event extends Fragment {
 				System.out.println("numero di righe: " + c2.getCount());
 				getActivity().startManagingCursor(c);
 				
-				c.close();
-				c2.close();
+				//c.close();
+				//c2.close();
 				dbHelper.close();
 
 

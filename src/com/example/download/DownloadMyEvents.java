@@ -216,7 +216,7 @@ public class DownloadMyEvents extends
 
 				result.add(myevent);
 				c.moveToNext();
-
+				//c.close();
 			}
 		}
 		

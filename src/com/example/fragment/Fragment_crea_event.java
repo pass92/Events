@@ -133,6 +133,7 @@ public class Fragment_crea_event extends Fragment {
 				AlertDialog alertDialog = alert.create();
 				alertDialog.show();
 
+				
 			}
 		});
 		

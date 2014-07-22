@@ -29,55 +29,56 @@ import android.widget.AdapterView.OnItemClickListener;
 public class Fragment_i_miei_eventi extends Fragment {
 	private ProgressDialog dialog;
 	private ListView listView;
-	private Communicator comm;
-	private List<EventsHelper> events = new ArrayList<EventsHelper>();
+	private Communicator comm; 
 	private AdapterListView adapter;
-	private boolean start=true;
+	private boolean start = true;
 
+	private List<EventsHelper> events = new ArrayList<EventsHelper>();
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle saveInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_i_miei_eventi,
 				container, false);
-      
+ 
 		comm = (Communicator) getActivity();
 		listView = (ListView) view.findViewById(R.id.listview_my_events);
-		
+
 		adapter = new AdapterListView(view.getContext(),
 				(ArrayList<EventsHelper>) events);
 		listView.setAdapter(adapter);
-//		if (saveInstanceState != null) {
-//			events = (List<EventsHelper>) saveInstanceState
-//					.getSerializable("events");
-//			adapter = new AdapterListView(view.getContext(),
-//					(ArrayList<EventsHelper>) events);
-//			
-//			listView.setAdapter(adapter);
-//		} else {
-		//if(start){
-			//start=false;
-		
-			dialog = ProgressDialog.show(view.getContext(), "", "Attendi...",
-					false, true);
-			
-			DownloadMyEvents taskEvents = new DownloadMyEvents(view, listView,
-					dialog, view.getContext(), events,adapter);
-			taskEvents.execute();
-			
-		//}
+		// if (saveInstanceState != null) {
+		// events = (List<EventsHelper>) saveInstanceState
+		// .getSerializable("events");
+		// adapter = new AdapterListView(view.getContext(),
+		// (ArrayList<EventsHelper>) events);
+		//
+		// listView.setAdapter(adapter);
+		// } else {
+		// if(start){
+		// start=false;
+
+		dialog = ProgressDialog.show(view.getContext(), "", "Attendi...",
+				false, true);
+
+		DownloadMyEvents taskEvents = new DownloadMyEvents(view, listView,
+				dialog, view.getContext(), events, adapter);
+		taskEvents.execute();
+
+		// }
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-//				MainActivity.setidEvents(position);
-//				comm.respond("fragment_i_miei_event", position);
+				// MainActivity.setidEvents(position);
+				// comm.respond("fragment_i_miei_event", position);
 				Bundle bundle = new Bundle();
 				bundle.putString("id", events.get(position).getId());
-				bundle.putString("descrizione", events.get(position).getDescription());
+				bundle.putString("descrizione", events.get(position)
+						.getDescription());
 				bundle.putDouble("lat", events.get(position).getLatitude());
 				bundle.putDouble("lon", events.get(position).getLongitude());
-				
+
 				Fragment fragment = new Fragment_i_miei_event_event();
 				fragment.setArguments(bundle);
 				FragmentManager manager = getFragmentManager();
@@ -87,16 +88,8 @@ public class Fragment_i_miei_eventi extends Fragment {
 				transaction.commit();
 			}
 		});
-	
+
 		return view;
 	}
 
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		// TODO Auto-generated method stub
-		super.onSaveInstanceState(outState);
-		Bundle args = new Bundle();
-		args.putSerializable("events", (Serializable) events);
-		outState.putAll(args);
-	}
 }

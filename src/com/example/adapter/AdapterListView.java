@@ -88,15 +88,20 @@ public class AdapterListView extends ArrayAdapter<EventsHelper> {
 		year = new String(time.substring(0, 4));
 		month = new String(time.substring(5, 7));
 		day = new String(time.substring(8, 10));
+		if(time.contains("+")){
+        	time=new String(time.substring(0,21));
+        	
+        }
+		else{
 		if (time.length() >= 16) {
 			hour = new String(time.substring(11, 16));
 		} else {
 			hour = new String("null");
 		}
 		time = new String(day + "/" + month + "/" + year + " alle " + hour);
-        if(time.contains("+")){
-        	time=new String("27/08/2014 alle 21:30");
-        }
+		
+		}
+		
 
 		viewHolder.title.setText(events.get(position).getTitle());
 		viewHolder.date.setText(time);

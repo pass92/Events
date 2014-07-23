@@ -158,8 +158,7 @@ public class Fragment_crea_event extends Fragment {
 									int whichButton) {
 
 								String srt = input.getEditableText().toString();
-								Toast.makeText(context, srt, Toast.LENGTH_LONG)
-										.show();
+								
 								date=srt;
 							} // End of onClick(DialogInterface dialog, int
 								// whichButton)
@@ -223,11 +222,13 @@ public class Fragment_crea_event extends Fragment {
 					 
 					 
 					 dbHelper.open();
-					 dbHelper.createEvents(""+n, pathimg, title, description, date, "0", location, "1", "46.8", "11.1");
+					 System.out.println("DATA:"+date);
+					 dbHelper.createEvents(""+n, pathimg, title, description, date+"+++", "0", location, "1", "46.8", "11.1");
 				dbHelper.close();
 				Context context = getActivity().getApplicationContext();
 				CharSequence text = "salvato";
 				int duration = Toast.LENGTH_SHORT;
+				getActivity().getFragmentManager().popBackStack();
 
 				Toast toast = Toast.makeText(context, text, duration);
 				toast.show();

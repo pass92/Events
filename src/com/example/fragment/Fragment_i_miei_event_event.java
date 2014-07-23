@@ -167,7 +167,9 @@ public class Fragment_i_miei_event_event extends Fragment {
 				System.out.println("id: " + id);
 				System.out.println("numero di righe: " + c2.getCount());
 				getActivity().startManagingCursor(c);
+
 				getActivity().getFragmentManager().popBackStack();
+
 
 			}
 			else{
@@ -238,8 +240,7 @@ public class Fragment_i_miei_event_event extends Fragment {
 			String longitudmye="" + c.getString(9);
 
 		  
-			c.close();
-			dbHelper.close();
+
 		   
            String uri="geo:0,0?q="+latitudemy +","+longitudmye;
 		   startActivity(new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri)));
